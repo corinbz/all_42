@@ -34,14 +34,12 @@ int32_t main(void)
 	mlx = mlx_init(WIDTH, HEIGHT, "TEST", true);
 	if (!mlx)
 		ft_error("mlx_init failed");
-	mlx_texture_t *my_character = mlx_load_png("../img/my_char.png");
+	mlx_texture_t *my_character = mlx_load_png("img/my_char.png");
 	if (!my_character)
-		ft_error("failed to load my_character.png");
+		ft_error("failed to load png");
 	mlx_image_t* img = mlx_texture_to_image(mlx, my_character);
-	if (!img || (mlx_image_to_window(mlx, img, 0, 0) < 0))
+	if (!img || (mlx_image_to_window(mlx, img, 20, 20) < 0))
 		ft_error("failed to make img");
-	mlx_put_pixel(img, 0, 0, 0xFF0000FF);
-	mlx_loop_hook(mlx, ft_hook, mlx);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);

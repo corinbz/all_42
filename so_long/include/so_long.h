@@ -11,8 +11,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#define WIDTH 512
-#define HEIGHT 512
+#define WIDTH 1024
+#define HEIGHT 1024
 
 // typedef struct s_data
 // {
