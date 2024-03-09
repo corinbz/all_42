@@ -1,20 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 12:13:55 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/09 11:47:19 by ccraciun         ###   ########.fr       */
+/*   Created: 2023/10/05 10:15:16 by corin             #+#    #+#             */
+/*   Updated: 2023/10/28 14:03:32 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/so_long.h"
+#include "libft.h"
+#include <stdio.h>
 
-void ft_error(char *error_txt)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	perror(error_txt);
-	mlx_strerror(mlx_errno);
-	exit(EXIT_FAILURE);
+	unsigned char	*d;
+	unsigned char	*s;
+
+	d = dest;
+	s = (unsigned char *)src;
+	if (d == s)
+		return (dest);
+	if (d < s)
+	{
+		ft_memcpy(dest, src, n);
+	}
+	else if (d > s)
+	{
+		while (n--)
+			d[n] = s[n];
+	}
+	return (dest);
 }

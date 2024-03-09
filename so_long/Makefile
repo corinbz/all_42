@@ -1,6 +1,6 @@
 NAME	:= so_long
 CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code -Ofast -g
-LIBMLX	:= ./MLX42
+LIBMLX	:= ./LIB/MLX42
 
 HEADERS	:= -I ./include -I $(LIBMLX)/include/MLX42/
 LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm

@@ -1,20 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 12:13:55 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/09 11:47:19 by ccraciun         ###   ########.fr       */
+/*   Created: 2023/10/14 17:32:36 by ccraciun          #+#    #+#             */
+/*   Updated: 2023/10/28 13:37:19 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/so_long.h"
+#include <stdio.h>
+#include "libft.h"
 
-void ft_error(char *error_txt)
+char	*ft_strdup(const char *str)
 {
-	perror(error_txt);
-	mlx_strerror(mlx_errno);
-	exit(EXIT_FAILURE);
+	size_t	str_len;
+	int		i;
+	char	*result;
+	char	*s;
+
+	s = (char *)str;
+	str_len = ft_strlen ((char *)str);
+	i = 0;
+	result = malloc ((str_len + 1) * sizeof (char));
+	if (result == NULL)
+		return (NULL);
+	while (str[i])
+	{
+		result[i] = s[i];
+		i++;
+	}
+	result[i] = '\0';
+	return (result);
 }

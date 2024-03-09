@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 12:13:55 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/09 11:47:19 by ccraciun         ###   ########.fr       */
+/*   Created: 2023/10/14 16:46:08 by ccraciun          #+#    #+#             */
+/*   Updated: 2023/10/14 17:54:56 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/so_long.h"
+#include <stdio.h>
+#include "libft.h"
 
-void ft_error(char *error_txt)
+void	*ft_calloc(size_t num_elements, size_t element_size)
 {
-	perror(error_txt);
-	mlx_strerror(mlx_errno);
-	exit(EXIT_FAILURE);
+	size_t	total_size;
+	void	*result;
+
+	total_size = num_elements * element_size;
+	result = malloc(total_size);
+	if (result != NULL)
+		ft_bzero (result, total_size);
+	return (result);
 }

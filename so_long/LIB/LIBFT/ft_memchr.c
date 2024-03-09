@@ -1,20 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 12:13:55 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/09 11:47:19 by ccraciun         ###   ########.fr       */
+/*   Created: 2023/10/10 20:59:25 by corin             #+#    #+#             */
+/*   Updated: 2023/10/28 13:49:14 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/so_long.h"
+#include <stdio.h>
+#include "libft.h"
 
-void ft_error(char *error_txt)
+void	*ft_memchr(const void *ptr, int value, size_t num)
 {
-	perror(error_txt);
-	mlx_strerror(mlx_errno);
-	exit(EXIT_FAILURE);
+	size_t				index;
+	const unsigned char	*p;
+
+	index = 0;
+	p = ptr;
+	while (index < num)
+	{
+		if (p[index] == (unsigned char)value)
+			return ((void *)(p + index));
+		index++;
+	}
+	return (NULL);
 }

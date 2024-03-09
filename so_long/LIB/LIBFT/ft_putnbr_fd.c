@@ -1,20 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 12:13:55 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/09 11:47:19 by ccraciun         ###   ########.fr       */
+/*   Created: 2023/10/15 15:43:13 by ccraciun          #+#    #+#             */
+/*   Updated: 2023/10/28 13:36:37 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/so_long.h"
+#include "libft.h"
+#include <limits.h>
 
-void ft_error(char *error_txt)
+static void	ft_put_int(long int a, int fd)
 {
-	perror(error_txt);
-	mlx_strerror(mlx_errno);
-	exit(EXIT_FAILURE);
+	char	c;
+
+	c = a % 10 + '0';
+	write(fd, &c, sizeof(char));
+}
+
+void	ft_putnbr_fd(int nb, int fd)
+{
+	long int	lnb;
+
+	lnb = nb;
+	if (nb <= INT_MAX || nb >= INT_MIN)
+	{
+		if (lnb < 0)
+		{
+			write(fd, "-", sizeof(char));
+			lnb = -lnb;
+		}
+		if (lnb >= 10)
+		{
+			ft_putnbr_fd(lnb / 10, fd);
+		}
+		ft_put_int(lnb, fd);
+	}
 }

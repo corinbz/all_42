@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   init_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 12:13:55 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/09 11:47:19 by ccraciun         ###   ########.fr       */
+/*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
+/*   Updated: 2024/03/09 12:47:28 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/so_long.h"
 
-void ft_error(char *error_txt)
+t_graphics	create_graphics(mlx_t *mlx)
 {
-	perror(error_txt);
-	mlx_strerror(mlx_errno);
-	exit(EXIT_FAILURE);
+	t_graphics	assets;
+
+	mlx_texture_t *player = mlx_load_png("img/player.png");
+	assets.player = mlx_texture_to_image(mlx, player);
+	// mlx_texture_destroy(player);
+	return (assets);
 }
+

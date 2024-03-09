@@ -1,20 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 12:13:55 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/09 11:47:19 by ccraciun         ###   ########.fr       */
+/*   Created: 2023/10/15 11:58:39 by ccraciun          #+#    #+#             */
+/*   Updated: 2023/10/28 13:41:32 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/so_long.h"
+#include "libft.h"
 
-void ft_error(char *error_txt)
+char	*ft_strmapi(char const *str, char (*f)(unsigned int, char))
 {
-	perror(error_txt);
-	mlx_strerror(mlx_errno);
-	exit(EXIT_FAILURE);
+	char	*result;
+	size_t	i;
+
+	result = (char *)malloc(sizeof(char) * (ft_strlen((char *)str) + 1));
+	if (!result)
+		return (0);
+	i = 0;
+	while (str[i])
+	{
+		result[i] = f(i, str[i]);
+		i++;
+	}
+	result[i] = 0;
+	return (result);
 }
