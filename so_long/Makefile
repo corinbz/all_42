@@ -1,30 +1,47 @@
-NAME	:= so_long
-CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code -Ofast -g
-LIBMLX	:= ./LIB/MLX42
-
-HEADERS	:= -I ./include -I $(LIBMLX)/include/MLX42/
+NAME    = so_long
+CFLAGS  = -Wextra -Wall -Werror -Wunreachable-code -Ofast -g
+#MLX STUFF
+LIBMLX	= ./LIBS/MLX42
+HEADERS	:= -I ./include -I $(LIBMLX)/include
 LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
-SRCS	:= $(shell find ./src -iname "*.c")
-OBJS	:= ${SRCS:.c=.o}
+
+LIBFTDIR = ./LIBS/LIBFT
+SRCS    = $(shell find ./src -name "*.c")
+OBJS    = $(addprefix obj/, $(notdir $(SRCS:.c=.o)))
+OBJDIR  = ./obj/
+
+GREEN=\033[1;32m
+BLUE=\033[1;36m
+YELLOW=\033[1;33m
+RED=\033[1;31m
+NC=\033[0m # No Color
 
 all: libmlx $(NAME)
 
 libmlx:
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
 
-%.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
+$(OBJDIR)%.o: ./src/%.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -I$(LIBFTDIR) -c $< -o $@ $(HEADERS)
+	@echo "$(GREEN)Compiled $< successfully!$(NC)"
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
+	@make -s -C $(LIBFTDIR)
+	@$(CC) $(CFLAGS) $(OBJS) -L$(LIBFTDIR) -lft -I$(LIBFTDIR) $(LIBS) $(HEADERS) -o $@
+	@echo "$(BLUE)$(NAME) created successfully!$(NC)"
 
 clean:
-	@rm -rf $(OBJS)
+	@rm -rf $(OBJDIR)
+	@make -s -C $(LIBFTDIR) clean
 	@rm -rf $(LIBMLX)/build
+	@echo "$(YELLOW)$(NAME) -> Object files removed!$(NC)"
 
 fclean: clean
-	@rm -rf $(NAME)
+	@rm -f $(NAME)
+	@make -s -C $(LIBFTDIR) fclean
+	@echo "$(RED)$(NAME) executable removed!$(NC)"
 
-re: clean all
+re: fclean all
 
-.PHONY: all, clean, fclean, re, libmlx
+.PHONY: all clean fclean re libmlx

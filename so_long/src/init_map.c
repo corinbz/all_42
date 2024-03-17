@@ -6,11 +6,11 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/09 12:47:28 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/03/17 16:14:15 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/so_long.h"
+#include "../headers/so_long.h"
 
 t_graphics	create_graphics(mlx_t *mlx)
 {
@@ -21,4 +21,12 @@ t_graphics	create_graphics(mlx_t *mlx)
 	// mlx_texture_destroy(player);
 	return (assets);
 }
+t_map create_map(void)
+{
+	t_map map;
 
+	map.width = 0;
+	map.height = 0;
+	map.valid = true;
+	return (map);
+}

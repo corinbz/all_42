@@ -1,26 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/14 16:46:08 by ccraciun          #+#    #+#             */
-/*   Updated: 2023/10/14 17:54:56 by ccraciun         ###   ########.fr       */
+/*   Created: 2023/10/14 17:32:36 by ccraciun          #+#    #+#             */
+/*   Updated: 2024/03/17 16:02:21 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "libft.h"
 
-void	*ft_calloc(size_t num_elements, size_t element_size)
+char	*ft_strdup(const char *str)
 {
-	size_t	total_size;
-	void	*result;
+	char	*new_str;
+	int		i;
 
-	total_size = num_elements * element_size;
-	result = malloc(total_size);
-	if (result != NULL)
-		ft_bzero (result, total_size);
-	return (result);
+	i = 0;
+	if (!str)
+		return (ft_strdup(""));
+	while (str[i])
+		i++;
+	new_str = ft_calloc(i + 1, sizeof(char));
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (str[i])
+	{
+		new_str[i] = str[i];
+		i++;
+	}
+	return (new_str);
 }

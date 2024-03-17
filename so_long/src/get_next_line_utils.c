@@ -6,55 +6,12 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 14:39:22 by corin             #+#    #+#             */
-/*   Updated: 2023/12/12 15:08:27 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/03/17 15:45:42 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../headers/so_long.h"
 
-// calloc
-void	*ft_calloc(size_t num_elements, size_t element_size)
-{
-	void			*result;
-	unsigned char	*p;
-
-	result = malloc(num_elements * element_size);
-	if (!result)
-		return (NULL);
-	p = (unsigned char *)result;
-	while (num_elements != 0)
-	{
-		*p = '\0';
-		p++;
-		num_elements--;
-	}
-	return (result);
-}
-
-// duplicate the string
-char	*ft_strdup(const char *str)
-{
-	char	*new_str;
-	int		i;
-
-	i = 0;
-	if (!str)
-		return (ft_strdup(""));
-	while (str[i])
-		i++;
-	new_str = ft_calloc(i + 1, sizeof(char));
-	if (!new_str)
-		return (NULL);
-	i = 0;
-	while (str[i])
-	{
-		new_str[i] = str[i];
-		i++;
-	}
-	return (new_str);
-}
-
-// join the strings
 char	*join_strs(const char *s1, const char *s2)
 {
 	char	*result;

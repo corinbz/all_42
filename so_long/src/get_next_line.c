@@ -5,28 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 14:35:28 by corin             #+#    #+#             */
-/*   Updated: 2023/12/12 15:08:43 by ccraciun         ###   ########.fr       */
+/*   Created: 2024/03/17 15:44:26 by ccraciun          #+#    #+#             */
+/*   Updated: 2024/03/17 15:44:32 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-
-• Repeated calls (e.g., using a loop) to your get_next_line() function should
-let you read the text file pointed to by the file descriptor, one line at a
-time.
-• Your function should return the line that was read. If there is nothing
-else to read or if an error occurred, it should return NULL.
-• Make sure that
-your function works as expected both when reading a file and when reading from
-the standard input.
-• Please note that the returned line should include the
-terminating \n character, except if the end of file was reached and does not end
-with a \n character.
-
-*/
-
-#include "get_next_line.h"
+#include "../headers/so_long.h"
 
 char	*get_before_nl(char *s)
 {
@@ -157,16 +141,3 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-
-// int main() {
-//   int fd = open("test.txt", O_RDONLY);
-//   char *line;
-//   line = get_next_line(fd);
-// 	printf("%s", line);
-// 	free(line);
-//   line = get_next_line(fd);
-//   	printf("%s", line);
-// 	free(line);
-//   close(fd);
-//   return (0);
-// }

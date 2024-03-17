@@ -1,36 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/14 17:32:36 by ccraciun          #+#    #+#             */
-/*   Updated: 2023/10/28 13:37:19 by ccraciun         ###   ########.fr       */
+/*   Created: 2023/10/14 16:46:08 by ccraciun          #+#    #+#             */
+/*   Updated: 2024/03/17 16:03:42 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "libft.h"
 
-char	*ft_strdup(const char *str)
+void	*ft_calloc(size_t num_elements, size_t element_size)
 {
-	size_t	str_len;
-	int		i;
-	char	*result;
-	char	*s;
+	void			*result;
+	unsigned char	*p;
 
-	s = (char *)str;
-	str_len = ft_strlen ((char *)str);
-	i = 0;
-	result = malloc ((str_len + 1) * sizeof (char));
-	if (result == NULL)
+	result = malloc(num_elements * element_size);
+	if (!result)
 		return (NULL);
-	while (str[i])
+	p = (unsigned char *)result;
+	while (num_elements != 0)
 	{
-		result[i] = s[i];
-		i++;
+		*p = '\0';
+		p++;
+		num_elements--;
 	}
-	result[i] = '\0';
 	return (result);
 }

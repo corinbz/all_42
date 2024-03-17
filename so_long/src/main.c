@@ -1,13 +1,4 @@
-// -----------------------------------------------------------------------------
-// Codam Coding College, Amsterdam @ 2022-2023 by W2Wizard.
-// See README in the root project for more information.
-// -----------------------------------------------------------------------------
-
-#include "../LIB/MLX42/include/MLX42/MLX42.h"
-#include "../include/so_long.h"
-
-#define WIDTH 512
-#define HEIGHT 512
+#include "../headers/so_long.h"
 
 int32_t main(void)
 {
@@ -26,10 +17,7 @@ int32_t main(void)
 	// // mlx_loop_hook(mlx, ft_hook(assets.player, mlx), mlx);
 	// mlx_loop(mlx);
 	// mlx_terminate(mlx);
-	int map_file = open("maps/map.ber", O_RDONLY);
-	if (map_file < 0)
-		ft_error("Failed to open map file");
-	t_map *map = NULL;
-	read_map(map_file, map);
+	t_map map = create_map();
+	read_map(&map);
 	return (EXIT_SUCCESS);
 }

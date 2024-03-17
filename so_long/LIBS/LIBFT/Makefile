@@ -6,7 +6,7 @@
 #    By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/10 21:27:13 by corin             #+#    #+#              #
-#    Updated: 2023/10/28 13:55:21 by ccraciun         ###   ########.fr        #
+#    Updated: 2024/03/17 16:54:51 by ccraciun         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,8 @@ SRC = ft_atoi.c \
       ft_putnbr_fd.c \
       ft_putstr_fd.c \
       ft_putendl_fd.c \
-      ft_striteri.c
+      ft_striteri.c \
+	  ft_line_len.c
 
 OBJS = ft_atoi.o \
        ft_bzero.o \
@@ -81,9 +82,10 @@ OBJS = ft_atoi.o \
        ft_putnbr_fd.o \
        ft_putstr_fd.o \
        ft_putendl_fd.o \
-       ft_striteri.o
+       ft_striteri.o \
+	   ft_line_len.o
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g
 
 CC = cc
 
