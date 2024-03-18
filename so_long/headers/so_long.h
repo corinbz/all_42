@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/17 16:37:16 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/03/18 21:34:03 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@
 #include <string.h>
 
 #define BUFFER_SIZE 10
-#define WIDTH 1024
-#define HEIGHT 1024
+#define WIDTH 256
+#define HEIGHT 256
 
 typedef struct graphics
 {
-	mlx_texture_t *wall;
-	mlx_texture_t *floor;
-	mlx_texture_t *exit;
-	mlx_image_t *player;
-	mlx_texture_t *collectible;
+	mlx_image_t	*wall;
+	mlx_image_t	*floor;
+	mlx_image_t	*exit;
+	mlx_image_t		*player;
+	mlx_image_t	*collectible;
 }	t_graphics;
 
 typedef struct s_map
@@ -54,10 +54,10 @@ t_map	create_map(void);
 void	read_map(t_map *map);
 void	get_and_check_map_width(int fd, t_map *map);
 void	get_map_height(int fd, t_map *map);
-bool check_map_elements(t_map *map);
+bool	check_map_elements(t_map *map);
 
 //utils
-char *get_next_line(int fd);
+char	*get_next_line(int fd);
 void	ft_free_all(char **str1, char **str2, char **str3);
-int	contains_newline(const char *s);
+int		contains_newline(const char *s);
 char	*join_strs(const char *s1, const char *s2);
