@@ -3,17 +3,19 @@
 int32_t main(void)
 {
 	mlx_t* mlx;
+	t_screen screen;
+	t_map map;
+	read_map(&map);
+	screen.width = map.width * 64;
+	screen.height = map.height * 64;
 
-	// Gotta error check this stuff
-	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
+	if (!(mlx = mlx_init(screen.width, screen.height, "MLX42", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
 	t_graphics graphics = create_graphics(mlx);
-	if (mlx_image_to_window(mlx, graphics.player, 0, 64) < 0)
-        ft_error("Failed to draw image to window");
-	mlx_image_to_window(mlx, graphics.wall, 0, 0);
+	render_images(mlx, graphics, map);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
 	return (EXIT_SUCCESS);

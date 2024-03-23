@@ -6,11 +6,10 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/18 21:34:03 by corin            ###   ########.fr       */
+/*   Updated: 2024/03/21 20:08:00 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../LIB/MLX42/include/MLX42/MLX42.h"
 #include "../LIBS/LIBFT/libft.h"
 #include "../LIBS/MLX42/include/MLX42/MLX42.h"
 #include <stdlib.h>
@@ -21,16 +20,21 @@
 #include <string.h>
 
 #define BUFFER_SIZE 10
-#define WIDTH 256
-#define HEIGHT 256
 
-typedef struct graphics
+typedef struct s_screen
+{
+	size_t	width;
+	size_t	height;
+}	t_screen;
+
+typedef struct s_graphics
 {
 	mlx_image_t	*wall;
 	mlx_image_t	*floor;
 	mlx_image_t	*exit;
-	mlx_image_t		*player;
+	mlx_image_t	*player;
 	mlx_image_t	*collectible;
+	size_t		image_size;
 }	t_graphics;
 
 typedef struct s_map
@@ -45,9 +49,10 @@ void	ft_error(char *error_txt);
 
 //graphics
 t_graphics	create_graphics(mlx_t *mlx);
+void		render_images(mlx_t *mlx, t_graphics graphics, t_map map);
 
 //hooks
-void	ft_hook(mlx_image_t image, mlx_t *mlx);
+// void	ft_hook(mlx_image_t image, mlx_t *mlx);
 
 //map
 t_map	create_map(void);
