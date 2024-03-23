@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/21 20:08:00 by corin            ###   ########.fr       */
+/*   Updated: 2024/03/23 15:26:32 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,26 @@ typedef struct s_graphics
 
 typedef struct s_map
 {
+	char	**cell_value;
 	size_t	width;
 	size_t	height;
 	bool	valid;
 }	t_map;
+
+typedef struct s_player_coordonates
+{
+	size_t	x;
+	size_t	y;	
+}	t_player_coordonates;
+
+typedef struct s_game
+{
+	void *mlx;
+	t_player_coordonates player_coordonates;
+	t_map map;
+	t_screen screen;
+	t_graphics graphics;
+}	t_game;
 
 //errors
 void	ft_error(char *error_txt);
@@ -52,7 +68,7 @@ t_graphics	create_graphics(mlx_t *mlx);
 void		render_images(mlx_t *mlx, t_graphics graphics, t_map map);
 
 //hooks
-// void	ft_hook(mlx_image_t image, mlx_t *mlx);
+void ft_keyhooks(mlx_key_data_t keydata, void* param);
 
 //map
 t_map	create_map(void);
@@ -60,6 +76,7 @@ void	read_map(t_map *map);
 void	get_and_check_map_width(int fd, t_map *map);
 void	get_map_height(int fd, t_map *map);
 bool	check_map_elements(t_map *map);
+void get_map_elements(t_map *map);
 
 //utils
 char	*get_next_line(int fd);

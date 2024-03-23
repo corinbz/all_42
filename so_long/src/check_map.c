@@ -6,12 +6,26 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/17 17:05:03 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/03/23 12:23:17 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
 
+void get_map_elements(t_map *map)
+{
+	int map_file = open("maps/map.ber", O_RDONLY);
+	if (map_file < 0)
+		ft_error("Failed to open map file");
+	char *line;
+	int rows = 0;
+	while((line = get_next_line(map_file)))
+	{
+		map->cell_value[rows] = ft_strtrim(line, "\n");
+		free(line);
+		rows++;
+	}
+}
 void get_and_check_map_width(int fd, t_map *map)
 {
 	char *line;
@@ -25,7 +39,10 @@ void get_and_check_map_width(int fd, t_map *map)
 	{
 		len = ft_line_len(line);
 		if (len != map->width)
+		{
 			map->valid = false;
+			return ;
+		}
 		free(line);
 	}
 }
@@ -57,6 +74,7 @@ void read_map(t_map *map)
 	get_and_check_map_width(map_file, map);
 	close(map_file);
 	map->valid = check_map_elements(map);
+	printf("map read succes and %d\n", map->valid);
 }
 
 bool check_map_elements(t_map *map)
@@ -77,6 +95,7 @@ bool check_map_elements(t_map *map)
 	if (map_file < 0)
 		ft_error("Failed to open map file");
 	char *line;
+	// printf("width %zu\n", map->width);
 	while((line = get_next_line(map_file)))
 	{
 		if (row == 0)
@@ -94,17 +113,25 @@ bool check_map_elements(t_map *map)
 		}
 		while(col < map->width)
 		{			
-			if (line[0] != '1' || line[map->width - 1] != '1')
+			if (line[0] != '1' || line[map->width] != '1')
 			{
-				printf("here\n");
 				return (false);
 			}
-			if (line[col] == 'P')
+			else if (line[col] == 'P')
 				player++;
-			if (line[col] == 'C')
+			else if (line[col] == 'C')
 				collectible++;
-			if (line[col] == 'E')
+			else if (line[col] == 'E')
 				exit++;
+			else if (line[col] == '1' || line[col] == '0')
+			{
+				col++;	
+				continue;
+			}
+			else
+			{
+				return (false);
+			}
 			col++;
 		}
 		col = 0;

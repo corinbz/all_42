@@ -6,24 +6,27 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 11:51:58 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/17 15:07:07 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/03/23 15:02:59 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
 
-// void ft_hook(mlx_image_t image, mlx_t *mlx)
-// {
-// 	// mlx_t* mlx = param;
+void move_up(t_game *game)
+{
+	
+}
 
-// 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-// 		mlx_close_window(mlx);
-// 	if (mlx_is_key_down(mlx, MLX_KEY_UP))
-// 		image.instances[0].y -= 5;
-// 	if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-// 		image.instances[0].y += 5;
-// 	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-// 		image.instances[0].x -= 5;
-// 	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-// 		image.instances[0].x += 5;
-// }
+void ft_keyhooks(mlx_key_data_t keydata, void* param)
+{
+	t_game *game;
+	game = (t_game *)param;
+	if (keydata.key == MLX_KEY_UP && keydata.action == MLX_RELEASE)
+		puts("UP");
+	if (keydata.key == MLX_KEY_DOWN && keydata.action == MLX_RELEASE)
+		puts("DOWN");
+	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_RELEASE)
+		puts("LEFT");
+	if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_RELEASE)
+		puts("RIGHT");
+}

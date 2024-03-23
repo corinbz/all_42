@@ -1,5 +1,5 @@
 NAME    = so_long
-CFLAGS  = -Wextra -Wall -Werror -Wunreachable-code -Ofast -g
+CFLAGS  = -Wextra -Wall -Wunreachable-code -Ofast -g
 #MLX STUFF
 LIBMLX	= ./LIBS/MLX42
 HEADERS	:= -I ./include -I $(LIBMLX)/include
