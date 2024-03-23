@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/23 12:23:17 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/03/23 15:38:01 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void get_map_height(int fd, t_map *map)
 	map->height = height;
 }
 
-void read_map(t_map *map)
+void parse_map(t_map *map)
 {
 	int map_file = open("maps/map.ber", O_RDONLY);
 	if (map_file < 0)
