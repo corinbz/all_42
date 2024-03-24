@@ -1,26 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/24 08:16:29 by corin             #+#    #+#             */
+/*   Updated: 2024/03/24 11:01:40 by corin            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../headers/so_long.h"
 
+//game = (t_game){0}; --INIT ALL MEMBERS TO 0;
 int32_t main(void)
 {
-	t_game game;
-	game = (t_game){0};
-	t_screen screen;
-	t_map map = create_map();
-	read_map(&map);
-	screen.width = (map.width + 1) * 64;
-	screen.height =map.height * 64;
-
-	if (!(game.mlx = mlx_init(screen.width, screen.height, "MLX42", true)))
-	{
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	t_graphics graphics = create_graphics(game.mlx);
-	get_map_elements(&map);
-	render_images(game.mlx, graphics, map);
-	// for(size_t i = 0; i < map.width; i++)
-	// 	printf("%c", map.cell_value[0][i]);
-	mlx_key_hook(game.mlx, &ft_keyhooks, NULL);
+	t_game	game;
+	
+	init_game_struct(&game);
+	start_game(&game);
+	if(game.map.valid)
+		render_images(game.mlx, game.graphics, game.map);
+	mlx_key_hook(game.mlx, &ft_keyhooks, &game);
 	mlx_loop(game.mlx);
 	mlx_terminate(game.mlx);
 	return (EXIT_SUCCESS);

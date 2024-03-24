@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 15:44:26 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/17 15:44:32 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/03/24 08:51:36 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
 
-char	*get_before_nl(char *s)
+static char	*get_before_nl(char *s)
 {
 	char	*res;
 	size_t	i;
@@ -39,7 +39,7 @@ char	*get_before_nl(char *s)
 	return (res);
 }
 
-char	*get_after_nl(char *s)
+static char	*get_after_nl(char *s)
 {
 	char	*res;
 	size_t	i;
@@ -66,7 +66,7 @@ char	*get_after_nl(char *s)
 }
 
 // reads the text file untill it finds newline or EOF
-int	read_line(int fd, char **text, char **tmp)
+static	int	read_line(int fd, char **text, char **tmp)
 {
 	int		bytes_read;
 	char	*buf;
@@ -97,7 +97,7 @@ int	read_line(int fd, char **text, char **tmp)
 
 // parses the text and returns the string before newline
 // text now contains the extra chars after newline
-char	*parse_line(char **text, char **tmp)
+static	char	*parse_line(char **text, char **tmp)
 {
 	char	*chars_before_nl;
 

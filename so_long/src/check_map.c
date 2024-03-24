@@ -3,30 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/23 15:38:01 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/03/24 10:16:25 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
 
-void get_map_elements(t_map *map)
-{
-	int map_file = open("maps/map.ber", O_RDONLY);
-	if (map_file < 0)
-		ft_error("Failed to open map file");
-	char *line;
-	int rows = 0;
-	while((line = get_next_line(map_file)))
-	{
-		map->cell_value[rows] = ft_strtrim(line, "\n");
-		free(line);
-		rows++;
-	}
-}
-void get_and_check_map_width(int fd, t_map *map)
+
+static void get_and_check_map_width(int fd, t_map *map)
 {
 	char *line;
 	line = get_next_line(fd);
@@ -47,7 +34,7 @@ void get_and_check_map_width(int fd, t_map *map)
 	}
 }
 
-void get_map_height(int fd, t_map *map)
+static void get_map_height(int fd, t_map *map)
 {
 	char *line;
 	size_t height;
@@ -61,23 +48,7 @@ void get_map_height(int fd, t_map *map)
 	map->height = height;
 }
 
-void parse_map(t_map *map)
-{
-	int map_file = open("maps/map.ber", O_RDONLY);
-	if (map_file < 0)
-		ft_error("Failed to open map file");
-	get_map_height(map_file, map);
-	close(map_file);
-	map_file = open("maps/map.ber", O_RDONLY);
-	if (map_file < 0)
-		ft_error("Failed to open map file");
-	get_and_check_map_width(map_file, map);
-	close(map_file);
-	map->valid = check_map_elements(map);
-	printf("map read succes and %d\n", map->valid);
-}
-
-bool check_map_elements(t_map *map)
+static bool check_map_elements(t_map *map)
 {
 	size_t row;
 	size_t col;
@@ -113,7 +84,7 @@ bool check_map_elements(t_map *map)
 		}
 		while(col < map->width)
 		{			
-			if (line[0] != '1' || line[map->width] != '1')
+			if (line[0] != '1' || line[map->width -1] != '1')
 			{
 				return (false);
 			}
@@ -142,3 +113,18 @@ bool check_map_elements(t_map *map)
 	return (true);
 }
 	
+void parse_map(t_map *map)
+{
+	int map_file = open("maps/map.ber", O_RDONLY);
+	if (map_file < 0)
+		ft_error("Failed to open map file");
+	get_map_height(map_file, map);
+	close(map_file);
+	map_file = open("maps/map.ber", O_RDONLY);
+	if (map_file < 0)
+		ft_error("Failed to open map file");
+	get_and_check_map_width(map_file, map);
+	close(map_file);
+	map->valid = check_map_elements(map);
+	printf("map read succes and %d\n", map->valid);
+}
