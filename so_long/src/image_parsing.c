@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:36:51 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/24 17:45:31 by corin            ###   ########.fr       */
+/*   Updated: 2024/03/24 18:57:46 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,27 +37,29 @@ t_imgs	create_imgs(mlx_t *mlx, t_imgs assets)
 	return (assets);
 }
 
-void render_images(mlx_t *mlx, t_imgs imgs, t_map map)
+void render_images(t_game *game)
 {
 	size_t x_pos;
 	size_t y_pos;
 	
 	y_pos = 0;
 	x_pos = 0;
-	while(y_pos < map.height)
+	while(y_pos < game->map.height)
 	{
-		while(x_pos < map.width)
+		while(x_pos < game->map.width)
 		{
-			if(map.cell_value[y_pos][x_pos] == '1')
-				draw_wall(mlx, imgs, x_pos, y_pos);
-			else if(map.cell_value[y_pos][x_pos] == 'P')
-				draw_player(mlx, imgs, x_pos, y_pos);
-			else if(map.cell_value[y_pos][x_pos] == '0')
-				draw_floor(mlx, imgs, x_pos, y_pos);
-			else if(map.cell_value[y_pos][x_pos] == 'E')
-				draw_exit(mlx, imgs, x_pos, y_pos);
-			else if(map.cell_value[y_pos][x_pos] == 'C')
-				draw_collectible(mlx, imgs, x_pos, y_pos);
+			if(game->map.cell_value[y_pos][x_pos] == '1')
+				draw_wall(game, x_pos, y_pos);
+			else if(game->map.cell_value[y_pos][x_pos] == 'P')
+			{
+				draw_player(game, x_pos, y_pos);
+			}
+			else if(game->map.cell_value[y_pos][x_pos] == '0')
+				draw_floor(game, x_pos, y_pos);
+			else if(game->map.cell_value[y_pos][x_pos] == 'E')
+				draw_exit(game, x_pos, y_pos);
+			else if(game->map.cell_value[y_pos][x_pos] == 'C')
+				draw_collectible(game, x_pos, y_pos);
 			x_pos++;
 		}
 		x_pos = 0;

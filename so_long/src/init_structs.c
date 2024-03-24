@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/24 17:48:24 by corin            ###   ########.fr       */
+/*   Updated: 2024/03/24 19:01:02 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void get_map_elements(t_map *map)
 
 void init_game_struct	(t_game *game)
 {
-	game->player_coordonates = (t_player_coordonates){0};
+	game->player_pos = (t_player_pos){0};
 	game->map = (t_map){0};
 	game->screen = (t_screen){0};
 	game->imgs.image_size = 64;
@@ -56,7 +56,7 @@ void start_game	(t_game *game)
 	game->screen.width = (game->map.width) * game->imgs.image_size;
 	game->screen.height = game->map.height * game->imgs.image_size;
 	//imgs
-	if (!(game->mlx = mlx_init(game->screen.width, game->screen.height, "MLX42", true)))
+	if (!(game->mlx = mlx_init(game->screen.width, game->screen.height, "Hungry frog", true)))
 		ft_putstr_fd("Failed to init mlx (main)\n", 2);
 	game->imgs = create_imgs(game->mlx, game->imgs);
 }

@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/24 17:45:45 by corin            ###   ########.fr       */
+/*   Updated: 2024/03/24 19:01:02 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,16 @@ typedef struct s_map
 	bool	valid;
 }	t_map;
 
-typedef struct s_player_coordonates
+typedef struct s_player_pos
 {
 	size_t	x;
-	size_t	y;	
-}	t_player_coordonates;
+	size_t	y;
+}	t_player_pos;
 
 typedef struct s_game
 {
 	mlx_t					*mlx;
-	t_player_coordonates	player_coordonates;
+	t_player_pos	player_pos;
 	t_map					map;
 	t_screen				screen;
 	t_imgs					imgs;
@@ -69,14 +69,14 @@ void	ft_error(char *error_txt);
 
 //imgs
 t_imgs	create_imgs(mlx_t *mlx, t_imgs assets);
-void		render_images(mlx_t *mlx, t_imgs imgs, t_map map);
+void		render_images(t_game *game);
 
 //draw_images
-void draw_wall(mlx_t *mlx, t_imgs imgs, size_t x_pos, size_t y_pos);
-void draw_floor(mlx_t *mlx, t_imgs imgs, size_t x_pos, size_t y_pos);
-void draw_exit(mlx_t *mlx, t_imgs imgs, size_t x_pos, size_t y_pos);
-void draw_player(mlx_t *mlx, t_imgs imgs, size_t x_pos, size_t y_pos);
-void draw_collectible(mlx_t *mlx, t_imgs imgs, size_t x_pos, size_t y_pos);
+void draw_wall(t_game *game, size_t x_pos, size_t y_pos);
+void draw_floor(t_game *game, size_t x_pos, size_t y_pos);
+void draw_exit(t_game *game, size_t x_pos, size_t y_pos);
+void draw_player(t_game *game, size_t x_pos, size_t y_pos);
+void draw_collectible(t_game *game, size_t x_pos, size_t y_pos);
 
 //hooks
 void ft_keyhooks(mlx_key_data_t keydata, void* param);
