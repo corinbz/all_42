@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/24 10:55:23 by corin            ###   ########.fr       */
+/*   Updated: 2024/03/24 17:48:24 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,11 @@ void get_map_elements(t_map *map)
 	while((line = get_next_line(map_file)))
 	{
 		map->cell_value[rows] = ft_strdup(line);
-		printf("    %d is   %s", rows, map->cell_value[rows]);
+		// printf("    %d is   %s", rows, map->cell_value[rows]);
 		free(line);
 		rows++;
 	}
 	close(map_file);
-	printf("\nrow 1 is %s", map->cell_value[1]);
 }
 
 void init_game_struct	(t_game *game)
@@ -45,7 +44,7 @@ void init_game_struct	(t_game *game)
 	game->player_coordonates = (t_player_coordonates){0};
 	game->map = (t_map){0};
 	game->screen = (t_screen){0};
-	game->graphics.image_size = 64;
+	game->imgs.image_size = 64;
 }
 
 void start_game	(t_game *game)
@@ -54,12 +53,12 @@ void start_game	(t_game *game)
 	game->map = create_map();
 	parse_map(&game->map);
 	get_map_elements(&game->map);
-	game->screen.width = (game->map.width) * game->graphics.image_size;
-	game->screen.height = game->map.height * game->graphics.image_size;
-	//graphics
+	game->screen.width = (game->map.width) * game->imgs.image_size;
+	game->screen.height = game->map.height * game->imgs.image_size;
+	//imgs
 	if (!(game->mlx = mlx_init(game->screen.width, game->screen.height, "MLX42", true)))
 		ft_putstr_fd("Failed to init mlx (main)\n", 2);
-	game->graphics = create_graphics(game->mlx, game->graphics);
+	game->imgs = create_imgs(game->mlx, game->imgs);
 }
 
 

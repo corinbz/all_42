@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/24 10:24:47 by corin            ###   ########.fr       */
+/*   Updated: 2024/03/24 17:45:45 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_screen
 	size_t	height;
 }	t_screen;
 
-typedef struct s_graphics
+typedef struct s_imgs
 {
 	mlx_image_t	*wall;
 	mlx_image_t	*floor;
@@ -37,7 +37,7 @@ typedef struct s_graphics
 	mlx_image_t	*player;
 	mlx_image_t	*collectible;
 	size_t		image_size;
-}	t_graphics;
+}	t_imgs;
 
 typedef struct s_map
 {
@@ -55,19 +55,28 @@ typedef struct s_player_coordonates
 
 typedef struct s_game
 {
-	mlx_t	*mlx;
-	t_player_coordonates player_coordonates;
-	t_map map;
-	t_screen screen;
-	t_graphics graphics;
+	mlx_t					*mlx;
+	t_player_coordonates	player_coordonates;
+	t_map					map;
+	t_screen				screen;
+	t_imgs					imgs;
+	size_t					count_collect;
+	size_t					moves;
 }	t_game;
 
 //errors
 void	ft_error(char *error_txt);
 
-//graphics
-t_graphics	create_graphics(mlx_t *mlx, t_graphics assets);
-void		render_images(mlx_t *mlx, t_graphics graphics, t_map map);
+//imgs
+t_imgs	create_imgs(mlx_t *mlx, t_imgs assets);
+void		render_images(mlx_t *mlx, t_imgs imgs, t_map map);
+
+//draw_images
+void draw_wall(mlx_t *mlx, t_imgs imgs, size_t x_pos, size_t y_pos);
+void draw_floor(mlx_t *mlx, t_imgs imgs, size_t x_pos, size_t y_pos);
+void draw_exit(mlx_t *mlx, t_imgs imgs, size_t x_pos, size_t y_pos);
+void draw_player(mlx_t *mlx, t_imgs imgs, size_t x_pos, size_t y_pos);
+void draw_collectible(mlx_t *mlx, t_imgs imgs, size_t x_pos, size_t y_pos);
 
 //hooks
 void ft_keyhooks(mlx_key_data_t keydata, void* param);
