@@ -3,10 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 14:19:52 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/23 14:20:25 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/03/24 20:06:20 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../headers/so_long.h"
+
+// free_game(t_game *game)
+// {
+// 	free(game->moves);
+// }

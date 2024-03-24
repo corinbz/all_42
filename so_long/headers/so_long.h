@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/24 19:01:02 by corin            ###   ########.fr       */
+/*   Updated: 2024/03/24 20:55:38 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_imgs
 	mlx_image_t	*exit;
 	mlx_image_t	*player;
 	mlx_image_t	*collectible;
+	// mlx_image_t	*won;
 	size_t		image_size;
 }	t_imgs;
 
@@ -87,6 +88,9 @@ void	parse_map(t_map *map);
 void	get_map_elements(t_map *map);
 void	init_game_struct(t_game *game);
 void	start_game(t_game *game);
+
+//cleaning
+void free_game(t_game *game);
 
 //utils
 char	*get_next_line(int fd);

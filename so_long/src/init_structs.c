@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/24 19:01:02 by corin            ###   ########.fr       */
+/*   Updated: 2024/03/24 19:38:24 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void init_game_struct	(t_game *game)
 	game->map = (t_map){0};
 	game->screen = (t_screen){0};
 	game->imgs.image_size = 64;
+	game->count_collect = 0;
 }
 
 void start_game	(t_game *game)
