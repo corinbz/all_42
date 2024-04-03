@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/24 10:16:25 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/03 12:20:59 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,19 @@ static void get_and_check_map_width(int fd, t_map *map)
 	size_t len;
 
 	len = ft_line_len(line);
-	if (len > map->width)
-		map->width = len;
+	map->width = len;
+	free(line);
 	while((line = get_next_line(fd)))
 	{
 		len = ft_line_len(line);
 		if (len != map->width)
 		{
 			map->valid = false;
-			return ;
+			return(free(line));
 		}
 		free(line);
 	}
+	free(line);
 }
 
 static void get_map_height(int fd, t_map *map)
@@ -46,6 +47,7 @@ static void get_map_height(int fd, t_map *map)
 		free(line);
 	}
 	map->height = height;
+	
 }
 
 static bool check_map_elements(t_map *map)
@@ -75,7 +77,7 @@ static bool check_map_elements(t_map *map)
 			{
 				if (line[col] != '1')
 				{
-					return (false);
+					return (free(line), false);
 				}
 				col++;
 			}
@@ -86,7 +88,7 @@ static bool check_map_elements(t_map *map)
 		{			
 			if (line[0] != '1' || line[map->width -1] != '1')
 			{
-				return (false);
+				return (free(line), false);
 			}
 			else if (line[col] == 'P')
 				player++;
@@ -101,16 +103,17 @@ static bool check_map_elements(t_map *map)
 			}
 			else
 			{
-				return (false);
+				return (free(line), false);
 			}
 			col++;
 		}
 		col = 0;
 		row++;
+		free(line);
 	}
 	if (player != 1 || exit != 1 || collectible == 0)
-		return (false);
-	return (true);
+		return (free(line), false);
+	return (free(line), true);
 }
 	
 void parse_map(t_map *map)

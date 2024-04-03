@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hooks.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 11:51:58 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/24 20:17:09 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/03 15:16:15 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static void move_up(t_game *game)
 				printf("%zu left\n", game->count_collect);
 			}
 		game->player_pos.y -= 1;
+		game->moves += 1;
+		printf("%zu moves\n", game->moves);
 	}
 	else
 		ft_putstr_fd("OUCH!\n", 1);
@@ -54,6 +56,8 @@ static void move_down(t_game *game)
 				printf("%zu left\n", game->count_collect);
 			}
 		game->player_pos.y += 1;
+		game->moves += 1;
+		printf("%zu moves\n", game->moves);
 	}
 	else
 		ft_putstr_fd("OUCH!\n", 1);
@@ -79,6 +83,8 @@ static void move_left(t_game *game)
 				printf("%zu left\n", game->count_collect);
 			}
 		game->player_pos.x -= 1;
+		game->moves += 1;
+		printf("%zu moves\n", game->moves);
 	}
 	else
 		ft_putstr_fd("OUCH!\n", 1);
@@ -95,7 +101,7 @@ static void move_right(t_game *game)
 	if(game->map.cell_value[game->player_pos.y][game->player_pos.x + 1] != '1')
 	{
 		if((game->map.cell_value[game->player_pos.y][game->player_pos.x + 1] == 'E') && (game->count_collect == 0))
-			ft_putstr_fd("You won!\n", 1);		
+			ft_putstr_fd("You won!\n", 1);
 		if(game->map.cell_value[game->player_pos.y][game->player_pos.x] == 'C')
 		{
 			game->map.cell_value[game->player_pos.y][game->player_pos.x] = '0';
@@ -103,6 +109,8 @@ static void move_right(t_game *game)
 			printf("%zu left\n", game->count_collect);
 		}
 		game->player_pos.x += 1;
+		game->moves += 1;
+		printf("%zu moves\n", game->moves);
 	}
 	else
 		ft_putstr_fd("OUCH!\n", 1);

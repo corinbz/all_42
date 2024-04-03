@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/24 19:38:24 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/03 13:35:34 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ t_map create_map(void)
 	map.width = 0;
 	map.height = 0;
 	map.valid = true;
-	map.cell_value = ft_calloc(20, sizeof(char *));
+	// map.cell_value = ft_calloc(40, sizeof(char *));
 	return (map);
 }
 void get_map_elements(t_map *map)
 {
+	map->cell_value = ft_calloc(map->height + 1, sizeof(char *));
 	int map_file = open("maps/map.ber", O_RDONLY);
 	if (map_file < 0)
 		ft_error("Failed to open map file");
@@ -32,7 +33,6 @@ void get_map_elements(t_map *map)
 	while((line = get_next_line(map_file)))
 	{
 		map->cell_value[rows] = ft_strdup(line);
-		// printf("    %d is   %s", rows, map->cell_value[rows]);
 		free(line);
 		rows++;
 	}
@@ -46,6 +46,7 @@ void init_game_struct	(t_game *game)
 	game->screen = (t_screen){0};
 	game->imgs.image_size = 64;
 	game->count_collect = 0;
+	game->moves = 0;
 }
 
 void start_game	(t_game *game)

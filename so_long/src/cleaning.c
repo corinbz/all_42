@@ -3,16 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 14:19:52 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/24 20:06:20 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/03 13:38:05 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
 
-// free_game(t_game *game)
-// {
-// 	free(game->moves);
-// }
+static void	free_2d(char **arr)
+{
+	size_t	i;
+
+	i = 0;
+	if (arr != NULL)
+	{
+		while (arr[i] != NULL)
+		{
+			free(arr[i]);
+			// arr[i] = NULL;
+			i++;
+		}
+		free(arr);
+		// arr = NULL;
+	}
+}
+
+
+static bool free_map(t_game *game)
+{
+	free_2d(game->map.cell_value);
+	return (true);
+}
+
+void free_game(t_game *game)
+{
+	free_map(game);
+}

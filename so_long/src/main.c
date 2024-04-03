@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 08:16:29 by corin             #+#    #+#             */
-/*   Updated: 2024/03/24 20:51:46 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/03 15:08:44 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int32_t main(void)
 	mlx_key_hook(game.mlx, &ft_keyhooks, &game);
 	// printf("collectibles %zu\n", game.count_collect);
 	mlx_loop(game.mlx);
+	free_game(&game);
 	mlx_terminate(game.mlx);
 	// free_game(&game);
 	return (EXIT_SUCCESS);
