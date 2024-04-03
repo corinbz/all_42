@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/03 12:20:59 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:13:42 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void get_map_height(int fd, t_map *map)
 	
 }
 
-static bool check_map_elements(t_map *map)
+static bool check_map_elements(t_map *map, char *map_filename)
 {
 	size_t row;
 	size_t col;
@@ -64,7 +64,7 @@ static bool check_map_elements(t_map *map)
 	exit = 0;
 	collectible = 0;
 	
-	int map_file = open("maps/map.ber", O_RDONLY);
+	int map_file = open(map_filename, O_RDONLY);
 	if (map_file < 0)
 		ft_error("Failed to open map file");
 	char *line;
@@ -116,18 +116,17 @@ static bool check_map_elements(t_map *map)
 	return (free(line), true);
 }
 	
-void parse_map(t_map *map)
+void parse_map(t_map *map, char *map_filename)
 {
-	int map_file = open("maps/map.ber", O_RDONLY);
+	int map_file = open(map_filename, O_RDONLY);
 	if (map_file < 0)
 		ft_error("Failed to open map file");
 	get_map_height(map_file, map);
 	close(map_file);
-	map_file = open("maps/map.ber", O_RDONLY);
+	map_file = open(map_filename, O_RDONLY);
 	if (map_file < 0)
 		ft_error("Failed to open map file");
 	get_and_check_map_width(map_file, map);
 	close(map_file);
-	map->valid = check_map_elements(map);
-	printf("map read succes and %d\n", map->valid);
+	map->valid = check_map_elements(map, map_filename);
 }

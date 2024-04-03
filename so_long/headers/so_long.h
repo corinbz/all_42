@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/03 11:53:17 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:39:31 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_imgs
 	mlx_image_t	*exit;
 	mlx_image_t	*player;
 	mlx_image_t	*collectible;
+	mlx_image_t *score;
 	size_t		image_size;
 }	t_imgs;
 
@@ -62,6 +63,7 @@ typedef struct s_game
 	t_imgs					imgs;
 	size_t					count_collect;
 	size_t					moves;
+	char*					map_name;
 }	t_game;
 
 //errors
@@ -77,15 +79,16 @@ void draw_floor(t_game *game, size_t x_pos, size_t y_pos);
 void draw_exit(t_game *game, size_t x_pos, size_t y_pos);
 void draw_player(t_game *game, size_t x_pos, size_t y_pos);
 void draw_collectible(t_game *game, size_t x_pos, size_t y_pos);
+bool draw_score(t_game *game);
 
 //hooks
 void ft_keyhooks(mlx_key_data_t keydata, void* param);
 
 //data_parsing
 t_map	create_map(void);
-void	parse_map(t_map *map);
-void	get_map_elements(t_map *map);
-void	init_game_struct(t_game *game);
+void	parse_map(t_map *map, char *map_filename);
+void	get_map_elements(t_map *map, char *map_filename);
+void	init_game_struct (t_game *game, char* map_name);
 void	start_game(t_game *game);
 
 //cleaning

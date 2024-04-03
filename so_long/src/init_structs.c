@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/03 13:35:34 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/03 18:31:58 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@ t_map create_map(void)
 	map.width = 0;
 	map.height = 0;
 	map.valid = true;
-	// map.cell_value = ft_calloc(40, sizeof(char *));
 	return (map);
 }
-void get_map_elements(t_map *map)
+void	get_map_elements(t_map *map, char *map_filename)
 {
 	map->cell_value = ft_calloc(map->height + 1, sizeof(char *));
-	int map_file = open("maps/map.ber", O_RDONLY);
+	int map_file = open(map_filename, O_RDONLY);
 	if (map_file < 0)
-		ft_error("Failed to open map file");
+		ft_error("Failed to open map file\n");
 	char *line;
 	int rows = 0;
 	while((line = get_next_line(map_file)))
@@ -39,7 +38,7 @@ void get_map_elements(t_map *map)
 	close(map_file);
 }
 
-void init_game_struct	(t_game *game)
+void init_game_struct(t_game *game, char* map_name)
 {
 	game->player_pos = (t_player_pos){0};
 	game->map = (t_map){0};
@@ -47,20 +46,25 @@ void init_game_struct	(t_game *game)
 	game->imgs.image_size = 64;
 	game->count_collect = 0;
 	game->moves = 0;
+	game->map_name = ft_strjoin("maps/", map_name);
+	if(!game->map_name)
+		return(ft_putstr_fd("failed to join maps/\n", 2), exit(EXIT_FAILURE));
 }
 
 void start_game	(t_game *game)
 {
-	//map
 	game->map = create_map();
-	parse_map(&game->map);
-	get_map_elements(&game->map);
+	parse_map(&game->map, game->map_name);
+	if(!game->map.valid)
+	{
+		return(ft_putstr_fd("map invalid\n", 2), free_game(game), exit(EXIT_FAILURE));
+	}
+	get_map_elements(&game->map, game->map_name);
 	game->screen.width = (game->map.width) * game->imgs.image_size;
 	game->screen.height = game->map.height * game->imgs.image_size;
-	//imgs
-	if (!(game->mlx = mlx_init(game->screen.width, game->screen.height, "Hungry frog", true)))
+	if (!(game->mlx = mlx_init(game->screen.width,
+				game->screen.height, "Hungry frog", true)))
 		ft_putstr_fd("Failed to init mlx (main)\n", 2);
 	game->imgs = create_imgs(game->mlx, game->imgs);
 }
-
 

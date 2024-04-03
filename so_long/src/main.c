@@ -6,27 +6,42 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 08:16:29 by corin             #+#    #+#             */
-/*   Updated: 2024/04/03 15:08:44 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:02:34 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
 
 //game = (t_game){0}; --INIT ALL MEMBERS TO 0;
-int32_t main(void)
+
+static bool valid_input(int ac, char *map, char *extension)
+{
+	size_t map_len;
+
+	if(ac != 2)
+	{
+		ft_putstr_fd("You need to provide a valid map file name\n", 2);
+		return(false);
+	}
+	map_len = ft_strlen(map);
+	if(ft_strncmp(map + map_len - 4, extension, 4))
+	{
+		ft_putstr_fd("Filename is not valid\n", 2);
+		return (false);
+	}
+	return (true);
+} 
+int32_t main(int ac, char **av)
 {
 	t_game	game;
+	if(!valid_input(ac, av[1], ".ber"))
+		return(EXIT_FAILURE);
 	
-	init_game_struct(&game);
+	init_game_struct(&game, av[1]);
 	start_game(&game);
 	if(game.map.valid)
-	{
-		// printf("img size is %zu\n",game.imgs.image_size);
 		render_images(&game);
-	}
-	// mlx_put_string(game.mlx, "YOU WON!", 300, 300);
 	mlx_key_hook(game.mlx, &ft_keyhooks, &game);
-	// printf("collectibles %zu\n", game.count_collect);
 	mlx_loop(game.mlx);
 	free_game(&game);
 	mlx_terminate(game.mlx);

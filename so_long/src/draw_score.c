@@ -1,44 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cleaning.c                                         :+:      :+:    :+:   */
+/*   draw_score.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/23 14:19:52 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/03 17:23:18 by ccraciun         ###   ########.fr       */
+/*   Created: 2024/04/03 18:37:07 by ccraciun          #+#    #+#             */
+/*   Updated: 2024/04/03 18:49:04 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
 
-static void	free_2d(char **arr)
+bool draw_score(t_game *game)
 {
-	size_t	i;
-
-	i = 0;
-	if (arr != NULL)
-	{
-		while (arr[i] != NULL)
-		{
-			free(arr[i]);
-			arr[i] = NULL;
-			i++;
-		}
-		free(arr);
-		arr = NULL;
-	}
-}
-
-
-static bool free_map(t_game *game)
-{
-	free_2d(game->map.cell_value);
+	game->imgs.score = mlx_put_string(game->mlx, "moves 0", 500, 50);
+	// mlx_resize_image(game->imgs.score, 200, 50);
 	return (true);
-}
-
-void free_game(t_game *game)
-{
-	free_map(game);
-	free(game->map_name);
 }

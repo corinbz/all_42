@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   image_parsing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 15:36:51 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/24 20:55:24 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/03 18:49:00 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,5 @@ void render_images(t_game *game)
 		x_pos = 0;
 		y_pos++;
 	}
+	draw_score(game);
 }
