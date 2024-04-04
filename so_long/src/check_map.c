@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/03 17:13:42 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:06:45 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,48 +49,48 @@ static void get_map_height(int fd, t_map *map)
 	map->height = height;
 	
 }
-
-static bool check_map_elements(t_map *map, char *map_filename)
+static bool	check_walls(size_t row, size_t col, int map_fd, t_map *map)
 {
-	size_t row;
-	size_t col;
-	size_t player;
-	size_t exit;
-	size_t collectible;
+	char	*line;
+
+	line = get_next_line(map_fd);
+	while ((line))
+	{
+		if (row == 0 || row == map->height - 1)
+		{
+			while (col < map->width)
+			{
+				if (line[col] != '1')
+					return (free(line), false);
+				col++;
+			}
+		}
+		if (line[0] != '1' || line[map->width -1] != '1')
+			return (free(line), false);
+		col = 0;
+		row++;
+		free(line);
+		line = get_next_line(map_fd);
+	}
+	return (free(line), true);
+}
+
+static bool count_elements(size_t row, size_t col, int map_fd, t_map *map)
+{
+	size_t	player;
+	size_t	exit;
+	size_t	collectible;
+	char	*line;
 	
-	row = 0;
-	col = 0;
 	player = 0;
 	exit = 0;
 	collectible = 0;
-	
-	int map_file = open(map_filename, O_RDONLY);
-	if (map_file < 0)
-		ft_error("Failed to open map file");
-	char *line;
-	// printf("width %zu\n", map->width);
-	while((line = get_next_line(map_file)))
+	line = get_next_line(map_fd);
+	while(line)
 	{
-		if (row == 0)
-		{
-			while(col < map->width)
-			{
-				if (line[col] != '1')
-				{
-					return (free(line), false);
-				}
-				col++;
-			}
-			col = 0;
-			row++;
-		}
 		while(col < map->width)
-		{			
-			if (line[0] != '1' || line[map->width -1] != '1')
-			{
-				return (free(line), false);
-			}
-			else if (line[col] == 'P')
+		{
+			if (line[col] == 'P')
 				player++;
 			else if (line[col] == 'C')
 				collectible++;
@@ -98,22 +98,46 @@ static bool check_map_elements(t_map *map, char *map_filename)
 				exit++;
 			else if (line[col] == '1' || line[col] == '0')
 			{
-				col++;	
+				col++;
 				continue;
 			}
 			else
-			{
 				return (free(line), false);
-			}
 			col++;
 		}
 		col = 0;
 		row++;
 		free(line);
+		line = get_next_line(map_fd);
 	}
 	if (player != 1 || exit != 1 || collectible == 0)
 		return (free(line), false);
-	return (free(line), true);
+	return(free(line), true);
+}
+
+
+static bool check_map_elements(t_map *map, char *map_filename)
+{
+	bool	res;
+	size_t	row;
+	size_t	col;
+	int		map_fd;
+
+	res = true;
+	row = 0;
+	col = 0;
+	map_fd = open(map_filename, O_RDONLY);
+	if (map_fd < 0)
+		ft_error("Failed to open map file");
+	res = check_walls(row, col, map_fd, map);
+	close(map_fd);
+	map_fd = open(map_filename, O_RDONLY);
+	if (map_fd < 0)
+		ft_error("Failed to open map file");
+	res = count_elements(row, col, map_fd, map);
+	close(map_fd);
+	// printf("res %d\n", res);
+	return (res);
 }
 	
 void parse_map(t_map *map, char *map_filename)

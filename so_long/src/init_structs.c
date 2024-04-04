@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/03 18:31:58 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/04 12:30:59 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void start_game	(t_game *game)
 	parse_map(&game->map, game->map_name);
 	if(!game->map.valid)
 	{
-		return(ft_putstr_fd("map invalid\n", 2), free_game(game), exit(EXIT_FAILURE));
+		return(ft_putstr_fd("map invalid\n", 2), free(game->map_name), exit(EXIT_FAILURE));
 	}
 	get_map_elements(&game->map, game->map_name);
 	game->screen.width = (game->map.width) * game->imgs.image_size;
@@ -67,4 +67,3 @@ void start_game	(t_game *game)
 		ft_putstr_fd("Failed to init mlx (main)\n", 2);
 	game->imgs = create_imgs(game->mlx, game->imgs);
 }
-

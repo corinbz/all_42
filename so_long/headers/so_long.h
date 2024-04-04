@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/03 18:39:31 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/04 12:29:51 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_player_pos
 typedef struct s_game
 {
 	mlx_t					*mlx;
-	t_player_pos	player_pos;
+	t_player_pos			player_pos;
 	t_map					map;
 	t_screen				screen;
 	t_imgs					imgs;
