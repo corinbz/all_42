@@ -6,7 +6,7 @@
 #    By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/10 21:27:13 by corin             #+#    #+#              #
-#    Updated: 2024/03/17 16:54:51 by ccraciun         ###   ########.fr        #
+#    Updated: 2024/04/05 16:17:21 by ccraciun         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,48 +47,13 @@ SRC = ft_atoi.c \
       ft_putstr_fd.c \
       ft_putendl_fd.c \
       ft_striteri.c \
+	  ft_free_2d.c \
 	  ft_line_len.c
 
-OBJS = ft_atoi.o \
-       ft_bzero.o \
-       ft_isalnum.o \
-       ft_isalpha.o \
-       ft_isascii.o \
-       ft_isdigit.o \
-       ft_isprint.o \
-       ft_itoa.o \
-       ft_memchr.o \
-       ft_memcmp.o \
-       ft_memcpy.o \
-       ft_memmove.o \
-       ft_memset.o \
-       ft_split.o \
-       ft_strchr.o \
-       ft_strjoin.o \
-       ft_strlcat.o \
-       ft_strlcpy.o \
-       ft_strlen.o \
-       ft_strmapi.o \
-       ft_strncmp.o \
-       ft_strnstr.o \
-       ft_strrchr.o \
-       ft_strtrim.o \
-       ft_substr.o \
-       ft_tolower.o \
-       ft_toupper.o \
-       ft_calloc.o \
-       ft_strdup.o \
-       ft_putchar_fd.o \
-       ft_putnbr_fd.o \
-       ft_putstr_fd.o \
-       ft_putendl_fd.o \
-       ft_striteri.o \
-	   ft_line_len.o
-
-FLAGS = -Wall -Wextra -Werror -g
+OBJS = $(SRC:.c=.o)
+FLAGS = -Wall -Wextra -Werror
 
 CC = cc
-
 
 all: $(NAME)
 

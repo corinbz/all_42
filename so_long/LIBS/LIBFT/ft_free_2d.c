@@ -1,19 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_free_2d.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/03 12:13:55 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/05 15:53:52 by ccraciun         ###   ########.fr       */
+/*   Created: 2024/04/05 16:15:08 by ccraciun          #+#    #+#             */
+/*   Updated: 2024/04/05 16:19:17 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/so_long.h"
+#include "libft.h"
 
-void	ft_error(char *error_txt)
+void	ft_free_2d(char **arr)
 {
-	ft_putstr_fd(error_txt, 2);
-	exit(EXIT_FAILURE);
+	size_t	i;
+
+	i = 0;
+	if (arr != NULL)
+	{
+		while (arr[i] != NULL)
+		{
+			free(arr[i]);
+			arr[i] = NULL;
+			i++;
+		}
+		free(arr);
+		arr = NULL;
+	}
 }

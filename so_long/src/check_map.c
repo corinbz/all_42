@@ -6,36 +6,41 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/05 15:45:54 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:59:56 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
 
-static bool	map_size_valid(int fd, t_map *map)
+static bool	map_size_valid(int map_fd, t_map *map)
 {
 	char	*line;
 	size_t	len;
 
-	line = get_next_line(fd);
+	line = get_next_line(map_fd);
 	len = ft_line_len(line);
 	map->width = len;
-	free(line);
-	while ((line = get_next_line(fd)))
+	while (line)
 	{
 		len = ft_line_len(line);
 		if (len != map->width)
-			return (free(line), false);
+		{
+			free(line);
+			line = NULL;
+			return (false);
+		}
 		map->height++;
 		free(line);
+		line = NULL;
+		line = get_next_line(map_fd);
 	}
-	// printf("h: %zu, w: %zu\n",map->height, map->width);
-	if(map->height <= MAX_MAP_HEIGHT && map->width <= MAX_MAP_WIDTH)
-		return(free(line), true);
-	return(free(line), false);
+	if (map->height <= MAX_MAP_HEIGHT && map->width <= MAX_MAP_WIDTH)
+		return (true);
+	return (false);
 }
 
-static bool check_walls(size_t row, size_t col, t_map *map) {
+static bool	check_walls(size_t row, size_t col, t_map *map)
+{
 	while (row < map->height)
 	{
 		if (col == 0 || col == map->width - 1)

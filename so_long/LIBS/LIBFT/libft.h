@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 21:23:39 by corin             #+#    #+#             */
-/*   Updated: 2024/03/17 16:55:24 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/05 16:19:05 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 size_t				ft_line_len(char *str);
+void				ft_free_2d(char **arr);
 
 #endif

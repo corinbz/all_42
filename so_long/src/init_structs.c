@@ -6,13 +6,13 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/04 12:30:59 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/05 17:20:49 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
 
-t_map create_map(void)
+t_map	create_map(void)
 {
 	t_map	map;
 
@@ -21,24 +21,38 @@ t_map create_map(void)
 	map.valid = true;
 	return (map);
 }
+
 void	get_map_elements(t_map *map, char *map_filename)
 {
+	int		map_fd;
+	char	*line;
+	int		rows;
+
+	rows = 0;
 	map->cell_value = ft_calloc(map->height + 1, sizeof(char *));
-	int map_file = open(map_filename, O_RDONLY);
-	if (map_file < 0)
+	map_fd = open(map_filename, O_RDONLY);
+	if (map_fd < 0)
 		ft_error("Failed to open map file\n");
-	char *line;
-	int rows = 0;
-	while((line = get_next_line(map_file)))
+	line = get_next_line(map_fd);
+	while (line)
 	{
 		map->cell_value[rows] = ft_strdup(line);
+		if (!map->cell_value[rows])
+		{
+			ft_free_2d(map->cell_value);
+		}
+		printf("cell value : %d %p", rows, map->cell_value[rows]);
+		printf("\nline -->     %d %p\n", rows, line);
 		free(line);
+		// printf("row : %d %s", rows, map->cell_value[rows]);
 		rows++;
+		// printf("cell value : %d %p", rows, map->cell_value[rows]);
+		line = get_next_line(map_fd);
 	}
-	close(map_file);
+	close(map_fd);
 }
 
-void init_game_struct(t_game *game, char* map_name)
+void	init_game_struct(t_game *game, char *map_name)
 {
 	game->player_pos = (t_player_pos){0};
 	game->map = (t_map){0};
