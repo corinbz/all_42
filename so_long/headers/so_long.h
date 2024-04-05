@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/04 12:29:51 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/05 15:34:51 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,18 @@
 #include <fcntl.h>
 #include <string.h>
 
-#define	BUFFER_SIZE		10
-#define	ALLOC_FAIL		2
-#define	READ_FILE_ERR	3
+#define BUFFER_SIZE		10
+#define ALLOC_FAIL		2
+#define READ_FILE_ERR	3
+#define MAX_MAP_HEIGHT	20
+#define MAX_MAP_WIDTH	40
+
+typedef struct s_count
+{
+	size_t	player;
+	size_t	exit;
+	size_t	collectible;
+}	t_count;
 
 typedef struct s_screen
 {
@@ -36,7 +45,7 @@ typedef struct s_imgs
 	mlx_image_t	*exit;
 	mlx_image_t	*player;
 	mlx_image_t	*collectible;
-	mlx_image_t *score;
+	mlx_image_t	*score;
 	size_t		image_size;
 }	t_imgs;
 

@@ -6,151 +6,134 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/04 14:06:45 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/05 15:45:54 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
 
-
-static void get_and_check_map_width(int fd, t_map *map)
+static bool	map_size_valid(int fd, t_map *map)
 {
-	char *line;
-	line = get_next_line(fd);
-	size_t len;
+	char	*line;
+	size_t	len;
 
+	line = get_next_line(fd);
 	len = ft_line_len(line);
 	map->width = len;
 	free(line);
-	while((line = get_next_line(fd)))
+	while ((line = get_next_line(fd)))
 	{
 		len = ft_line_len(line);
 		if (len != map->width)
-		{
-			map->valid = false;
-			return(free(line));
-		}
-		free(line);
-	}
-	free(line);
-}
-
-static void get_map_height(int fd, t_map *map)
-{
-	char *line;
-	size_t height;
-
-	height = 0;
-	while((line = get_next_line(fd)))
-	{		
-		height++;
-		free(line);
-	}
-	map->height = height;
-	
-}
-static bool	check_walls(size_t row, size_t col, int map_fd, t_map *map)
-{
-	char	*line;
-
-	line = get_next_line(map_fd);
-	while ((line))
-	{
-		if (row == 0 || row == map->height - 1)
-		{
-			while (col < map->width)
-			{
-				if (line[col] != '1')
-					return (free(line), false);
-				col++;
-			}
-		}
-		if (line[0] != '1' || line[map->width -1] != '1')
 			return (free(line), false);
-		col = 0;
-		row++;
+		map->height++;
 		free(line);
-		line = get_next_line(map_fd);
 	}
-	return (free(line), true);
+	// printf("h: %zu, w: %zu\n",map->height, map->width);
+	if(map->height <= MAX_MAP_HEIGHT && map->width <= MAX_MAP_WIDTH)
+		return(free(line), true);
+	return(free(line), false);
 }
 
-static bool count_elements(size_t row, size_t col, int map_fd, t_map *map)
-{
-	size_t	player;
-	size_t	exit;
-	size_t	collectible;
-	char	*line;
-	
-	player = 0;
-	exit = 0;
-	collectible = 0;
-	line = get_next_line(map_fd);
-	while(line)
+static bool check_walls(size_t row, size_t col, t_map *map) {
+	while (row < map->height)
 	{
-		while(col < map->width)
+		if (col == 0 || col == map->width - 1)
 		{
-			if (line[col] == 'P')
-				player++;
-			else if (line[col] == 'C')
-				collectible++;
-			else if (line[col] == 'E')
-				exit++;
-			else if (line[col] == '1' || line[col] == '0')
+			if ((map->cell_value[row][col]) != '1')
+				return (false);
+		}
+		else
+		{
+			if (row == 0 || row == map->height - 1)
+			{
+				if ((map->cell_value[row][col]) != '1')
+					return (false);
+			}
+		}
+		col++;
+		if (col == map->width)
+		{
+			col = 0;
+			row++;
+		}
+	}
+	return (true);
+}
+
+static bool	check_elements_count(t_count *count)
+{
+	if ((int)count->player != 1
+		|| (int)count->exit != 1
+		|| (int)count->collectible == 0)
+		return (false);
+	return (true);
+}
+
+static void	increment_elements(char cell, t_count *count)
+{
+	if (cell == 'P')
+		count->player++;
+	else if (cell == 'C')
+		count->collectible++;
+	else if (cell == 'E')
+		count->exit++;
+}
+
+static bool	count_elements(size_t row, size_t col, t_map *map)
+{
+	char	cell;
+	t_count	count;
+
+	count = (t_count){0};
+	while (row <= map->height)
+	{
+		col = 0;
+		while (col < map->width)
+		{
+			cell = map->cell_value[row][col];
+			if (cell == '1' || cell == '0')
 			{
 				col++;
-				continue;
+				continue ;
 			}
+			else if (cell == 'P' || cell == 'C' || cell == 'E')
+				increment_elements(cell, &count);
 			else
-				return (free(line), false);
+				return (false);
 			col++;
 		}
-		col = 0;
 		row++;
-		free(line);
-		line = get_next_line(map_fd);
 	}
-	if (player != 1 || exit != 1 || collectible == 0)
-		return (free(line), false);
-	return(free(line), true);
+	return (check_elements_count(&count));
 }
 
-
-static bool check_map_elements(t_map *map, char *map_filename)
+static bool	check_map_elements(t_map *map)
 {
 	bool	res;
 	size_t	row;
 	size_t	col;
-	int		map_fd;
 
 	res = true;
 	row = 0;
 	col = 0;
-	map_fd = open(map_filename, O_RDONLY);
-	if (map_fd < 0)
-		ft_error("Failed to open map file");
-	res = check_walls(row, col, map_fd, map);
-	close(map_fd);
-	map_fd = open(map_filename, O_RDONLY);
-	if (map_fd < 0)
-		ft_error("Failed to open map file");
-	res = count_elements(row, col, map_fd, map);
-	close(map_fd);
+	res = check_walls(row, col, map);
+	res = count_elements(row, col, map);
 	// printf("res %d\n", res);
 	return (res);
 }
-	
+
 void parse_map(t_map *map, char *map_filename)
 {
-	int map_file = open(map_filename, O_RDONLY);
-	if (map_file < 0)
-		ft_error("Failed to open map file");
-	get_map_height(map_file, map);
-	close(map_file);
+	int	map_file;
+
 	map_file = open(map_filename, O_RDONLY);
 	if (map_file < 0)
 		ft_error("Failed to open map file");
-	get_and_check_map_width(map_file, map);
+	map->valid = map_size_valid(map_file, map);
 	close(map_file);
-	map->valid = check_map_elements(map, map_filename);
+	if (!map->valid)
+		ft_error("invalid map format\n");
+	get_map_elements(map, map_filename);
+	map->valid = check_map_elements(map);
 }
