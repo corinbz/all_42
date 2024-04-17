@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/05 15:34:51 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/14 18:30:57 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_imgs
 typedef struct s_map
 {
 	char	**cell_value;
+	char	**visited_cell;
 	size_t	width;
 	size_t	height;
 	bool	valid;
@@ -72,7 +73,7 @@ typedef struct s_game
 	t_imgs					imgs;
 	size_t					count_collect;
 	size_t					moves;
-	char*					map_name;
+	char					*map_name;
 }	t_game;
 
 //errors
@@ -91,7 +92,7 @@ void draw_collectible(t_game *game, size_t x_pos, size_t y_pos);
 bool draw_score(t_game *game);
 
 //hooks
-void ft_keyhooks(mlx_key_data_t keydata, void* param);
+void	ft_keyhooks(mlx_key_data_t keydata, void* param);
 
 //data_parsing
 t_map	create_map(void);
@@ -101,10 +102,12 @@ void	init_game_struct (t_game *game, char* map_name);
 void	start_game(t_game *game);
 
 //cleaning
-void free_game(t_game *game);
+void	free_game(t_game *game);
 
 //utils
 char	*get_next_line(int fd);
 void	ft_free_all(char **str1, char **str2, char **str3);
 int		contains_newline(const char *s);
 char	*join_strs(const char *s1, const char *s2);
+
+bool	collectibles_accesible(t_game *game);

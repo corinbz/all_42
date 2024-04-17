@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/05 17:20:49 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/14 18:30:12 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_map	create_map(void)
 	return (map);
 }
 
+//maybe check maloc protections here
 void	get_map_elements(t_map *map, char *map_filename)
 {
 	int		map_fd;
@@ -30,9 +31,10 @@ void	get_map_elements(t_map *map, char *map_filename)
 
 	rows = 0;
 	map->cell_value = ft_calloc(map->height + 1, sizeof(char *));
+	map->visited_cell = ft_calloc(map->height + 1, sizeof(char *));
 	map_fd = open(map_filename, O_RDONLY);
 	if (map_fd < 0)
-		ft_error("Failed to open map file\n");
+		ft_error("Error: Failed to open map file\n");
 	line = get_next_line(map_fd);
 	while (line)
 	{
@@ -41,12 +43,8 @@ void	get_map_elements(t_map *map, char *map_filename)
 		{
 			ft_free_2d(map->cell_value);
 		}
-		printf("cell value : %d %p", rows, map->cell_value[rows]);
-		printf("\nline -->     %d %p\n", rows, line);
 		free(line);
-		// printf("row : %d %s", rows, map->cell_value[rows]);
 		rows++;
-		// printf("cell value : %d %p", rows, map->cell_value[rows]);
 		line = get_next_line(map_fd);
 	}
 	close(map_fd);
@@ -61,23 +59,24 @@ void	init_game_struct(t_game *game, char *map_name)
 	game->count_collect = 0;
 	game->moves = 0;
 	game->map_name = ft_strjoin("maps/", map_name);
-	if(!game->map_name)
-		return(ft_putstr_fd("failed to join maps/\n", 2), exit(EXIT_FAILURE));
+	if (!game->map_name)
+		return (ft_putstr_fd("failed to join maps/\n", 2), exit(EXIT_FAILURE));
 }
 
-void start_game	(t_game *game)
+void	start_game(t_game *game)
 {
 	game->map = create_map();
 	parse_map(&game->map, game->map_name);
-	if(!game->map.valid)
+	if (!game->map.valid)
 	{
-		return(ft_putstr_fd("map invalid\n", 2), free(game->map_name), exit(EXIT_FAILURE));
+		ft_putstr_fd("map invalid\n", 2);
+		return (free(game->map_name), exit(EXIT_FAILURE));
 	}
 	get_map_elements(&game->map, game->map_name);
 	game->screen.width = (game->map.width) * game->imgs.image_size;
 	game->screen.height = game->map.height * game->imgs.image_size;
-	if (!(game->mlx = mlx_init(game->screen.width,
-				game->screen.height, "Hungry frog", true)))
+	game->mlx = mlx_init(game->screen.width, game->screen.height, "Hungry frog", true);
+	if (!game->mlx)
 		ft_putstr_fd("Failed to init mlx (main)\n", 2);
 	game->imgs = create_imgs(game->mlx, game->imgs);
 }

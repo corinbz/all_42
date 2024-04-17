@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 08:16:29 by corin             #+#    #+#             */
-/*   Updated: 2024/04/05 15:47:26 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/14 18:28:47 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	main(int ac, char **av)
 	start_game(&game);
 	if (game.map.valid)
 		render_images(&game);
+	//collectibles_accesible(&game);
 	mlx_key_hook(game.mlx, &ft_keyhooks, &game);
 	mlx_loop(game.mlx);
 	free_game(&game);

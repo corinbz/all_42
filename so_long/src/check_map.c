@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/05 16:59:56 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/14 16:27:42 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static bool	count_elements(size_t row, size_t col, t_map *map)
 	t_count	count;
 
 	count = (t_count){0};
-	while (row <= map->height)
+	while (row < map->height)
 	{
 		col = 0;
 		while (col < map->width)
@@ -113,7 +113,7 @@ static bool	count_elements(size_t row, size_t col, t_map *map)
 	return (check_elements_count(&count));
 }
 
-static bool	check_map_elements(t_map *map)
+static	bool check_map_elements(t_map *map)
 {
 	bool	res;
 	size_t	row;
@@ -124,11 +124,10 @@ static bool	check_map_elements(t_map *map)
 	col = 0;
 	res = check_walls(row, col, map);
 	res = count_elements(row, col, map);
-	// printf("res %d\n", res);
 	return (res);
 }
 
-void parse_map(t_map *map, char *map_filename)
+void	parse_map(t_map *map, char *map_filename)
 {
 	int	map_file;
 
