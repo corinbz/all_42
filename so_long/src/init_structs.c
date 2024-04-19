@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/14 18:30:12 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/19 17:23:04 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	get_map_elements(t_map *map, char *map_filename)
 
 	rows = 0;
 	map->cell_value = ft_calloc(map->height + 1, sizeof(char *));
-	map->visited_cell = ft_calloc(map->height + 1, sizeof(char *));
 	map_fd = open(map_filename, O_RDONLY);
 	if (map_fd < 0)
 		ft_error("Error: Failed to open map file\n");
@@ -73,6 +72,9 @@ void	start_game(t_game *game)
 		return (free(game->map_name), exit(EXIT_FAILURE));
 	}
 	get_map_elements(&game->map, game->map_name);
+	game->map.valid = collectibles_accesible(game);
+	if(!game->map.valid)
+		exit(1);
 	game->screen.width = (game->map.width) * game->imgs.image_size;
 	game->screen.height = game->map.height * game->imgs.image_size;
 	game->mlx = mlx_init(game->screen.width, game->screen.height, "Hungry frog", true);
