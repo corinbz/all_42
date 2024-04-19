@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/19 14:36:37 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:30:04 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ typedef struct s_imgs
 typedef struct s_map
 {
 	char	**cell_value;
-	char	**visited_cell;
 	size_t	width;
 	size_t	height;
 	bool	valid;

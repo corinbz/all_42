@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/19 17:23:04 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:53:40 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	init_game_struct(t_game *game, char *map_name)
 	game->moves = 0;
 	game->map_name = ft_strjoin("maps/", map_name);
 	if (!game->map_name)
-		return (ft_putstr_fd("failed to join maps/\n", 2), exit(EXIT_FAILURE));
+		return (ft_error("Failed to join maps/\n"), exit(EXIT_FAILURE));
 }
 
 void	start_game(t_game *game)
@@ -69,12 +69,16 @@ void	start_game(t_game *game)
 	if (!game->map.valid)
 	{
 		ft_putstr_fd("map invalid\n", 2);
-		return (free(game->map_name), exit(EXIT_FAILURE));
+		return (free(game->map_name),ft_free_2d(game->map.cell_value), exit(EXIT_FAILURE));
 	}
 	get_map_elements(&game->map, game->map_name);
 	game->map.valid = collectibles_accesible(game);
+	printf("map valid: %d\n", game->map.valid);
 	if(!game->map.valid)
-		exit(1);
+	{
+		printf("got here\n");
+		return (free_game(game), exit(1));
+	}
 	game->screen.width = (game->map.width) * game->imgs.image_size;
 	game->screen.height = game->map.height * game->imgs.image_size;
 	game->mlx = mlx_init(game->screen.width, game->screen.height, "Hungry frog", true);

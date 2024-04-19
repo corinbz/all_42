@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 16:42:00 by corin             #+#    #+#             */
-/*   Updated: 2024/04/19 17:21:20 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/19 18:00:16 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,14 @@ static bool	check_coll_exists(char **map, t_game *game)
 		while (j < game->map.width)
 			{
 				if(map[i][j] == 'C')
+				{
+					// printf("found c at %zu %zu\n", i, j);
 					return (false);
-				// printf("%c",map[i][j]);
+				}
+				printf("%c", map[i][j]);
 				j++;
 			}
-		// printf("\n");
+		printf("\n");
 		j = 0;
 		i++;
 	}
@@ -48,20 +51,23 @@ static bool	check_coll_exists(char **map, t_game *game)
 }
 bool	collectibles_accesible(t_game *game)
 {
-	size_t row;
+	size_t	row;
+	bool	res;
 
 	row = 0;
 	char **map_copy = ft_calloc(game->map.height + 1, sizeof(char *));
 	if(!map_copy)
-		return(ft_putstr_fd("malloc failed\n", 2), NULL);
+		return(ft_error("malloc failed\n"), NULL);
 	while(row < game->map.height)
 	{
 		map_copy[row] = ft_strdup(game->map.cell_value[row]);
 		if(!map_copy[row])
-			return(ft_putstr_fd("malloc failed\n", 2), ft_free_2d(map_copy), NULL);
+			return(ft_error("malloc failed\n"), ft_free_2d(map_copy), NULL);
 		row++;
 	}
 	flood_fill(game->player_pos.x, game->player_pos.y, *game, map_copy);
-	//printf("valid?col %d\n", check_coll_exists(map_copy, game));
-	return (check_coll_exists(map_copy, game));
+	res = check_coll_exists(map_copy, game);
+	printf("res is %d\n", res);
+	ft_free_2d(map_copy);
+	return (res);
 }
