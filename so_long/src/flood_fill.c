@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 16:42:00 by corin             #+#    #+#             */
-/*   Updated: 2024/04/20 13:59:56 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:33:40 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static bool	check_coll_exists(char **map, t_game *game)
 			{
 				if(map[i][j] == 'C')
 				{
-					return (false);
+					printf("at pos %zu %zu\n",i, j);
+					return (ft_error("Collectible not accesible\n"),false);
 				}
 				j++;
 			}
@@ -66,6 +67,7 @@ bool	collectibles_accesible(t_game *game)
 	}
 	flood_fill(game->player_pos.x, game->player_pos.y, *game, map_copy);
 	res = check_coll_exists(map_copy, game);
+	res = true;
 	ft_free_2d(map_copy);
 	return (res);
 }

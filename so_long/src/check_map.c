@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/20 16:09:00 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:25:41 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static bool	map_size_valid(t_map *map)
 
 	i = 1;
 	len = ft_line_len(map->cell_value[0]);
+	if(len > MAX_MAP_WIDTH)
+		return(ft_error("Width too big\n") ,false);
 	map->width = len;
 	while(i < map->height)
 	{
@@ -139,6 +141,8 @@ static void get_rows_size(t_map *map, char *map_filename)
 		line = get_next_line(map_fd);
 	}
 	close(map_fd);
+	if(rows > MAX_MAP_HEIGHT)
+		return(ft_error("Height too big\n") ,exit(1));
 	map->height = rows;
 }
 
@@ -148,8 +152,8 @@ int	parse_map(t_map *map, char *map_filename)
 	get_map_elements(map, map_filename);
 	map->valid = check_map_elements(map);
 	if(!map->valid)
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/20 16:13:33 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:26:12 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,18 +96,15 @@ static void get_player_pos(t_game *game)
 void	start_game(t_game *game)
 {
 	game->map = create_map();
-	if(parse_map(&game->map, game->map_name) == 1)
-	{
+	if(!parse_map(&game->map, game->map_name))
 		return(free_game(game), exit(1));
-	}
 	if (!game->map.valid)
 	{
 		ft_putstr_fd("map invalid\n", 2);
-		return (free(game->map_name),ft_free_2d(game->map.cell_value), exit(EXIT_FAILURE));
+		return (free(game->map_name),ft_free_2d(game->map.cell_value), exit(1));
 	}
 	get_player_pos(game);
 	game->map.valid = collectibles_accesible(game);
-	printf("map valid: %d\n", game->map.valid);
 	if(!game->map.valid)
 	{
 		return (free_game(game), exit(1));
