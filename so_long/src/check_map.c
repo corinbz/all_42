@@ -6,41 +6,32 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/20 12:20:48 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:09:00 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/so_long.h"
 
-static bool	map_size_valid(int map_fd, t_map *map)
+static bool	map_size_valid(t_map *map)
 {
-	char	*line;
 	size_t	len;
+	size_t	i;
 
-	line = get_next_line(map_fd);
-	len = ft_line_len(line);
+	i = 1;
+	len = ft_line_len(map->cell_value[0]);
 	map->width = len;
-	while (line)
+	while(i < map->height)
 	{
-		len = ft_line_len(line);
-		if (len != map->width)
-		{
-			free(line);
-			line = NULL;
+		if(ft_line_len(map->cell_value[i]) != len)
 			return (false);
-		}
-		map->height++;
-		free(line);
-		line = NULL;
-		line = get_next_line(map_fd);
+		i++;
 	}
-	if (map->height <= MAX_MAP_HEIGHT && map->width <= MAX_MAP_WIDTH)
-		return (true);
-	return (false);
+	return (true);
 }
 
 static bool	check_walls(size_t row, size_t col, t_map *map)
 {
+	// printf("width %zu height %zu\n", map->width, map->height);
 	while (row < map->height)
 	{
 		if (col == 0 || col == map->width - 1)
@@ -50,10 +41,13 @@ static bool	check_walls(size_t row, size_t col, t_map *map)
 		}
 		else
 		{
-			if (row == 0 || row == map->height - 1)
+			if (row == 0 || row == map->height -1)
 			{
 				if ((map->cell_value[row][col]) != '1')
+				{
+					// printf("x %zu y %zu\n",row,col);
 					return (false);
+				}
 			}
 		}
 		col++;
@@ -122,22 +116,58 @@ static	bool check_map_elements(t_map *map)
 	res = true;
 	row = 0;
 	col = 0;
+	res = map_size_valid(map);
 	res = check_walls(row, col, map);
 	res = count_elements(row, col, map);
 	return (res);
 }
-
-void	parse_map(t_map *map, char *map_filename)
+static void get_rows_size(t_map *map, char *map_filename)
 {
-	int	map_file;
+	int		map_fd;
+	char	*line;
+	size_t	rows;
 
-	map_file = open(map_filename, O_RDONLY);
-	if (map_file < 0)
-		ft_error("Failed to open map file");
-	map->valid = map_size_valid(map_file, map);
-	close(map_file);
-	if (!map->valid)
-		ft_error("invalid map format\n");//exit and free TODO
+	rows = 0;
+	map_fd = open(map_filename, O_RDONLY);
+	if (map_fd < 0)
+		ft_error("Error: Failed to open map file\n");
+	line = get_next_line(map_fd);
+	while (line)
+	{
+		rows++;
+		free(line);
+		line = get_next_line(map_fd);
+	}
+	close(map_fd);
+	map->height = rows;
+}
+
+int	parse_map(t_map *map, char *map_filename)
+{
+	get_rows_size(map, map_filename);
 	get_map_elements(map, map_filename);
 	map->valid = check_map_elements(map);
+	if(!map->valid)
+		return (1);
+	return (0);
 }
+
+
+// void ft_check(char **map)
+// {
+// 	int width;
+// 	int y;
+// 	int x;
+
+// 	width = ft_line_len;
+// 	x = 0;
+// 	y = 0;
+// 	while(map[y][0] != '\0')
+// 	{
+// 		while(map[y][x] != '\n')
+// 			x++;
+// 		if (x != width)
+// 			return (true);
+// 		x = 0;
+// 	}
+// }

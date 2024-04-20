@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/20 12:50:16 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/20 15:03:57 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-#define BUFFER_SIZE		10
+#define BUFFER_SIZE		5
 #define ALLOC_FAIL		2
 #define READ_FILE_ERR	3
 #define MAX_MAP_HEIGHT	20
@@ -94,7 +94,7 @@ void	ft_keyhooks(mlx_key_data_t keydata, void *param);
 
 //data_parsing
 t_map	create_map(void);
-void	parse_map(t_map *map, char *map_filename);
+int		parse_map(t_map *map, char *map_filename);
 void	get_map_elements(t_map *map, char *map_filename);
 void	init_game_struct (t_game *game, char* map_name);
 void	start_game(t_game *game);

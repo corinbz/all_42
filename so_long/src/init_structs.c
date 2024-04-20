@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/20 12:40:20 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:13:33 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,15 @@ void	get_map_elements(t_map *map, char *map_filename)
 		rows++;
 		line = get_next_line(map_fd);
 	}
+	// for (int i = 0;i < rows; i++)
+	// 	printf("%s",map->cell_value[i]);
 	close(map_fd);
 }
 
 void	init_game_struct(t_game *game, char *map_name)
 {
+	int	fd;
+	
 	game->player_pos = (t_player_pos){0};
 	game->map = (t_map){0};
 	game->screen = (t_screen){0};
@@ -60,6 +64,9 @@ void	init_game_struct(t_game *game, char *map_name)
 	game->map_name = ft_strjoin("maps/", map_name);
 	if (!game->map_name)
 		return (ft_error("Failed to join maps/\n"), exit(EXIT_FAILURE));
+	fd = open(game->map_name, O_RDONLY);
+	if(fd < 0)
+		return(ft_error("map file not accesible\n") ,free(game->map_name), exit(1));
 }
 static void get_player_pos(t_game *game)
 {
@@ -89,13 +96,15 @@ static void get_player_pos(t_game *game)
 void	start_game(t_game *game)
 {
 	game->map = create_map();
-	parse_map(&game->map, game->map_name);
+	if(parse_map(&game->map, game->map_name) == 1)
+	{
+		return(free_game(game), exit(1));
+	}
 	if (!game->map.valid)
 	{
 		ft_putstr_fd("map invalid\n", 2);
 		return (free(game->map_name),ft_free_2d(game->map.cell_value), exit(EXIT_FAILURE));
 	}
-	get_map_elements(&game->map, game->map_name);
 	get_player_pos(game);
 	game->map.valid = collectibles_accesible(game);
 	printf("map valid: %d\n", game->map.valid);
