@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/19 17:52:44 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/20 12:20:48 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void	parse_map(t_map *map, char *map_filename)
 	map->valid = map_size_valid(map_file, map);
 	close(map_file);
 	if (!map->valid)
-		ft_error("invalid map format\n");
+		ft_error("invalid map format\n");//exit and free TODO
 	get_map_elements(map, map_filename);
 	map->valid = check_map_elements(map);
 }

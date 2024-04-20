@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hooks.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 11:51:58 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/14 16:26:12 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/20 12:53:33 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,9 @@ void	ft_keyhooks(mlx_key_data_t keydata, void *param)
 
 	game = (t_game *)param;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_RELEASE)
+	{
 		mlx_close_window(game->mlx);
+	}
 	if ((keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_UP)
 		&& (keydata.action == MLX_RELEASE || keydata.action == MLX_REPEAT))
 		move_up(game, game->player_pos.x, game->player_pos.y);

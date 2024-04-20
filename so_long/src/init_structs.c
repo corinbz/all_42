@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/19 17:53:40 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/20 12:40:20 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,30 @@ void	init_game_struct(t_game *game, char *map_name)
 	if (!game->map_name)
 		return (ft_error("Failed to join maps/\n"), exit(EXIT_FAILURE));
 }
+static void get_player_pos(t_game *game)
+{
+	size_t x;
+	size_t y;
+
+	y = 0;
+	x = 0;
+
+	while (y < game->map.height)
+	{
+		while (x <= game->map.width)
+		{
+			if (game->map.cell_value[y][x] == 'P')
+			{
+				game->player_pos.x = x;
+				game->player_pos.y = y;
+				return ;
+			}
+			x++;
+		}
+		x = 0;
+		y++;
+	}	
+}
 
 void	start_game(t_game *game)
 {
@@ -72,11 +96,11 @@ void	start_game(t_game *game)
 		return (free(game->map_name),ft_free_2d(game->map.cell_value), exit(EXIT_FAILURE));
 	}
 	get_map_elements(&game->map, game->map_name);
+	get_player_pos(game);
 	game->map.valid = collectibles_accesible(game);
 	printf("map valid: %d\n", game->map.valid);
 	if(!game->map.valid)
 	{
-		printf("got here\n");
 		return (free_game(game), exit(1));
 	}
 	game->screen.width = (game->map.width) * game->imgs.image_size;
