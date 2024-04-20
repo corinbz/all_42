@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 08:16:29 by corin             #+#    #+#             */
-/*   Updated: 2024/04/20 16:10:46 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:37:32 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	main(int ac, char **av)
 	mlx_key_hook(game.mlx, &ft_keyhooks, &game);
 	mlx_loop(game.mlx);
 	mlx_terminate(game.mlx);
-	printf("here\n");
 	free_game(&game);
 	return (EXIT_SUCCESS);
 }

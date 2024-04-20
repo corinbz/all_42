@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 16:42:00 by corin             #+#    #+#             */
-/*   Updated: 2024/04/20 16:33:40 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/20 16:51:40 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@ void ft_print_map(char **map, size_t height, size_t width);
 
 void	flood_fill(size_t row, size_t col, t_game game, char **map)
 {
+	// printf("stating pos: %zu, %zu is %c\n", row, col, map[row][col]);
 	if (row >= game.map.height || row >= game.map.width
 		|| map[row][col] == '1'
 		|| map[row][col] == 'V')
@@ -34,15 +35,19 @@ static bool	check_coll_exists(char **map, t_game *game)
 	j = 0;
 	while (i < game->map.height)
 	{
+		// printf("row: %zu--> ", i);
 		while (j < game->map.width)
 			{
-				if(map[i][j] == 'C')
-				{
-					printf("at pos %zu %zu\n",i, j);
-					return (ft_error("Collectible not accesible\n"),false);
-				}
+				// printf("__%zu", j);
+				printf("%c",map[i][j]);
+				// if(map[i][j] == 'C')
+				// {
+				// 	printf("at pos %zu %zu\n",i, j);
+				// 	return (ft_error("Collectible not accesible\n"),false);
+				// }
 				j++;
 			}
+		printf("\n");
 		j = 0;
 		i++;
 	}
@@ -65,9 +70,11 @@ bool	collectibles_accesible(t_game *game)
 			return(ft_error("malloc failed\n"), ft_free_2d(map_copy), NULL);
 		row++;
 	}
+	printf("player pos %zu %zu\n", game->player_pos.x, game->player_pos.y);
+	// printf("%c\n", map_copy[10][11]);
 	flood_fill(game->player_pos.x, game->player_pos.y, *game, map_copy);
 	res = check_coll_exists(map_copy, game);
-	res = true;
+	// res = true;
 	ft_free_2d(map_copy);
 	return (res);
 }
