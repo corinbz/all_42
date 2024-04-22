@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free_2d.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 16:15:08 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/05 16:19:17 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/22 12:22:59 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ void	ft_free_2d(char **arr)
 		while (arr[i] != NULL)
 		{
 			free(arr[i]);
-			arr[i] = NULL;
+			// arr[i] = NULL;
 			i++;
 		}
 		free(arr);
-		arr = NULL;
+		// arr = NULL;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/20 16:25:41 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/22 12:06:20 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ static void get_rows_size(t_map *map, char *map_filename)
 	rows = 0;
 	map_fd = open(map_filename, O_RDONLY);
 	if (map_fd < 0)
-		ft_error("Error: Failed to open map file\n");
+		ft_error("Failed to open map file\n");
 	line = get_next_line(map_fd);
 	while (line)
 	{
@@ -146,32 +146,14 @@ static void get_rows_size(t_map *map, char *map_filename)
 	map->height = rows;
 }
 
-int	parse_map(t_map *map, char *map_filename)
+bool	parse_map(t_map *map, char *map_filename)
 {
 	get_rows_size(map, map_filename);
-	get_map_elements(map, map_filename);
+	map->valid = get_map_elements(map, map_filename);
+	if(!map->valid)
+		return (false);
 	map->valid = check_map_elements(map);
 	if(!map->valid)
-		return (0);
-	return (1);
+		return (false);
+	return (true);
 }
-
-
-// void ft_check(char **map)
-// {
-// 	int width;
-// 	int y;
-// 	int x;
-
-// 	width = ft_line_len;
-// 	x = 0;
-// 	y = 0;
-// 	while(map[y][0] != '\0')
-// 	{
-// 		while(map[y][x] != '\n')
-// 			x++;
-// 		if (x != width)
-// 			return (true);
-// 		x = 0;
-// 	}
-// }

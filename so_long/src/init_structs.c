@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/20 16:26:12 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/22 12:18:23 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_map	create_map(void)
 }
 
 //maybe check maloc protections here
-void	get_map_elements(t_map *map, char *map_filename)
+bool	get_map_elements(t_map *map, char *map_filename)
 {
 	int		map_fd;
 	char	*line;
@@ -39,16 +39,13 @@ void	get_map_elements(t_map *map, char *map_filename)
 	{
 		map->cell_value[rows] = ft_strdup(line);
 		if (!map->cell_value[rows])
-		{
-			ft_free_2d(map->cell_value);
-		}
+			return(free(line), false);
 		free(line);
 		rows++;
 		line = get_next_line(map_fd);
 	}
-	// for (int i = 0;i < rows; i++)
-	// 	printf("%s",map->cell_value[i]);
 	close(map_fd);
+	return (true);
 }
 
 void	init_game_struct(t_game *game, char *map_name)
@@ -66,7 +63,7 @@ void	init_game_struct(t_game *game, char *map_name)
 		return (ft_error("Failed to join maps/\n"), exit(EXIT_FAILURE));
 	fd = open(game->map_name, O_RDONLY);
 	if(fd < 0)
-		return(ft_error("map file not accesible\n") ,free(game->map_name), exit(1));
+		return(ft_error("Map file not accesible\n") ,free(game->map_name), exit(1));
 }
 static void get_player_pos(t_game *game)
 {
@@ -76,20 +73,20 @@ static void get_player_pos(t_game *game)
 	y = 0;
 	x = 0;
 
-	while (y < game->map.height)
+	while (x < game->map.height)
 	{
-		while (x <= game->map.width)
+		while (y <= game->map.width)
 		{
-			if (game->map.cell_value[y][x] == 'P')
+			if (game->map.cell_value[x][y] == 'P')
 			{
 				game->player_pos.x = x;
 				game->player_pos.y = y;
 				return ;
 			}
-			x++;
+			y++;
 		}
-		x = 0;
-		y++;
+		y = 0;
+		x++;
 	}	
 }
 
