@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/22 12:06:20 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/22 14:08:00 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static bool	map_size_valid(t_map *map)
 	while(i < map->height)
 	{
 		if(ft_line_len(map->cell_value[i]) != len)
-			return (false);
+			return (ft_error("Invalid row length\n"), false);
 		i++;
 	}
 	return (true);
@@ -33,31 +33,28 @@ static bool	map_size_valid(t_map *map)
 
 static bool	check_walls(size_t row, size_t col, t_map *map)
 {
-	// printf("width %zu height %zu\n", map->width, map->height);
 	while (row < map->height)
 	{
-		if (col == 0 || col == map->width - 1)
+		while(col < map->width)
 		{
-			if ((map->cell_value[row][col]) != '1')
-				return (false);
-		}
-		else
-		{
-			if (row == 0 || row == map->height -1)
+			printf("%c", map->cell_value[row][col]);
+			if (col == 0 || col == map->width)
+			{
+				if ((map->cell_value[row][col]) != '1')
+					return (ft_error("incomplete wall\n"),false);
+			}
+			if (row == 0 || row == map->height)
 			{
 				if ((map->cell_value[row][col]) != '1')
 				{
-					// printf("x %zu y %zu\n",row,col);
-					return (false);
+					return (ft_error("incomplete wall\n"),false);
 				}
 			}
+			col++;
 		}
-		col++;
-		if (col == map->width)
-		{
-			col = 0;
-			row++;
-		}
+		printf("\n");
+		col = 0;
+		row++;
 	}
 	return (true);
 }
@@ -67,7 +64,7 @@ static bool	check_elements_count(t_count *count)
 	if ((int)count->player != 1
 		|| (int)count->exit != 1
 		|| (int)count->collectible == 0)
-		return (false);
+		return (ft_error("Invalid elements count\n"), false);
 	return (true);
 }
 
@@ -101,7 +98,7 @@ static bool	count_elements(size_t row, size_t col, t_map *map)
 			else if (cell == 'P' || cell == 'C' || cell == 'E')
 				increment_elements(cell, &count);
 			else
-				return (false);
+				return (ft_error("Invalid character found\n"), false);
 			col++;
 		}
 		row++;
@@ -115,15 +112,17 @@ static	bool check_map_elements(t_map *map)
 	size_t	row;
 	size_t	col;
 
-	res = true;
+	// res = true;
 	row = 0;
 	col = 0;
-	res = map_size_valid(map);
-	res = check_walls(row, col, map);
-	res = count_elements(row, col, map);
+	res = map_size_valid(map) && check_walls(row, col, map)
+		&& count_elements(row, col, map);
+	// res = check_walls(row, col, map);
+	// res = count_elements(row, col, map);
+	// printf("res: %d\n",res);
 	return (res);
 }
-static void get_rows_size(t_map *map, char *map_filename)
+static bool get_rows_size(t_map *map, char *map_filename)
 {
 	int		map_fd;
 	char	*line;
@@ -141,14 +140,17 @@ static void get_rows_size(t_map *map, char *map_filename)
 		line = get_next_line(map_fd);
 	}
 	close(map_fd);
-	if(rows > MAX_MAP_HEIGHT)
-		return(ft_error("Height too big\n") ,exit(1));
+	if(rows > MAX_MAP_HEIGHT || rows < 3)
+		return(ft_error("Map height is invalid\n"), false);
 	map->height = rows;
+	return (true);
 }
 
 bool	parse_map(t_map *map, char *map_filename)
 {
-	get_rows_size(map, map_filename);
+	if(!get_rows_size(map, map_filename))
+		return(false);
+	printf("rows: %zu\n", map->height);
 	map->valid = get_map_elements(map, map_filename);
 	if(!map->valid)
 		return (false);

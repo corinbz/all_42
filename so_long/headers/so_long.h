@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/22 11:58:07 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/22 13:42:48 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-#define BUFFER_SIZE		5
+#define BUFFER_SIZE		10
 #define ALLOC_FAIL		2
 #define READ_FILE_ERR	3
 #define MAX_MAP_HEIGHT	20
