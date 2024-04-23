@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/22 14:08:00 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/23 10:44:02 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,27 @@ static bool	map_size_valid(t_map *map)
 
 static bool	check_walls(size_t row, size_t col, t_map *map)
 {
+	// printf("width: %zu, height: %zu\n", map->width, map->height);
 	while (row < map->height)
 	{
 		while(col < map->width)
 		{
-			printf("%c", map->cell_value[row][col]);
+			// printf("%c", map->cell_value[row][col]);
 			if (col == 0 || col == map->width)
 			{
 				if ((map->cell_value[row][col]) != '1')
-					return (ft_error("incomplete wall\n"),false);
+					return (ft_error("Incomplete wall\n"),false);
 			}
-			if (row == 0 || row == map->height)
+			if (row == 0 || row == map->height - 1)
 			{
 				if ((map->cell_value[row][col]) != '1')
 				{
-					return (ft_error("incomplete wall\n"),false);
+					return (ft_error("Incomplete wall\n"),false);
 				}
 			}
 			col++;
 		}
-		printf("\n");
+		// printf("\n");
 		col = 0;
 		row++;
 	}
@@ -150,7 +151,7 @@ bool	parse_map(t_map *map, char *map_filename)
 {
 	if(!get_rows_size(map, map_filename))
 		return(false);
-	printf("rows: %zu\n", map->height);
+	// printf("rows: %zu\n", map->height);
 	map->valid = get_map_elements(map, map_filename);
 	if(!map->valid)
 		return (false);

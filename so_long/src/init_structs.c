@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/22 13:29:52 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/23 10:48:00 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ bool	get_map_elements(t_map *map, char *map_filename)
 
 	rows = 0;
 	map->cell_value = ft_calloc(map->height + 1, sizeof(char *));
+	map->cell_value[map->height] = NULL;
 	map_fd = open(map_filename, O_RDONLY);
 	if (map_fd < 0)
 		ft_error("Error: Failed to open map file\n");
 	line = get_next_line(map_fd);
 	while (line)
 	{
+		// printf("row %d--> %s", rows, line);
 		map->cell_value[rows] = ft_strdup(line);
 		if (!map->cell_value[rows])
 			return(free(line), false);
@@ -101,7 +103,7 @@ void	start_game(t_game *game)
 		return (free(game->map_name),ft_free_2d(game->map.cell_value), exit(1));
 	}
 	get_player_pos(game);
-	game->map.valid = collectibles_accesible(game);
+	// game->map.valid = collectibles_accesible(game);
 	if(!game->map.valid)
 	{
 		return (free_game(game), exit(1));
