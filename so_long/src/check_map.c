@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/23 10:44:02 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/24 10:36:18 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static bool	map_size_valid(t_map *map)
 			return (ft_error("Invalid row length\n"), false);
 		i++;
 	}
+	if(map->cell_value[map->height - 1][len] == '\n')
+		return (ft_error("New line on end of file\n"), false);
 	return (true);
 }
 
@@ -118,9 +120,6 @@ static	bool check_map_elements(t_map *map)
 	col = 0;
 	res = map_size_valid(map) && check_walls(row, col, map)
 		&& count_elements(row, col, map);
-	// res = check_walls(row, col, map);
-	// res = count_elements(row, col, map);
-	// printf("res: %d\n",res);
 	return (res);
 }
 static bool get_rows_size(t_map *map, char *map_filename)

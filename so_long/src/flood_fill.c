@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 16:42:00 by corin             #+#    #+#             */
-/*   Updated: 2024/04/23 10:24:41 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/24 10:26:52 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ bool	collectibles_accesible(t_game *game)
 
 	row = 0;
 	res = true;
+	map_copy = NULL;
 	map_copy = ft_calloc(game->map.height + 1, sizeof(char *));
 	if(!map_copy)
 		return(ft_error("malloc failed\n"), ft_free_2d(map_copy), false);
@@ -69,10 +70,6 @@ bool	collectibles_accesible(t_game *game)
 	}
 	flood_fill(game->player_pos.x, game->player_pos.y, *game, map_copy);
 	res = check_collorexit_exists(map_copy, game);
-	// for(int i = 0; i < 3; i++)
-	// {
-	// 	printf("%s", map_copy[i]);
-	// }
 	ft_free_2d(map_copy);
 	return (res);
 }
