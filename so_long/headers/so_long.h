@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/23 10:21:04 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/24 10:46:32 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-#define BUFFER_SIZE		1
-#define ALLOC_FAIL		2
-#define READ_FILE_ERR	3
+#define BUFFER_SIZE		10
 #define MAX_MAP_HEIGHT	20
 #define MAX_MAP_WIDTH	40
 
@@ -96,7 +94,7 @@ void	ft_keyhooks(mlx_key_data_t keydata, void *param);
 t_map	create_map(void);
 bool	parse_map(t_map *map, char *map_filename);
 bool	get_map_elements(t_map *map, char *map_filename);
-void	init_game_struct (t_game *game, char* map_name);
+void	init_game_struct(t_game *game, char *map_name);
 void	start_game(t_game *game);
 
 //cleaning
@@ -108,4 +106,6 @@ void	ft_free_all(char **str1, char **str2, char **str3);
 int		contains_newline(const char *s);
 char	*join_strs(const char *s1, const char *s2);
 
+//map checking
 bool	collectibles_accesible(t_game *game);
+bool	count_elements(size_t row, size_t col, t_map *map);

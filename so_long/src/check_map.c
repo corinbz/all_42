@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/24 10:36:18 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/24 10:44:05 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,110 +19,60 @@ static bool	map_size_valid(t_map *map)
 
 	i = 1;
 	len = ft_line_len(map->cell_value[0]);
-	if(len > MAX_MAP_WIDTH)
-		return(ft_error("Width too big\n") ,false);
+	if (len > MAX_MAP_WIDTH)
+		return (ft_error("Width too big\n"), false);
 	map->width = len;
-	while(i < map->height)
+	while (i < map->height)
 	{
-		if(ft_line_len(map->cell_value[i]) != len)
+		if (ft_line_len(map->cell_value[i]) != len)
 			return (ft_error("Invalid row length\n"), false);
 		i++;
 	}
-	if(map->cell_value[map->height - 1][len] == '\n')
+	if (map->cell_value[map->height - 1][len] == '\n')
 		return (ft_error("New line on end of file\n"), false);
 	return (true);
 }
 
 static bool	check_walls(size_t row, size_t col, t_map *map)
 {
-	// printf("width: %zu, height: %zu\n", map->width, map->height);
 	while (row < map->height)
 	{
-		while(col < map->width)
+		while (col < map->width)
 		{
-			// printf("%c", map->cell_value[row][col]);
 			if (col == 0 || col == map->width)
 			{
 				if ((map->cell_value[row][col]) != '1')
-					return (ft_error("Incomplete wall\n"),false);
+					return (ft_error("Incomplete wall\n"), false);
 			}
 			if (row == 0 || row == map->height - 1)
 			{
 				if ((map->cell_value[row][col]) != '1')
 				{
-					return (ft_error("Incomplete wall\n"),false);
+					return (ft_error("Incomplete wall\n"), false);
 				}
 			}
 			col++;
 		}
-		// printf("\n");
 		col = 0;
 		row++;
 	}
 	return (true);
 }
 
-static bool	check_elements_count(t_count *count)
-{
-	if ((int)count->player != 1
-		|| (int)count->exit != 1
-		|| (int)count->collectible == 0)
-		return (ft_error("Invalid elements count\n"), false);
-	return (true);
-}
-
-static void	increment_elements(char cell, t_count *count)
-{
-	if (cell == 'P')
-		count->player++;
-	else if (cell == 'C')
-		count->collectible++;
-	else if (cell == 'E')
-		count->exit++;
-}
-
-static bool	count_elements(size_t row, size_t col, t_map *map)
-{
-	char	cell;
-	t_count	count;
-
-	count = (t_count){0};
-	while (row < map->height)
-	{
-		col = 0;
-		while (col < map->width)
-		{
-			cell = map->cell_value[row][col];
-			if (cell == '1' || cell == '0')
-			{
-				col++;
-				continue ;
-			}
-			else if (cell == 'P' || cell == 'C' || cell == 'E')
-				increment_elements(cell, &count);
-			else
-				return (ft_error("Invalid character found\n"), false);
-			col++;
-		}
-		row++;
-	}
-	return (check_elements_count(&count));
-}
-
-static	bool check_map_elements(t_map *map)
+static bool	check_map_elements(t_map *map)
 {
 	bool	res;
 	size_t	row;
 	size_t	col;
 
-	// res = true;
 	row = 0;
 	col = 0;
 	res = map_size_valid(map) && check_walls(row, col, map)
 		&& count_elements(row, col, map);
 	return (res);
 }
-static bool get_rows_size(t_map *map, char *map_filename)
+
+static bool	get_rows_size(t_map *map, char *map_filename)
 {
 	int		map_fd;
 	char	*line;
@@ -140,22 +90,21 @@ static bool get_rows_size(t_map *map, char *map_filename)
 		line = get_next_line(map_fd);
 	}
 	close(map_fd);
-	if(rows > MAX_MAP_HEIGHT || rows < 3)
-		return(ft_error("Map height is invalid\n"), false);
+	if (rows > MAX_MAP_HEIGHT || rows < 3)
+		return (ft_error("Map height is invalid\n"), false);
 	map->height = rows;
 	return (true);
 }
 
 bool	parse_map(t_map *map, char *map_filename)
 {
-	if(!get_rows_size(map, map_filename))
-		return(false);
-	// printf("rows: %zu\n", map->height);
+	if (!get_rows_size(map, map_filename))
+		return (false);
 	map->valid = get_map_elements(map, map_filename);
-	if(!map->valid)
+	if (!map->valid)
 		return (false);
 	map->valid = check_map_elements(map);
-	if(!map->valid)
+	if (!map->valid)
 		return (false);
 	return (true);
 }

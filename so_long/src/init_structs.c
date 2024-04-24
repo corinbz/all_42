@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/24 10:28:57 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/24 11:07:55 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,18 @@ bool	get_map_elements(t_map *map, char *map_filename)
 
 	rows = 0;
 	map->cell_value = ft_calloc(map->height + 1, sizeof(char *));
-	if(!map->cell_value)
-		return(ft_error("Malloc failed(cell_value)\n"),false);
+	if (!map->cell_value)
+		return (ft_error("Malloc failed(cell_value)\n"), false);
 	map->cell_value[map->height] = NULL;
 	map_fd = open(map_filename, O_RDONLY);
 	if (map_fd < 0)
-		return(ft_error("Error: Failed to open map file\n"), false);
+		return (ft_error("Error: Failed to open map file\n"), false);
 	line = get_next_line(map_fd);
 	while (line)
 	{
 		map->cell_value[rows] = ft_strdup(line);
 		if (!map->cell_value[rows])
-			return(free(line), false);
+			return (free(line), false);
 		free(line);
 		rows++;
 		line = get_next_line(map_fd);
@@ -53,7 +53,7 @@ bool	get_map_elements(t_map *map, char *map_filename)
 void	init_game_struct(t_game *game, char *map_name)
 {
 	int	fd;
-	
+
 	game->player_pos = (t_player_pos){0};
 	game->map = (t_map){0};
 	game->screen = (t_screen){0};
@@ -64,22 +64,22 @@ void	init_game_struct(t_game *game, char *map_name)
 	if (!game->map_name)
 		return (ft_error("Failed to join maps/\n"), exit(EXIT_FAILURE));
 	fd = open(game->map_name, O_RDONLY);
-	if(fd < 0)
-		return(ft_error("Map file not accesible\n") ,free(game->map_name), exit(1));
+	if (fd < 0)
+		return (ft_error("Map file not accesible\n"),
+			free(game->map_name), exit(1));
 }
-static void get_player_pos(t_game *game)
+
+static void	get_player_pos(t_game *game)
 {
-	size_t x;
-	size_t y;
+	size_t	x;
+	size_t	y;
 
 	y = 0;
 	x = 0;
-
 	while (x < game->map.height)
 	{
 		while (y < game->map.width)
 		{
-			// printf("%c", game->map.cell_value[x][y]);
 			if (game->map.cell_value[x][y] == 'P')
 			{
 				game->player_pos.x = x;
@@ -88,17 +88,16 @@ static void get_player_pos(t_game *game)
 			}
 			y++;
 		}
-		// printf("\n");
 		y = 0;
 		x++;
-	}	
+	}
 }
 
 void	start_game(t_game *game)
 {
 	game->map = create_map();
-	if(!parse_map(&game->map, game->map_name))
-		return(free_game(game), exit(1));
+	if (!parse_map(&game->map, game->map_name))
+		return (free_game(game), exit(1));
 	if (!game->map.valid)
 	{
 		ft_error("Map invalid\n");
@@ -106,13 +105,14 @@ void	start_game(t_game *game)
 	}
 	get_player_pos(game);
 	game->map.valid = collectibles_accesible(game);
-	if(!game->map.valid)
+	if (!game->map.valid)
 	{
 		return (free_game(game), exit(1));
 	}
 	game->screen.width = (game->map.width) * game->imgs.image_size;
 	game->screen.height = game->map.height * game->imgs.image_size;
-	game->mlx = mlx_init(game->screen.width, game->screen.height, "Hungry frog", true);
+	game->mlx = mlx_init(game->screen.width, game->screen.height,
+			"Hungry frog", true);
 	if (!game->mlx)
 		ft_error("Failed to init mlx (main)\n");
 	game->imgs = create_imgs(game->mlx, game->imgs);
