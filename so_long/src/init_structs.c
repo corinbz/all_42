@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/24 11:07:55 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/24 11:17:53 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	init_game_struct(t_game *game, char *map_name)
 	game->moves = 0;
 	game->map_name = ft_strjoin("maps/", map_name);
 	if (!game->map_name)
-		return (ft_error("Failed to join maps/\n"), exit(EXIT_FAILURE));
+		return (ft_error("Failed to join maps/\n"), exit(1));
 	fd = open(game->map_name, O_RDONLY);
 	if (fd < 0)
 		return (ft_error("Map file not accesible\n"),

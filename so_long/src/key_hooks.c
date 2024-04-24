@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_hooks.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 11:51:58 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/20 14:02:24 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/24 11:25:11 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static void	move_up(t_game *game, size_t pos_x, size_t pos_y)
 			mlx_close_window(game->mlx);
 		pos_y -= 1;
 		game->moves += 1;
-		printf("%zu moves\n", game->moves);
+		ft_putnbr_fd(game->moves, 1);
+		ft_putstr_fd(" moves\n", 1);
 	}
 	else
 		ft_putstr_fd("OUCH!\n", 1);
@@ -53,7 +54,8 @@ static void	move_down(t_game *game, size_t pos_x, size_t pos_y)
 			mlx_close_window(game->mlx);
 		pos_y += 1;
 		game->moves += 1;
-		printf("%zu moves\n", game->moves);
+		ft_putnbr_fd(game->moves, 1);
+		ft_putstr_fd(" moves\n", 1);
 	}
 	else
 		ft_putstr_fd("OUCH!\n", 1);
@@ -77,7 +79,8 @@ static void	move_left(t_game *game, size_t pos_x, size_t pos_y)
 			mlx_close_window(game->mlx);
 		pos_x -= 1;
 		game->moves += 1;
-		printf("%zu moves\n", game->moves);
+		ft_putnbr_fd(game->moves, 1);
+		ft_putstr_fd(" moves\n", 1);
 	}
 	else
 		ft_putstr_fd("OUCH!\n", 1);
@@ -101,7 +104,8 @@ static void	move_right(t_game *game, size_t pos_x, size_t pos_y)
 			mlx_close_window(game->mlx);
 		pos_x += 1;
 		game->moves += 1;
-		printf("%zu moves\n", game->moves);
+		ft_putnbr_fd(game->moves, 1);
+		ft_putstr_fd(" moves\n", 1);
 	}
 	else
 		ft_putstr_fd("OUCH!\n", 1);

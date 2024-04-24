@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 20:59:43 by corin             #+#    #+#             */
-/*   Updated: 2023/10/22 15:35:39 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/24 11:26:25 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,18 +91,3 @@ char	**ft_split(char const *s, char c)
 	result[index] = NULL;
 	return (result);
 }
-
-// int main()
-// {
-// 	char **result = ft_split("hello", ' ');
-// 	int i = 0;
-
-// 	while(result[i] != NULL)
-// 	{
-// 		printf("index %d is %s\n",i,result[i]);
-// 		free(result[i]);
-// 		i++;
-// 	}
-// 	free(result[i]);
-// 	free(result);
-// }

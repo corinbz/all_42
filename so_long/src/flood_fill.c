@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 16:42:00 by corin             #+#    #+#             */
-/*   Updated: 2024/04/24 10:50:16 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/24 11:14:52 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	flood_fill(size_t row, size_t col, t_game game, char **map)
 	flood_fill (row, col +1, game, map);
 }
 
-static bool	check_collorexit_exists(char **map, t_game *game)
+static bool	check_coll_or_exit_exists(char **map, t_game *game)
 {
 	size_t	i;
 	size_t	j;
@@ -68,7 +68,7 @@ bool	collectibles_accesible(t_game *game)
 		row++;
 	}
 	flood_fill(game->player_pos.x, game->player_pos.y, *game, map_copy);
-	res = check_collorexit_exists(map_copy, game);
+	res = check_coll_or_exit_exists(map_copy, game);
 	ft_free_2d(map_copy);
 	return (res);
 }

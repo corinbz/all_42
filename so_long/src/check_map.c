@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/24 10:44:05 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/24 11:10:44 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static bool	get_rows_size(t_map *map, char *map_filename)
 	rows = 0;
 	map_fd = open(map_filename, O_RDONLY);
 	if (map_fd < 0)
-		ft_error("Failed to open map file\n");
+		return (ft_error("Failed to open map file\n"), false);
 	line = get_next_line(map_fd);
 	while (line)
 	{
