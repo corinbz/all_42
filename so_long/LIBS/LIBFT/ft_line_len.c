@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_line_len.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
+/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 16:52:03 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/03/23 09:56:38 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:02:12 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 size_t	ft_line_len(char *str)
 {
 	size_t	res;
-	
+
 	res = 0;
-	while(*str && *str != '\n')
+	while (*str && *str != '\n')
 	{
 		res++;
 		str++;

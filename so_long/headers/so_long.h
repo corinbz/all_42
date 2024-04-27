@@ -6,7 +6,7 @@
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/24 10:46:32 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/27 17:39:54 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,15 @@
 #define BUFFER_SIZE		10
 #define MAX_MAP_HEIGHT	20
 #define MAX_MAP_WIDTH	40
+
+typedef struct s_pngs
+{
+	mlx_texture_t	*player;
+	mlx_texture_t	*wall;
+	mlx_texture_t	*exit;
+	mlx_texture_t	*floor;
+	mlx_texture_t	*collectible;
+}	t_pngs;
 
 typedef struct s_count
 {
@@ -77,7 +86,7 @@ typedef struct s_game
 void	ft_error(char *error_txt);
 
 //imgs
-t_imgs	create_imgs(mlx_t *mlx, t_imgs assets);
+bool	create_imgs(mlx_t *mlx, t_imgs assets);
 void	render_images(t_game *game);
 
 //draw_images
