@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/27 17:39:54 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/28 10:33:51 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	ft_keyhooks(mlx_key_data_t keydata, void *param);
 
 //data_parsing
 t_map	create_map(void);
-bool	parse_map(t_map *map, char *map_filename);
+bool	parse_map(t_game *game);
 bool	get_map_elements(t_map *map, char *map_filename);
 void	init_game_struct(t_game *game, char *map_name);
 void	start_game(t_game *game);

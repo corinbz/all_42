@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/27 17:47:03 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/28 10:34:17 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static void	get_player_pos(t_game *game)
 void	start_game(t_game *game)
 {
 	game->map = create_map();
-	if (!parse_map(&game->map, game->map_name))
+	if (!parse_map(game))
 		return (free_game(game), exit(1));
 	if (!game->map.valid)
 	{

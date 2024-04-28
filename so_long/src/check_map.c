@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/24 11:10:44 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/28 10:37:51 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,15 @@ static bool	get_rows_size(t_map *map, char *map_filename)
 	return (true);
 }
 
-bool	parse_map(t_map *map, char *map_filename)
+bool	parse_map(t_game *game)
 {
-	if (!get_rows_size(map, map_filename))
+	if (!get_rows_size(&game->map, game->map_name))
+		return (free(game->map_name), exit(1), false);
+	game->map.valid = get_map_elements(&game->map, game->map_name);
+	if (!game->map.valid)
 		return (false);
-	map->valid = get_map_elements(map, map_filename);
-	if (!map->valid)
-		return (false);
-	map->valid = check_map_elements(map);
-	if (!map->valid)
+	game->map.valid = check_map_elements(&game->map);
+	if (!game->map.valid)
 		return (false);
 	return (true);
 }
