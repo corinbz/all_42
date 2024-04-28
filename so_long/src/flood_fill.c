@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flood_fill.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 16:42:00 by corin             #+#    #+#             */
-/*   Updated: 2024/04/24 11:14:52 by corin            ###   ########.fr       */
+/*   Updated: 2024/04/28 11:24:13 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ bool	collectibles_accesible(t_game *game)
 
 	row = 0;
 	res = true;
-	map_copy = NULL;
 	map_copy = ft_calloc(game->map.height + 1, sizeof(char *));
 	if (!map_copy)
 		return (ft_error("malloc failed\n"), ft_free_2d(map_copy), false);
+	map_copy[game->map.height] = NULL;
 	while (row < game->map.height)
 	{
 		map_copy[row] = ft_strdup(game->map.cell_value[row]);

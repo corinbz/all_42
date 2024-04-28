@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:47:07 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/28 10:33:51 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/28 11:12:04 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_game
 void	ft_error(char *error_txt);
 
 //imgs
-bool	create_imgs(mlx_t *mlx, t_imgs assets);
+bool	create_imgs(t_game *game);
 void	render_images(t_game *game);
 
 //draw_images

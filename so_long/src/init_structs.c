@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 16:53:53 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/28 10:34:17 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/04/28 11:26:34 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,5 @@ void	start_game(t_game *game)
 			"Hungry frog", true);
 	if (!game->mlx)
 		ft_error("Failed to init mlx (main)\n");
-	game->map.valid = create_imgs(game->mlx, game->imgs);
-	printf("map->valid is %d\n", game->map.valid);
+	create_imgs(game);
 }
