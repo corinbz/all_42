@@ -1,23 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 09:54:18 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/12/17 12:19:17 by corin            ###   ########.fr       */
+/*   Created: 2024/12/17 11:43:57 by corin             #+#    #+#             */
+/*   Updated: 2024/12/17 13:06:24 by corin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+#include <stdbool.h>
 
-int main(void)
+size_t count_rows(char **cells)
 {
-	t_map	*map;
-	map = ft_calloc(1, sizeof(t_map));
-	parse_map_file("assets/maps/simple_valid.cub", map);
-	valid_walls(map);
-	free_map(map);
-	return (0);
+	size_t res;
+
+	res = 0;
+	while(cells[res])
+		res++;
+	return (res);
+}
+
+bool valid_walls(t_map *map)
+{
+	bool check;
+	int i;
+	int j;
+	size_t max_rows;
+	
+	max_rows = count_rows(map->cell_value);
+
+	i = 0;
+	j = 0;
+	while(map->cell_value[0][j])
+	{
+		while(ft_isspace(map->cell_value[i][j]))
+			j++;
+		
+	}
+	
+	
+	return (true);
 }
