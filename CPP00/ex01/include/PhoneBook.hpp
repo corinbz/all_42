@@ -1,36 +1,22 @@
 #include "Contact.hpp"
-#include <iostream>
+//
+// Colors
+/* #define GREEN "\033[0;32m" */
+/* #define RED "\033[0;31m" */
+/* #define BLUE "\033[0;34m" */
+/* #define YELLOW "\033[0;33m" */
+/* #define RESET "\033[0m" */
+#define MAX_CONTACTS 8
 
 class PhoneBook {
 
 public:
-  Contact contacts[8];
-  int current_contact = 1;
-  void displayContacts() {
-    std::cout << "|     Index|First Name| Last Name|  Nickname|" << std::endl;
-    std::cout << "|----------|----------|----------|----------|" << std::endl;
-
-    for (int i = 1; i < current_contact; i++) {
-      std::string index = std::to_string(i);
-
-      // right-align each field
-      std::cout << "|" << std::string(10 - index.length(), ' ') << index << "|"
-                << formatField(contacts[i].getFirstName()) << "|"
-                << formatField(contacts[i].getLastName()) << "|"
-                << formatField(contacts[i].getNickname()) << "|" << std::endl;
-    }
-  }
+  Contact contacts[MAX_CONTACTS];
+  int current_index = 0;
+  int total_contacts = 0;
+  void displayContacts();
+  void displayContact(int index);
 
 private:
-  std::string formatField(const std::string &text) {
-    const int width = 10;
-    if (text.length() >= width) {
-      // If text too long trucate and add . at the end
-      return text.substr(0, width - 1) + ".";
-    } else {
-      // if text is shorter then width, pad with spaces
-      // what happens here
-      return (std::string(width - text.length(), ' ') + text);
-    }
-  }
+  std::string formatField(const std::string &text);
 };

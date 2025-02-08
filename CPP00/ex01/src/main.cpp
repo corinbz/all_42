@@ -26,12 +26,20 @@ int main(void) {
   while (true) {
     std::cin.clear();
     displayMenu();
-    std::getline(std::cin, choice);
+    if (!std::getline(std::cin, choice)) {
+      std::cin.clear();
+      std::cout << "\nEnd of input detected. Exiting..." << std::endl;
+      exit(0);
+    }
 
     switch (parseCommand(choice)) {
     case 1: // ADD
-      my_phonebook.contacts[my_phonebook.current_contact].addContact();
-      my_phonebook.current_contact++;
+      my_phonebook.contacts[my_phonebook.current_index % MAX_CONTACTS]
+          .addContact();
+      std::cout << "added to index :" << my_phonebook.current_index % MAX_CONTACTS;
+      my_phonebook.current_index++;
+      if (my_phonebook.total_contacts < MAX_CONTACTS)
+        my_phonebook.total_contacts++;
       break;
     case 2: // SEARCH
       my_phonebook.displayContacts();
