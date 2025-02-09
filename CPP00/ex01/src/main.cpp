@@ -36,7 +36,6 @@ int main(void) {
     case 1: // ADD
       my_phonebook.contacts[my_phonebook.current_index % MAX_CONTACTS]
           .addContact();
-      std::cout << "added to index :" << my_phonebook.current_index % MAX_CONTACTS;
       my_phonebook.current_index++;
       if (my_phonebook.total_contacts < MAX_CONTACTS)
         my_phonebook.total_contacts++;
@@ -45,7 +44,6 @@ int main(void) {
       my_phonebook.displayContacts();
       break;
     case 3: // EXIT
-      // do something
       return (0);
     case 4: // Invalid command
       std::cout << "Invalid command. Try again";

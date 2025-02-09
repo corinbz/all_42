@@ -49,3 +49,10 @@ void Contact::addContact() {
   darkest_secret = getInput("Darkest secret:");
   std::cout << "\nContact successfully added!\n" << std::endl;
 }
+
+  // Getter methods for displaying contact information
+  std::string Contact::getFirstName() const { return first_name; }
+  std::string Contact::getLastName() const { return last_name; }
+  std::string Contact::getNickname() const { return nickname; }
+  std::string Contact::getPhoneNumber() const { return phone_number; }
+  std::string Contact::getDarkestSecret() const { return darkest_secret; }

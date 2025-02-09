@@ -10,6 +10,7 @@ void PhoneBook::displayContacts() {
               << std::endl;
     return;
   }
+  std::cout << "---------------------------------------------" << std::endl;
   std::cout << "|     Index|First Name| Last Name|  Nickname|" << std::endl;
   std::cout << "|----------|----------|----------|----------|" << std::endl;
 
@@ -17,14 +18,16 @@ void PhoneBook::displayContacts() {
     char index = i + 49;
 
     // right-align each field
+	if(contacts[i].getFirstName().empty())
+		break;
     std::cout << "|" << std::string(9, ' ') << index << "|"
               << formatField(contacts[i].getFirstName()) << "|"
               << formatField(contacts[i].getLastName()) << "|"
               << formatField(contacts[i].getNickname()) << "|" << std::endl;
   }
+  std::cout << "---------------------------------------------" << std::endl;
   while (true) {
-    std::cout << "\nChose index to display full contact information"
-              << std::endl;
+    std::cout << "\nChose index to display full contact information" << std::endl;
     std::string choice;
     if (!std::getline(std::cin, choice)) {
       std::cin.clear();
@@ -39,13 +42,14 @@ void PhoneBook::displayContacts() {
         std::cout << "Invalid input. Try again!" << std::endl;
         continue;
       }
-      if (std::stoi(choice) <= total_contacts) {
+      if (std::stoi(choice) <= total_contacts && std::stoi(choice) != 0) {
         displayContact(std::stoi(choice) - 1);
         break;
       }
       std::cout << "Index out of range. Try again!" << std::endl;
     }
   }
+
 std::string PhoneBook::formatField(const std::string &text) {
   const int width = 10;
   if (text.length() >= width) {
