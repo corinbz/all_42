@@ -130,8 +130,6 @@ void Account::_displayTimestamp(void)
     time(&rawtime);
     timeinfo = localtime(&rawtime);
     
-    // Format time string according to [YYYYMMDD_HHMMSS]
-    // strftime allows us to format time components exactly as we need
     strftime(buffer, sizeof(buffer), "[%Y%m%d_%H%M%S] ", timeinfo);
     
     std::cout << buffer;
