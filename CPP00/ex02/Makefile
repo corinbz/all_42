@@ -1,19 +1,17 @@
 
 # Compiler
-CXX = c++ -std=c++11
+CXX = c++ -std=c++98
 OBJDIR = obj
-INCS = include/PhoneBook.hpp \
-			 include/Contact.hpp \
+INCS = include/Account.hpp \
 
 # Compiler flags
-CXXFLAGS = -Wall -Werror -Wextra
+CXXFLAGS = -Wall -Wextra -Werror #-Wno-deprecated-declarations
 
 # Executable name
-TARGET = phonebook
+TARGET = account
 
-SRCS = src/PhoneBook.cpp \
-			 src/Contact.cpp \
-			 src/main.cpp \
+SRCS = src/Account.cpp \
+			 src/tests.cpp \
 
 OBJS = $(SRCS:src/%.cpp=$(OBJDIR)/%.o)
 
@@ -56,5 +54,5 @@ fclean: clean
 # Rebuild rule: clean everything and rebuild
 re: fclean all
 
-# Phony targets (not actual files)
+# Phony targets
 .PHONY: all clean fclean re
