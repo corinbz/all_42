@@ -1,5 +1,4 @@
 #include "../include/Contact.hpp"
-#include <algorithm>
 #include <iostream>
 
 std::string Contact::getInput(const std::string &prompt) {
@@ -25,12 +24,12 @@ bool Contact::isValidPhoneNumber(const std::string &number) {
   size_t start = 0;
   if (number[0] == '+')
     start = 1;
-  // std::all_of checks if every element satisfies a condition
-  // takes 3 parameters
-  // 1 - beggining of string
-  // 2 - end of string
-  // 3 - condition to check
-  return std::all_of(number.begin() + start, number.end(), ::isdigit);
+  for(char c: number)
+  {
+	if(!isdigit(c))
+		return false;
+  }
+  return true;
 }
 
 void Contact::addContact() {
@@ -39,12 +38,12 @@ void Contact::addContact() {
   nickname = getInput("Nickname:");
   while (true) {
     std::string number =
-        getInput("Phone number (digits only or optional + at start)");
+        getInput("Phone number (digits only)");
     if (isValidPhoneNumber(number)) {
       phone_number = number;
       break;
     }
-    std::cout << "Invalid phone number. Try again.";
+    std::cout << "Invalid phone number. Try again." << std::endl;
   }
   darkest_secret = getInput("Darkest secret:");
   std::cout << "\nContact successfully added!\n" << std::endl;

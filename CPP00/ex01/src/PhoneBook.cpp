@@ -1,5 +1,4 @@
 #include "../include/PhoneBook.hpp"
-#include <algorithm>
 #include <cctype>
 #include <iostream>
 #include <string>
@@ -38,10 +37,18 @@ void PhoneBook::displayContacts() {
         std::cout << "Input cannot be empty. Try again!" << std::endl;
         continue;
       }
-      if (!std::all_of(choice.begin(), choice.end(), ::isdigit)) {
-        std::cout << "Invalid input. Try again!" << std::endl;
-        continue;
-      }
+	  bool choice_valid_number = true;
+	  for(char c: choice)
+	  {
+		if(!isdigit(c))
+		{
+		std::cout << "Invalid input. Try again!" << std::endl;
+		choice_valid_number = false;
+		break;
+		}
+	  }
+	  if(!choice_valid_number)
+	  	continue;
       if (std::stoi(choice) <= total_contacts && std::stoi(choice) != 0) {
         displayContact(std::stoi(choice) - 1);
         break;
