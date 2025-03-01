@@ -11,7 +11,8 @@ void Weapon::setType(std::string type)
 }
 
 //constructor
-Weapon::Weapon(){
+Weapon::Weapon()
+{
 };
 
 Weapon::Weapon(std::string type)

@@ -2,19 +2,17 @@
 #include <iostream>
 
 //constructor
-HumanA::HumanA(std::string name, Weapon weapon) {
+HumanA::HumanA(std::string name, Weapon &weapon)
+{
 	this->name = name;
-	HumanA::setWeapon(weapon);
+	this->weapon = &weapon;
 }
 
+HumanA::~HumanA(){};
+
 std::string HumanA::get_name()
-	{
-	return HumanA::name;
-}
-	
-void HumanA::setWeapon(Weapon weapon)
 {
-	this->weapon = &weapon;
+	return HumanA::name;
 }
 
 void HumanA::attack()

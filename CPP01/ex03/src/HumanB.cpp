@@ -2,20 +2,20 @@
 #include <iostream>
 
 //constructor
-HumanB::HumanB(Weapon weapon){
-	HumanB::weapon = weapon;
+HumanB::HumanB(std::string name){
+	this->name = name;
 }
 
-HumanB::HumanB(){};
+HumanB::~HumanB(){};
 
 std::string HumanB::get_name()
 	{
 	return HumanB::name;
 }
 	
-void HumanB::setWeapon(std::string name)
+void HumanB::setWeapon(Weapon weapon)
 {
-	this->name = name;
+	this->weapon = weapon;
 }
 
 void HumanB::attack()

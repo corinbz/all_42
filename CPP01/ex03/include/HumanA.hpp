@@ -9,9 +9,9 @@ private:
 	Weapon *weapon;
 public:
 	//constructor
-	HumanA(std::string name, );
+	HumanA(std::string name,Weapon &weapon);
+	~HumanA();
 	std::string get_name();
-	void setWeapon(Weapon weapon);
 	void attack();
 };
 #endif // !HUMAN_A_CLASS_H

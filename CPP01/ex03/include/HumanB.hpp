@@ -9,9 +9,9 @@ private:
 	Weapon weapon;
 public:
 	//constructor
-	HumanB(Weapon weapon);
-	HumanB();
-	void setWeapon(std::string name);
+	HumanB(std::string name);
+	~HumanB();
+	void setWeapon(Weapon weapon);
 	std::string get_name();
 	void attack();
 };
