@@ -4,7 +4,7 @@
 #include <ostream>
 class Fixed {
 private:
-  int _fixedNum;
+  int _fixedNum ;
   static const int _bits = 8;
 
 public:

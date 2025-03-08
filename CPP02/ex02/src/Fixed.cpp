@@ -145,7 +145,7 @@ Fixed Fixed::operator-(Fixed const& obj) const{
 
 Fixed Fixed::operator/(Fixed const& obj) const{
 	Fixed res;
-	res.setRawBits(getRawBits() / obj.getRawBits() >> _bits);
+	res.setRawBits(getRawBits() / obj.getRawBits() << _bits);
 	return res;
 }
 
