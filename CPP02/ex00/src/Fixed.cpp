@@ -1,7 +1,9 @@
 #include "../include/Fixed.hpp"
 #include <iostream>
 
-Fixed::Fixed() { std::cout << "Constructor called" << std::endl; }
+Fixed::Fixed() {
+	this->_fixedNum = 0;
+	std::cout << "Constructor called" << std::endl; }
 Fixed::~Fixed() { std::cout << "Destructor called" << std::endl; }
 Fixed::Fixed(Fixed &t) {
   this->_fixedNum = t._fixedNum;

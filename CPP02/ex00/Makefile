@@ -33,7 +33,7 @@ $(TARGET): $(OBJS)
 	@echo "$(GREEN)Done! Executable created: $(TARGET)$(RESET)"
 
 # Rule to build object files from source files
-$(OBJDIR)/%.o: src/%.cpp Makefile $(OBJDIR)
+$(OBJDIR)/%.o: src/%.cpp Makefile | $(OBJDIR)
 	@echo "$(BLUE)Compiling $<...$(RESET)"
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
