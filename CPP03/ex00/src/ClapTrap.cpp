@@ -45,6 +45,14 @@ void ClapTrap::takeDamage(unsigned int amount){
 void ClapTrap::beRepaired(unsigned int amount){
 	if (_energy_points && _hitpoints)
 	{
+		long long unsigned overflow;
+		overflow = _hitpoints + amount;
+		std::cout << overflow << std::endl;
+		if (overflow > UINT32_MAX)
+		{
+			std::cout << "got here\n";
+			amount = UINT32_MAX - _hitpoints;
+		}
 		_hitpoints += amount;
 		_energy_points--;
 		std::cout << "Repair in progress...\n" << "New hp: " << _hitpoints
