@@ -2,6 +2,7 @@
 #define CLAPTRAP_HPP
 
 #include <string>
+#include <cstdint>
 class ClapTrap {
 	private:
 		std::string _name;
