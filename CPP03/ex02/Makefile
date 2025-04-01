@@ -6,11 +6,11 @@ OBJDIR = obj
 CXXFLAGS = -Wall -Werror -Wextra
 
 # Executable name
-TARGET = scav
+TARGET = frag
 
 SRCS = src/main.cpp \
 	   src/ClapTrap.cpp \
-		 src/ScavTrap.cpp \
+		 src/FragTrap.cpp \
 
 OBJS = $(SRCS:src/%.cpp=$(OBJDIR)/%.o)
 

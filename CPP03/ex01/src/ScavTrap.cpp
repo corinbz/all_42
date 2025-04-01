@@ -1,19 +1,28 @@
 #include "../include/ScavTrap.hpp"
 #include <iostream>
 
-ScavTrap::ScavTrap() {
+ScavTrap::ScavTrap() : ClapTrap("noname") {
   std::cout << "Default ScavTrap constructor called" << std::endl;
 }
 
-ScavTrap::ScavTrap(std::string name) {
-  this->_name = name;
-  _hitpoints = 100;
-  _energy_points = 50;
-  _atack_damage = 20;
+ScavTrap::ScavTrap(std::string name) : ClapTrap(name) {
   std::cout << "ScavTrap constructor called" << std::endl;
   std::cout << "Hitpoints: " << _hitpoints << std::endl;
   std::cout << "Energy points: " << _energy_points << std::endl;
   std::cout << "Atack damage: " << _atack_damage << "\n" << std::endl;
+}
+
+ScavTrap::ScavTrap(const ScavTrap &copy) : ClapTrap(copy) {
+  std::cout << "ScavTrap copy constructor called" << std::endl;
+}
+
+ScavTrap& ScavTrap::operator=(const ScavTrap& src) {
+  if (this != &src)
+  {
+    ClapTrap::operator=(src);
+    std::cout << "ScavTrap copy assigment operator called\n" << std::endl;
+  }
+  return *this;
 }
 
 ScavTrap::~ScavTrap() {

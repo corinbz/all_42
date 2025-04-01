@@ -4,8 +4,9 @@
 int main(void) {
   /* ClapTrap test("air_trap"); */
   ScavTrap scav("Gandalf");
+  ScavTrap copy = scav;
   scav.attack("Goblin");
-  /* test.takeDamage(20); */
+  scav.takeDamage(20);
   scav.beRepaired(999);
   scav.attack("Ranzo");
   scav.guardGate();
