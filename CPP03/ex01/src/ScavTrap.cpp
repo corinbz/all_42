@@ -16,9 +16,8 @@ ScavTrap::ScavTrap(const ScavTrap &copy) : ClapTrap(copy) {
   std::cout << "ScavTrap copy constructor called" << std::endl;
 }
 
-ScavTrap& ScavTrap::operator=(const ScavTrap& src) {
-  if (this != &src)
-  {
+ScavTrap &ScavTrap::operator=(const ScavTrap &src) {
+  if (this != &src) {
     ClapTrap::operator=(src);
     std::cout << "ScavTrap copy assigment operator called\n" << std::endl;
   }
