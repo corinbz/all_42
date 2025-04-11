@@ -6,14 +6,13 @@ OBJDIR = obj
 CXXFLAGS = -Wall -Werror -Wextra
 
 # Executable name
-TARGET = zoo
+TARGET = brain
 
 SRCS = src/main.cpp \
 	   src/Animal.cpp \
 		 src/Cat.cpp \
 		 src/Dog.cpp \
-		 src/WrongAnimal.cpp \
-		 src/WrongCat.cpp \
+		 src/Brain.cpp \
 
 OBJS = $(SRCS:src/%.cpp=$(OBJDIR)/%.o)
 
