@@ -20,11 +20,8 @@ WrongAnimal::~WrongAnimal() {
 
 // copy assigment
 WrongAnimal &WrongAnimal::operator=(const WrongAnimal &src) {
-	std::cout << "WrongAnimal: copy assigment operator called\n" << std::endl;
-	if(this == &src) {
-		return *this;
-	}
   this->type = src.type;
+  std::cout << "WrongAnimal: copy assigment operator called\n" << std::endl;
   return (*this);
 }
 

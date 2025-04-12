@@ -6,28 +6,28 @@
 #include <iostream>
 
 int main() {
-  // Animal *animal = new Animal();
-  // Cat *cat = new Cat();
-  // Dog *dog = new Dog();
-  // std::cout << "Animal type: " << animal->getType() << "\n";
-  // std::cout << "Cat type: " << cat->getType() << "\n";
-  // std::cout << "Dog type: " << dog->getType() << "\n";
-  // animal->makeSound();
-  // cat->makeSound();
-  // dog->makeSound();
-  // delete animal;
-  // delete cat;
-  // delete dog;
+  Animal *animal = new Animal();
+  Cat *cat = new Cat();
+  Dog *dog = new Dog();
+  std::cout << "Animal type: " << animal->getType() << "\n";
+  std::cout << "Cat type: " << cat->getType() << "\n";
+  std::cout << "Dog type: " << dog->getType() << "\n";
+  animal->makeSound();
+  cat->makeSound();
+  dog->makeSound();
+  delete animal;
+  delete cat;
+  delete dog;
 
 	//testing wrong animal/cat
-	WrongAnimal *wronganimal = new WrongAnimal();
-	WrongCat *wrongcat = new WrongCat();
-	std::cout << "Animal type: " << wronganimal->getType() << "\n";
-  std::cout << "WrongCat type: " << wrongcat->getType() << "\n";
-	wronganimal->makeSound();
-	wrongcat->makeSound();
-	delete wronganimal;
-	delete wrongcat;
+	// WrongAnimal *wronganimal = new WrongAnimal();
+	// WrongAnimal *wrongcat = new WrongCat();
+	// std::cout << "Animal type: " << wronganimal->getType() << "\n";
+	//  std::cout << "WrongCat type: " << wrongcat->getType() << "\n";
+	// wronganimal->makeSound();
+	// wrongcat->makeSound();
+	// delete wronganimal;
+	// delete wrongcat;
 
 
  // const Animal *constAnimal = new Animal();

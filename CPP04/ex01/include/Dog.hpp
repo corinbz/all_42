@@ -12,10 +12,14 @@ public:
   Dog();
   Dog(const Dog &copy);
   // deconstructor
-  ~Dog();
+	virtual ~Dog();
   // copy assigment
   Dog &operator=(const Dog &src);
   // methods
   void makeSound() const;
+	//getter
+	void getIdeas() const;
+	//setter
+	void setIdea(int index, std::string idea);
 };
 #endif // !DOG_HPP

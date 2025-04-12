@@ -1,25 +1,25 @@
-#ifndef CAT_HPP
-#define CAT_HPP
+#ifndef DOG_HPP
+#define DOG_HPP
 
 #include "Animal.hpp"
 #include "Brain.hpp"
 
-class Cat : public Animal {
+class Dog : public Animal {
 private:
 	Brain *brain;
 public:
   // constructors
-  Cat();
-  Cat(const Cat &copy);
+  Dog();
+  Dog(const Dog &copy);
   // deconstructor
-  virtual ~Cat();
+	virtual ~Dog();
   // copy assigment
-  Cat &operator=(const Cat &src);
+  Dog &operator=(const Dog &src);
   // methods
-  void makeSound() const;
+  void makeSound() const override;
 	//getter
 	void getIdeas() const;
 	//setter
 	void setIdea(int index, std::string idea);
 };
-#endif // !CAT_HPP
+#endif // !DOG_HPP

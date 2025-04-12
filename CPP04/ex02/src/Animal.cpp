@@ -29,8 +29,6 @@ Animal &Animal::operator=(const Animal &src) {
 
 // methods
 void Animal::makeSound() const {
-  std::cout << "Animal: makes a generic sound! What is this beast?"
-            << std::endl;
 }
 
 // getters

@@ -19,11 +19,8 @@ WrongCat::~WrongCat() { std::cout << "WrongCat: class being destroyed...\n" << s
 
 // copy assigment
 WrongCat &WrongCat::operator=(const WrongCat &src) {
-	std::cout << "WrongCat: copy assigment operator called\n" << std::endl;
-	if(this == &src) {
-		return *this;
-	}
   this->type = src.type;
+  std::cout << "WrongCat: copy assigment operator called\n" << std::endl;
   return (*this);
 }
 

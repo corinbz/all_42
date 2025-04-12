@@ -35,3 +35,13 @@ Dog &Dog::operator=(const Dog &src) {
 
 // methods
 void Dog::makeSound() const { std::cout << "Dog: Woof" << std::endl; }
+
+void Dog::getIdeas() const {
+	for (int i = 0; i < 5; i++)
+		std::cout << "Idea " << i << " for dog is: " << brain->getIdea(i) << " at adress " << brain->getIdeaAdress(i) << std::endl;
+}
+
+void Dog::setIdea(int index, std::string idea)
+{
+	this->brain->setIdea(index, idea);
+}

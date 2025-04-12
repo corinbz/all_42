@@ -18,8 +18,11 @@ Cat::~Cat() { std::cout << "Cat: class being destroyed...\n" << std::endl; }
 
 // copy assigment
 Cat &Cat::operator=(const Cat &src) {
+	std::cout << "Cat: copy assigment operator called\n" << std::endl;
+	if(this == &src) {
+		return *this;
+	}
   this->type = src.type;
-  std::cout << "Cat: copy assigment operator called\n" << std::endl;
   return (*this);
 }
 

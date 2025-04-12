@@ -6,7 +6,7 @@ OBJDIR = obj
 CXXFLAGS = -Wall -Werror -Wextra
 
 # Executable name
-TARGET = brain
+TARGET = abstract
 
 SRCS = src/main.cpp \
 	   src/Animal.cpp \

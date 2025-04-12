@@ -22,13 +22,13 @@ Cat::~Cat() {
 
 // copy assigment
 Cat &Cat::operator=(const Cat &src) {
+	std::cout << "Cat: copy assigment operator called\n" << std::endl;
 	if (this != &src) {
 		Animal::operator=(src);
 		delete brain;
 		brain = new Brain(*src.brain);
 		type = src.type;
 	}
-  std::cout << "Cat: copy assigment operator called\n" << std::endl;
   return (*this);
 }
 

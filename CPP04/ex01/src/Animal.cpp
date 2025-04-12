@@ -19,6 +19,9 @@ Animal::~Animal() {
 
 // copy assigment
 Animal &Animal::operator=(const Animal &src) {
+	if (this == &src) {
+		return *this;
+	}
   this->type = src.type;
   std::cout << "Animal: copy assigment operator called\n" << std::endl;
   return (*this);

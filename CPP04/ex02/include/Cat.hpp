@@ -16,7 +16,7 @@ public:
   // copy assigment
   Cat &operator=(const Cat &src);
   // methods
-  void makeSound() const;
+  void makeSound() const override;
 	//getter
 	void getIdeas() const;
 	//setter
