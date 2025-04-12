@@ -15,7 +15,6 @@
 
 int main() {
     std::cout << CYAN << "=== Test 1: Attempt Instantiation ===" << RESET << "\n";
-    // This would fail if uncommented:
     // Animal animal("generic");  // error: cannot declare variable ‘animal’ to be of abstract type ‘Animal’
     
     Dog dog;
@@ -39,7 +38,7 @@ int main() {
         std::cout << RESET;
     }
     for (int i = 0; i < 4; ++i) {
-        delete animals[i];  // Virtual destructor ensures correct cleanup
+        delete animals[i];
     }
 
     return 0;
