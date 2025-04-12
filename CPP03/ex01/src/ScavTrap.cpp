@@ -2,10 +2,16 @@
 #include <iostream>
 
 ScavTrap::ScavTrap() : ClapTrap("noname") {
+	_hitpoints = 100;
+	_energy_points = 50;
+	_atack_damage = 20;
   std::cout << "Default ScavTrap constructor called" << std::endl;
 }
 
 ScavTrap::ScavTrap(std::string name) : ClapTrap(name) {
+	_hitpoints = 100;
+	_energy_points = 50;
+	_atack_damage = 20;
   std::cout << "ScavTrap constructor called" << std::endl;
   std::cout << "Hitpoints: " << _hitpoints << std::endl;
   std::cout << "Energy points: " << _energy_points << std::endl;
@@ -17,9 +23,13 @@ ScavTrap::ScavTrap(const ScavTrap &copy) : ClapTrap(copy) {
 }
 
 ScavTrap &ScavTrap::operator=(const ScavTrap &src) {
+	std::cout << "ScavTrap copy assigment operator called\n" << std::endl;
   if (this != &src) {
     ClapTrap::operator=(src);
-    std::cout << "ScavTrap copy assigment operator called\n" << std::endl;
+	_name = src._name;
+	_hitpoints = src._hitpoints;
+	_energy_points = src._energy_points;
+	_atack_damage = src._atack_damage;
   }
   return *this;
 }
