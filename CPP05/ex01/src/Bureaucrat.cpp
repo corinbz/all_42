@@ -1,4 +1,5 @@
 #include "../include/Bureaucrat.hpp"
+#include "../include/Form.hpp"
 #include <iostream>
 
 Bureaucrat::Bureaucrat() : _name("Just_a_number"), _grade(150) {
@@ -69,6 +70,8 @@ void Bureaucrat::decrementGrade() {
   if (this->_grade > 150)
     throw(Bureaucrat::GradeTooLowException());
 }
+
+void Bureaucrat::signForm(Form &form) { form.beSigned(*this); }
 
 char const *Bureaucrat::GradeTooLowException::what() const throw() {
   return (MAGENTA "Grade is too low!\n" RESET);
