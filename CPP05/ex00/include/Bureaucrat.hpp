@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <string>
+#include <iostream>
 #include <sys/types.h>
 
 // ANSI color codes
