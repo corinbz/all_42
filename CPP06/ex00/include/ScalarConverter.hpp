@@ -25,13 +25,18 @@ private:
   ScalarConverter &operator=(const ScalarConverter &src);
   virtual ~ScalarConverter() = 0;
 
-  // helper functions
-  static bool isPrintable(const std::string &str);
+  // type detection
+  static bool isPseudoLiteral(const std::string &str, double &value);
   static bool isInt(const std::string &str);
   static bool isDouble(const std::string &str);
   static bool isFloat(const std::string &str);
   static bool isChar(const std::string &str);
-  static bool isSpecialString(const std::string &str);
+
+  // printing helpers
+  static void printChar(double value, bool invalid);
+  static void printInt(double value, bool invalid);
+  static void printFloat(double value, bool invalid, const std::string &str);
+  static void printDouble(double value, bool invalid, const std::string &str);
 
 public:
   static void convert(const std::string &str);
