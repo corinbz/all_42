@@ -6,7 +6,7 @@ OBJDIR = obj
 CXXFLAGS = -Wall -Werror -Wextra
 
 # Executable name
-TARGET = easy_find
+TARGET = mutant
 
 SRCS = src/main.cpp \
 
