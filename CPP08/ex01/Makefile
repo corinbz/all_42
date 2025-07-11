@@ -3,7 +3,7 @@ CXX = c++
 OBJDIR = obj
 
 # Compiler flags
-CXXFLAGS = -Wall -Werror -Wextra
+CXXFLAGS = -Wall -Werror -Wextra -g
 
 # Executable name
 TARGET = span

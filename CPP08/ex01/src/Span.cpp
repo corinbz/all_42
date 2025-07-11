@@ -10,7 +10,9 @@ Span::Span(unsigned int size) : span_(new std::vector<int>), size_(size) {};
 
 Span &Span::operator=(const Span &src) {
   if (this != &src) {
+    delete this->span_;
     this->size_ = src.size_;
+    this->span_ = new std::vector<int>(*src.span_); // deep copy
   }
   return (*this);
 }
@@ -61,7 +63,9 @@ int Span::longestSpan() {
 void Span::populate() {
   std::random_device rd;
   std::mt19937 gen(rd());
-  std::uniform_int_distribution<> dist{1, 100000};
+  std::uniform_int_distribution<> dist{1, 1000000};
   span_->resize(size_);
   std::generate(span_->begin(), span_->end(), [&]() { return dist(gen); });
+  std::cout << "List has been populated with " << size_ << " random numbers."
+            << std::endl;
 }

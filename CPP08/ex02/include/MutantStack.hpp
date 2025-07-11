@@ -8,7 +8,7 @@ private:
   std::stack<T> stack;
 
 public:
-  typedef typename std::stack<T>::container_type::iterator it;
+  typedef typename std::stack<T>::container_type::iterator iterator;
   MutantStack() : std::stack<T>() {};
   MutantStack(MutantStack const &src) : std::stack<T>(src) { *this = src; };
   MutantStack &operator=(MutantStack const &src) {
@@ -16,6 +16,6 @@ public:
     return (*this);
   };
   ~MutantStack() {};
-  it begin() { return this->c.begin(); }
-  it end() { return this->c.end(); }
+  iterator begin() { return this->c.begin(); }
+  iterator end() { return this->c.end(); }
 };
