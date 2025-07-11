@@ -6,7 +6,7 @@ OBJDIR = obj
 CXXFLAGS = -Wall -Werror -Wextra
 
 # Executable name
-TARGET = bitcoin
+TARGET = btc
 
 SRCS = src/main.cpp \
 			 src/BitcoinExchange.cpp \
