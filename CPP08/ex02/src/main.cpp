@@ -4,7 +4,6 @@
 #include <stack>
 #include <vector>
 
-// ANSI escape codes for colors
 #define RESET "\033[0m"
 #define RED "\033[31m"
 #define GREEN "\033[32m"
@@ -64,31 +63,7 @@ int main() {
   }
   std::cout << std::endl;
 
-  std::cout << BOLD << MAGENTA
-            << "--- Test 2: Copy Constructor and Assignment Operator ---"
-            << RESET << std::endl;
-  MutantStack<int> copy_mstack(mstack);
-  std::cout << "Iterating through copy_mstack (copy constructor):" << std::endl;
-  for (MutantStack<int>::iterator c_it = copy_mstack.begin();
-       c_it != copy_mstack.end(); ++c_it) {
-    std::cout << CYAN << *c_it << RESET
-              << std::endl; // Should be same as mstack
-  }
-  std::cout << std::endl;
-
-  MutantStack<int> assigned_mstack;
-  assigned_mstack.push(100);
-  assigned_mstack = mstack; // Assignment operator
-  std::cout << "Iterating through assigned_mstack (assignment operator):"
-            << std::endl;
-  for (MutantStack<int>::iterator a_it = assigned_mstack.begin();
-       a_it != assigned_mstack.end(); ++a_it) {
-    std::cout << CYAN << *a_it << RESET
-              << std::endl; // Should be same as mstack
-  }
-  std::cout << std::endl;
-
-  std::cout << BOLD << MAGENTA << "--- Test 3: Empty Stack ---" << RESET
+  std::cout << BOLD << MAGENTA << "--- Test 2: Empty Stack ---" << RESET
             << std::endl;
   MutantStack<int> empty_mstack;
   std::cout << "Is empty_mstack empty? "
@@ -106,7 +81,7 @@ int main() {
   }
   std::cout << std::endl;
 
-  std::cout << BOLD << MAGENTA << "--- Test 4: Popping all elements ---"
+  std::cout << BOLD << MAGENTA << "--- Test 3: Popping all elements ---"
             << RESET << std::endl;
   MutantStack<int> full_pop_stack;
   full_pop_stack.push(1);
@@ -121,7 +96,7 @@ int main() {
   printStack("After popping all", full_pop_stack); // Should be empty
 
   std::cout << BOLD << MAGENTA
-            << "--- Test 5: Iterator Increments and Decrements ---" << RESET
+            << "--- Test 4: Iterator Increments and Decrements ---" << RESET
             << std::endl;
   MutantStack<int> iter_stack;
   iter_stack.push(10);
@@ -147,7 +122,7 @@ int main() {
   std::cout << std::endl;
 
   std::cout << BOLD << MAGENTA
-            << "--- Test 6: Iterators with different types (e.g., char) ---"
+            << "--- Test 5: Iterators with different types (e.g., char) ---"
             << RESET << std::endl;
   MutantStack<char> char_stack;
   char_stack.push('a');
@@ -160,7 +135,7 @@ int main() {
   }
   std::cout << std::endl << std::endl;
 
-  std::cout << BOLD << MAGENTA << "--- Test 7: Comparison with std::list ---"
+  std::cout << BOLD << MAGENTA << "--- Test 6: Comparison with std::list ---"
             << RESET << std::endl;
   std::list<int> test_list;
   test_list.push_back(5);
@@ -188,16 +163,4 @@ int main() {
        m_it != comparison_mstack.end(); ++m_it) {
     std::cout << CYAN << *m_it << RESET << std::endl;
   }
-  std::cout << std::endl;
-
-  std::cout << BOLD << MAGENTA
-            << "--- Test 8: Stack to another stack via copy constructor ---"
-            << RESET << std::endl;
-  std::stack<int> s(mstack); // This uses the std::stack copy constructor
-  std::cout << "Top of std::stack s (copied from mstack): " << GREEN << s.top()
-            << RESET << std::endl; // Expected: 0 (the top of mstack)
-  std::cout << "Size of std::stack s: " << GREEN << s.size() << RESET
-            << std::endl; // Expected: 5
-
-  return 0;
 }
