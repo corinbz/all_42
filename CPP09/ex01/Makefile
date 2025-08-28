@@ -6,10 +6,10 @@ OBJDIR = obj
 CXXFLAGS = -Wall -Werror -Wextra
 
 # Executable name
-TARGET = rnp
+TARGET = RPN
 
 SRCS = src/main.cpp \
-			 src/RNP.cpp \
+			 src/RPN.cpp \
 
 OBJS = $(SRCS:src/%.cpp=$(OBJDIR)/%.o)
 

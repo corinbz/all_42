@@ -1,17 +1,17 @@
-#include "../include/Span.hpp"
+#include "../include/RPN.hpp"
 #include <iostream>
+#include <stdexcept>
 
-int main() {
-  Span my_span(10);
-  my_span.addNumber(10);
-  my_span.addNumber(12);
-  my_span.addNumber(1);
-  std::cout << "shortestSpan is " << my_span.shortestSpan() << std::endl;
-  std::cout << "longestSpan is " << my_span.longestSpan() << std::endl;
-
-  Span big_span(15000);
-  big_span.populate();
-  std::cout << "shortestSpan is " << big_span.shortestSpan() << std::endl;
-  std::cout << "longestSpan is " << big_span.longestSpan() << std::endl;
+int main(int ac, char **av) {
+  try {
+    if (ac != 2)
+      throw std::invalid_argument(
+          "Invalid argument! \nUsage: ./RPN \"1 2 + 3 /\"");
+    std::string input = av[1];
+    RPN stack;
+    std::cout << "Result is: " << stack.calculate(input) << std::endl;
+  } catch (const std::exception &e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+  }
   return 0;
 }
