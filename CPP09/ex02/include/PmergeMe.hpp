@@ -1,21 +1,40 @@
 #pragma once
-#include <stack>
 
-template <class T>
+#include <algorithm>
+#include <chrono>
+#include <deque>
+#include <iostream>
+#include <iterator>
+#include <list>
+#include <sstream>
+#include <vector>
 
-class MutantStack : public std::stack<T> {
+class PmergeMe {
 private:
-  std::stack<T> stack;
+  template <typename Container> Container fordJohnsonSort(Container arr);
+
+  template <typename Container>
+  void binaryInsert(Container &arr, typename Container::value_type value,
+                    size_t end);
+
+  std::vector<int> generateJacobsthal(int n);
 
 public:
-  typedef typename std::stack<T>::container_type::iterator it;
-  MutantStack() : std::stack<T>() {};
-  MutantStack(MutantStack const &src) : std::stack<T>(src) { *this = src; };
-  MutantStack &operator=(MutantStack const &src) {
-    std::stack<T>::operator=(src);
-    return (*this);
-  };
-  ~MutantStack() {};
-  it begin() { return this->c.begin(); }
-  it end() { return this->c.end(); }
+  PmergeMe();
+  ~PmergeMe();
+
+  void processSequence(const std::vector<std::string> &args);
+  bool isValidInput(const std::vector<std::string> &args);
+
+  template <typename Container>
+  void displayResults(const Container &original, const Container &sorted,
+                      double timeFirst, double timeSecond,
+                      const std::string &firstType,
+                      const std::string &secondType, int size);
+
+  // Template method to get container type name
+  template <typename Container> std::string getContainerName();
 };
+
+// Include template implementations
+#include "PmergeMe.tpp"

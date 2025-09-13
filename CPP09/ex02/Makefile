@@ -6,10 +6,10 @@ OBJDIR = obj
 CXXFLAGS = -Wall -Werror -Wextra
 
 # Executable name
-TARGET = pmerge
+TARGET = PmergeMe
 
 SRCS = src/main.cpp \
-			 src/Pmergem.cpp \
+			 src/PmergeMe.cpp \
 
 OBJS = $(SRCS:src/%.cpp=$(OBJDIR)/%.o)
 
