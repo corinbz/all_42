@@ -1,6 +1,7 @@
 #include "../include/BitcoinExchange.hpp"
 #include <exception>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <regex>
 #include <sstream>
@@ -104,6 +105,7 @@ void BtcConvertor::setConversionRates() {
     size_t commaPos = line.find(',');
     std::string dateStr = line.substr(0, commaPos);
     std::string rateStr = line.substr(commaPos + 1);
+    // std::cout << rateStr << std::endl;
     if (dateStr == "date")
       continue;
     Date date(dateStr);
@@ -111,17 +113,22 @@ void BtcConvertor::setConversionRates() {
     if (rate < 0) {
       throw std::runtime_error("Invalid rate value for " + dateStr);
     }
+
     conversionRates[date] = rate;
+    // std::cout << date << " has conversion rate:" << rate << std::endl;
   }
 }
 
-void BtcConvertor::setInput(std::string &input) {}
+// void BtcConvertor::setInput(std::string &input) {}
 
-BtcConvertor::BtcConvertor(std::string filePath) { setConversionRates(); };
+BtcConvertor::BtcConvertor(std::string filePath) {
+  std::string hello = filePath;
+  setConversionRates();
+};
 
 BtcConvertor::~BtcConvertor() {};
 
 std::ostream &operator<<(std::ostream &COUT, const Date &src) {
-  COUT << src.toString();
+  COUT << std::fixed << std::setprecision(2) << src.toString();
   return COUT;
 }
