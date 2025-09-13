@@ -1,5 +1,6 @@
 #pragma once
 #include <fstream>
+#include <list>
 #include <map>
 #include <sstream>
 
@@ -23,17 +24,18 @@ public:
 class BtcConvertor {
 private:
   std::map<Date, double> conversionRates;
-  std::map<Date, double> input;
+  std::map<std::string, std::list<double>> input;
 
   void setConversionRates();
-  void setInput(std::string &input);
+  void setInput(std::string &inputFile);
 
 public:
   BtcConvertor();
   BtcConvertor(std::string filePath);
-  /* BtcConvertor &operator=(const BtcConvertor &src); */
-  /* BtcConvertor(const BtcConvertor &src); */
+  BtcConvertor &operator=(const BtcConvertor &src);
+  BtcConvertor(const BtcConvertor &src);
   ~BtcConvertor();
+  void printOutput() const;
 };
 
 std::ostream &operator<<(std::ostream &COUT, const Date &src);

@@ -1,4 +1,6 @@
 #include "../include/BitcoinExchange.hpp"
+#include <algorithm>
+#include <cctype>
 #include <exception>
 #include <fstream>
 #include <iomanip>
@@ -6,6 +8,7 @@
 #include <regex>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 
 // Date class
 
@@ -74,7 +77,7 @@ bool Date::operator<(const Date &other) const {
     return this->month < other.month;
   if (this->day != other.day)
     return this->day < other.day;
-  return true;
+  return false;
 }
 
 std::string Date::toString() const {
@@ -92,6 +95,19 @@ std::ostream &Date::output(std::ostream &COUT) const {
 
 BtcConvertor::BtcConvertor() {};
 
+BtcConvertor &BtcConvertor::operator=(const BtcConvertor &src) {
+  if (this != &src) {
+    this->conversionRates = src.conversionRates;
+    this->input = src.input;
+  }
+  return (*this);
+}
+
+BtcConvertor::BtcConvertor(const BtcConvertor &src) {
+  this->conversionRates = src.conversionRates;
+  this->input = src.input;
+}
+
 void BtcConvertor::setConversionRates() {
   std::string filePath = "data.csv";
   std::ifstream file(filePath);
@@ -99,6 +115,8 @@ void BtcConvertor::setConversionRates() {
     throw std::runtime_error("Cannot open file : " + filePath);
   }
   std::string line;
+  // skip first line
+  std::getline(file, line);
   while (std::getline(file, line)) {
     if (line.empty())
       continue;
@@ -106,25 +124,93 @@ void BtcConvertor::setConversionRates() {
     std::string dateStr = line.substr(0, commaPos);
     std::string rateStr = line.substr(commaPos + 1);
     // std::cout << rateStr << std::endl;
-    if (dateStr == "date")
-      continue;
     Date date(dateStr);
     double rate = std::stod(rateStr);
-    if (rate < 0) {
-      throw std::runtime_error("Invalid rate value for " + dateStr);
-    }
 
     conversionRates[date] = rate;
-    // std::cout << date << " has conversion rate:" << rate << std::endl;
+    /* std::cout << date << " has conversion rate:" << conversionRates[date] */
+    /*           << std::endl; */
   }
+  file.close();
 }
 
-// void BtcConvertor::setInput(std::string &input) {}
+void BtcConvertor::setInput(std::string &inputFile) {
+  std::ifstream file(inputFile);
+  if (!file.is_open()) {
+    throw std::runtime_error("Cannot open file : " + inputFile);
+  }
+  std::string line;
+  // skip first line
+  std::getline(file, line);
+  std::string datePrev;
+  while (std::getline(file, line)) {
+    if (line.empty())
+      continue;
+    line.erase(std::remove(line.begin(), line.end(), ' '), line.end());
+    size_t separatorPos = line.find('|');
+    std::string dateStr = line.substr(0, separatorPos);
+    datePrev = dateStr;
+    std::string valueStr = line.substr(separatorPos + 1);
+    /* std::cout << "date : " << dateStr << "\nvalue : " << valueStr <<
+     * std::endl; */
+    double value = std::stod(valueStr);
+    input[dateStr].push_back(value);
+  }
+  file.close();
+}
 
 BtcConvertor::BtcConvertor(std::string filePath) {
-  std::string hello = filePath;
-  setConversionRates();
+  try {
+    setConversionRates();
+    setInput(filePath);
+    printOutput();
+
+  } catch (const std::exception &e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+  }
 };
+
+void BtcConvertor::printOutput() const {
+  for (const auto &pair : input) {
+    {
+      try {
+        const Date inputDate(pair.first);
+        const std::list<double> &values = pair.second;
+
+        for (double inputValue : values) {
+          try {
+            if (inputValue < 0) {
+              throw std::runtime_error("Not a positive number.");
+            }
+            if (inputValue >= 1000) {
+              throw std::runtime_error("Number too large.");
+            }
+            double rate = 0;
+            auto exactDate = conversionRates.find(inputDate);
+            if (exactDate != conversionRates.end()) {
+              rate = exactDate->second;
+            } else {
+              auto prevDate = conversionRates.upper_bound(inputDate);
+              if (prevDate != conversionRates.begin()) {
+                --prevDate;
+                rate = prevDate->second;
+              } else {
+                throw std::runtime_error("Bad input : " + inputDate.toString());
+              }
+            }
+            double res = inputValue * rate;
+            std::cout << inputDate << " => " << inputValue << " = " << res
+                      << std::endl;
+          } catch (const std::exception &e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+          }
+        }
+      } catch (const std::exception &e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+      }
+    }
+  }
+}
 
 BtcConvertor::~BtcConvertor() {};
 

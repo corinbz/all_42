@@ -3,7 +3,7 @@ CXX = c++
 OBJDIR = obj
 
 # Compiler flags
-CXXFLAGS = -Wall -Werror -Wextra -g
+CXXFLAGS = -Wall -Werror -Wextra
 
 # Executable name
 TARGET = btc
