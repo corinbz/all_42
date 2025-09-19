@@ -3,7 +3,7 @@ CXX = c++
 OBJDIR = obj
 
 # Compiler flags
-CXXFLAGS = -Wall -Werror -Wextra
+CXXFLAGS = -Wall -Wextra
 
 # Executable name
 TARGET = PmergeMe

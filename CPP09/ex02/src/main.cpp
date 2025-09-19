@@ -9,7 +9,7 @@ int main(int ac, char **av) {
   //   std::cout << element << " ";
   // }
   int comparisons = 0;
-  std::vector result = PmergeMe::sortVector(ac, av, comparisons);
+  std::vector<int> result = PmergeMe::sortVector(ac, av, comparisons);
   for (const auto &element : result) {
     std::cout << element << " ";
   }

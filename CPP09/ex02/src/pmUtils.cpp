@@ -35,3 +35,5 @@ std::vector<int> PmergeMe::buildInsertSeq(int size,
   }
   return res;
 }
+
+bool isMainChain(std::vector<int> vec, int pos, int blockSize) {}
