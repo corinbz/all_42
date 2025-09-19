@@ -1,103 +1,68 @@
 #include "../include/PmergeMe.hpp"
+#include <algorithm>
+#include <vector>
 
-PmergeMe::PmergeMe() {}
-PmergeMe::~PmergeMe() {}
-
-bool PmergeMe::isValidInput(const std::vector<std::string> &args) {
-  if (args.empty()) {
-    std::cerr << "Error: No arguments provided" << std::endl;
-    return false;
-  }
-
-  for (size_t i = 0; i < args.size(); ++i) {
-    const std::string &arg = args[i];
-
-    // Check if string contains only digits
-    if (arg.empty() || arg[0] == '-' || arg[0] == '+') {
-      std::cerr << "Error" << std::endl;
-      return false;
-    }
-
-    for (size_t j = 0; j < arg.length(); ++j) {
-      if (!std::isdigit(arg[j])) {
-        std::cerr << "Error" << std::endl;
-        return false;
-      }
-    }
-
-    // Convert and check if it's a positive integer
-    try {
-      long num = std::atol(arg.c_str());
-      if (num <= 0 || num > 2147483647) { // INT_MAX
-        std::cerr << "Error" << std::endl;
-        return false;
-      }
-    } catch (...) {
-      std::cerr << "Error" << std::endl;
-      return false;
-    }
-  }
-  return true;
+static std::vector<int> createVecFromArg(int ac, char **av) {
+	std::vector<int> vec;
+	vec.reserve(ac - 1);
+	for (int i = 1; av[i] ; i++) {
+		vec.push_back(std::atoi(av[i]));
+	}
+	return vec;
 }
 
-std::vector<int> PmergeMe::generateJacobsthal(int n) {
-  std::vector<int> jacobsthal;
-  if (n <= 0)
-    return jacobsthal;
+int sortPairsRecVec(std::vector<int> &vec, int &comp, int recDepth)
+{
+	int blockSize = 1u << (recDepth - 1); // 2^0 -> 2^1 -> 2^2 etc
+	int totalBlocks = vec.size() / blockSize;
 
-  jacobsthal.push_back(1);
-  if (n <= 1)
-    return jacobsthal;
-
-  jacobsthal.push_back(1);
-
-  int a = 1, b = 1;
-  while (true) {
-    int next = a + 2 * b;
-    if (next > n)
-      break;
-    jacobsthal.push_back(next);
-    a = b;
-    b = next;
-  }
-
-  return jacobsthal;
+	std::cout << "depth : " << recDepth << std::endl;
+	std::cout << "blocksize : " << blockSize<< std::endl;
+	std::cout << "totalBlocks : " << totalBlocks<< std::endl;
+	if (totalBlocks <= 1)
+		return recDepth - 1; //returns recursion level
+	
+	//iterate over the blocks. eg: blocksize 2 (5 9) (1 8)(4)
+	//																					0 1		2	3	 4
+	// first iteration i = 0
+	// 0 + 2 * 2 - 1 < 5 -> 3 < 5
+	// if ( vec[0 + 2 -1] > vec[0 + 2 * 2 -1] -> vec[1] > vec[3] )
+	// swap_ranges will swap the blocks (5 9) and (1 8)
+	// new order will be 1 8 5 9 4
+	int oldComp = comp;
+	for (size_t i = 0; i + 2*blockSize - 1 < vec.size(); i += 2*blockSize)
+	{
+		++comp;
+		if (vec[i + blockSize - 1] > vec[i + 2*blockSize - 1])
+		{
+			std::swap_ranges(vec.begin() + i, vec.begin() + i + blockSize, vec.begin() + i + blockSize);
+			//						start of 1st block :       end 1st block				: start of 2nd block
+		}
+	}
+	std::cout << "Swaps performed this depth : " << comp  - oldComp << std::endl << std::endl;
+	return sortPairsRecVec(vec, comp, recDepth + 1);
+}
+std::vector<int> PmergeMe::sortVector(int ac, char **av, int &comp)
+{
+	std::vector<int> vec = createVecFromArg(ac, av);
+	if (vec.size() <= 1)
+		return vec;
+	int recDepth = sortPairsRecVec(vec, comp, 1);
+	int maxPend = vec.size() / 2 + 1;
+	std::vector<int> jacSeq = buildJacobsthalSeq(maxPend);
+	while (recDepth > 0) {
+		int blockSize = 1u << (recDepth - 1); // u makes 1 unsigned
+		int numBlocks = vec.size() / blockSize;
+		int numPend = numBlocks / 2;
+		if (numBlocks % 2 != 0)
+			++numPend;
+		if (numPend > 1)
+			insertPendVec(vec, blockSize, numPend, jacSeq, comp);
+		--recDepth;
+	}
+	return vec;
 }
 
-void PmergeMe::processSequence(const std::vector<std::string> &args) {
-  if (!isValidInput(args)) {
-    return;
-  }
-
-  // Convert strings to integers and fill containers
-  std::vector<int> originalVec;
-  std::deque<int> originalDeq;
-
-  for (size_t i = 0; i < args.size(); ++i) {
-    int num = std::atoi(args[i].c_str());
-    originalVec.push_back(num);
-    originalDeq.push_back(num);
-  }
-
-  // Sort using vector with template
-  std::chrono::high_resolution_clock::time_point start =
-      std::chrono::high_resolution_clock::now();
-  std::vector<int> sortedVec = fordJohnsonSort(originalVec);
-  std::chrono::high_resolution_clock::time_point end =
-      std::chrono::high_resolution_clock::now();
-  double timeVector =
-      std::chrono::duration<double, std::micro>(end - start).count();
-
-  // Sort using deque with template
-  start = std::chrono::high_resolution_clock::now();
-  std::deque<int> sortedDeq = fordJohnsonSort(originalDeq);
-  end = std::chrono::high_resolution_clock::now();
-  double timeDeque =
-      std::chrono::duration<double, std::micro>(end - start).count();
-
-  // Display results
-  displayResults(originalVec, sortedVec, timeVector, timeDeque, "std::vector",
-                 "std::deque", originalVec.size());
+void insertPendVec(std::vector<int> &vec, int blockSize, int numPend, const std::vector<int>& jacSeq, int &comp) {
+	// #TODO	
 }
-
-// main.cpp remains the same

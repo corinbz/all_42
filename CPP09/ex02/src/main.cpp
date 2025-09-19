@@ -1,18 +1,17 @@
 #include "../include/PmergeMe.hpp"
 
-int main(int argc, char *argv[]) {
-  if (argc < 2) {
-    std::cerr << "Error" << std::endl;
-    return 1;
+// #TODO create function to check arguments
+int main(int ac, char **av) {
+  // std::vector<int> test;
+  // test = PmergeMe::buildJacobsthalSeq(15);
+  // std::vector<int> filled = PmergeMe::buildInsertSeq(15, test);
+  // for (const auto &element : filled) {
+  //   std::cout << element << " ";
+  // }
+  int comparisons = 0;
+  std::vector result = PmergeMe::sortVector(ac, av, comparisons);
+  for (const auto &element : result) {
+    std::cout << element << " ";
   }
-
-  std::vector<std::string> args;
-  for (int i = 1; i < argc; i++) {
-    args.push_back(argv[i]);
-  }
-
-  PmergeMe sorter;
-  sorter.processSequence(args);
-
   return 0;
 }

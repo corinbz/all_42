@@ -11,29 +11,19 @@
 
 class PmergeMe {
 private:
-  template <typename Container> Container fordJohnsonSort(Container arr);
-
-  template <typename Container>
-  void binaryInsert(Container &arr, typename Container::value_type value,
-                    size_t end);
-
-  std::vector<int> generateJacobsthal(int n);
-
-public:
+  // i don't need the class to be instantiated, just need the functions
   PmergeMe();
+  PmergeMe(const PmergeMe &src);
+  PmergeMe &operator=(const PmergeMe &src);
   ~PmergeMe();
 
-  void processSequence(const std::vector<std::string> &args);
-  bool isValidInput(const std::vector<std::string> &args);
+public:
+  static std::vector<int> sortVector(int ac, char **av, int &comp);
 
-  template <typename Container>
-  void displayResults(const Container &original, const Container &sorted,
-                      double timeFirst, double timeSecond,
-                      const std::string &firstType,
-                      const std::string &secondType, int size);
-
-  // Template method to get container type name
-  template <typename Container> std::string getContainerName();
+  // utils
+  static std::vector<int> buildJacobsthalSeq(int size);
+  static std::vector<int> buildInsertSeq(int size,
+                                         const std::vector<int> jacSeq);
 };
 
 // Include template implementations
