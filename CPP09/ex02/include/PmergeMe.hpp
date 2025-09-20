@@ -24,6 +24,7 @@ public:
   static std::vector<int> buildJacobsthalSeq(int size);
   static std::vector<int> buildInsertSeq(int size,
                                          const std::vector<int> jacSeq);
+  static bool isMainChain(std::vector<int> vec, int pos, int blockSize);
 };
 
 // Include template implementations

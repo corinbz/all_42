@@ -36,4 +36,15 @@ std::vector<int> PmergeMe::buildInsertSeq(int size,
   return res;
 }
 
-bool isMainChain(std::vector<int> vec, int pos, int blockSize) {}
+bool PmergeMe::isMainChain(std::vector<int> vec, int pos, int blockSize) {
+  int blockNum = pos / blockSize;
+
+  // leftover numbers
+  if ((blockNum + 1) * blockSize > vec.size())
+    return false;
+  // main (odd number indexes)
+  if (blockNum % 2 == 1)
+    return true;
+
+  return false;
+}

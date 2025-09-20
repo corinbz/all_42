@@ -46,28 +46,56 @@ int sortPairsRecVec(std::vector<int> &vec, int &comp, int recDepth) {
   return sortPairsRecVec(vec, comp, recDepth + 1);
 }
 
-void arrangeVec(std::vector<int> &vec, int blockSize) {
-  std::vector<int> newVec;
-  newVec.reserve(vec.size());
-  for (size_t i = 1; i < vec.size() - 1; i += blockSize) {
+void arrangeVec(std::vector<int> &vec, int blockSize,
+                std::vector<int> insertSeq) {
+  std::vector<int> main;
+  std::vector<int> pEnd;
 
-    newVec.push_back(vec[i]);
+  std::cout << "vec: ";
+  for (auto &element : vec) {
+    std::cout << element << " ";
   }
+  main.reserve(vec.size());
+  pEnd.reserve(vec.size());
+  for (size_t i = 0; i < vec.size(); ++i) {
+    if (PmergeMe::isMainChain(vec, i, blockSize))
+      main.push_back(vec[i]);
+    else
+      pEnd.push_back(vec[i]);
+  }
+  std::cout << "main: ";
+  for (auto &element : main) {
+    std::cout << element << " ";
+  }
+  std::cout << "pEnd: ";
+  for (auto &element : pEnd) {
+    std::cout << element << " ";
+  }
+  main.insert(main.begin(), pEnd[insertSeq[0] - 1]);
+  for (int i = 1; i < insertSeq.size(); i++) {
+    int to_compare = main.size() / 2;
+     while (pEnd[insertSeq[i] - 1] > main[to_compare]) to_compare /= 2;
+  }
+  std::cout << "main: ";
+  for (auto &element : main) {
+    std::cout << element << " ";
+  }
+  vec = main;
 }
 
 void insertPendVec(std::vector<int> &vec, int blockSize, int numPend,
                    const std::vector<int> &jacSeq, int &comp) {
   std::vector<int> insertSeq = PmergeMe::buildInsertSeq(numPend, jacSeq);
-  for (auto &element : vec) {
-    std::cout << element << " ";
-  }
+  /* std::cout << "insertSeq: "; */
+  /* for (auto &element : insertSeq) { */
+  /*   std::cout << element << " "; */
+  /* } */
+  arrangeVec(vec, blockSize, insertSeq);
   std::cout << std::endl;
   std::cout << "numPend: " << numPend << std::endl;
   std::cout << "blockSize: " << blockSize << std::endl;
-  while (numPend > 0) {
-
-    numPend--;
-  }
+  /* for (size_t i = 0; i < numPend; ++i) { */
+  /* } */
 }
 
 std::vector<int> PmergeMe::sortVector(int ac, char **av, int &comp) {
