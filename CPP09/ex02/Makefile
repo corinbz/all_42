@@ -10,7 +10,6 @@ TARGET = PmergeMe
 
 SRCS = src/main.cpp \
 			 src/PmergeMe.cpp \
-			 src/pmUtils.cpp \
 
 OBJS = $(SRCS:src/%.cpp=$(OBJDIR)/%.o)
 

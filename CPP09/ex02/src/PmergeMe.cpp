@@ -1,8 +1,6 @@
 #include "../include/PmergeMe.hpp"
 
-// ================== UTILITY FUNCTIONS ==================
-
-// Generate Jacobsthal sequence for optimal insertion order
+// Generate Jacobsthal sequence 
 std::vector<int> PmergeMe::jacobsthal(int size) {
     std::vector<int> seq;
     if (size <= 0) return seq;
@@ -58,7 +56,6 @@ int PmergeMe::binSearchDeq(const std::deque<int>& arr, int val, int end) {
     return left;
 }
 
-// ================== VECTOR HELPER FUNCTIONS ==================
 
 // Create and sort pairs from input vector
 PmergeMe::PairVector PmergeMe::makePairs(const std::vector<int>& vec,
@@ -145,8 +142,10 @@ std::vector<int> PmergeMe::buildInsertOrder(int pendSize) {
 void PmergeMe::insertPend(std::vector<int>& main,
                          const std::vector<int>& pend,
                          const std::vector<int>& order) {
+
     for (std::vector<int>::const_iterator it = order.begin();
-         it != order.end(); ++it) {
+																					it != order.end();
+																					++it) {
         int idx = *it;
         if (idx < static_cast<int>(pend.size())) {
             int val = pend[idx];
@@ -233,7 +232,6 @@ void PmergeMe::addStragglerDeq(std::deque<int>& main,
     }
 }
 
-// ================== MAIN SORTING FUNCTIONS ==================
 
 // Ford-Johnson sort implementation for vector
 std::vector<int> PmergeMe::fjSortVec(std::vector<int> vec) {
@@ -323,7 +321,6 @@ std::deque<int> PmergeMe::fjSortDeq(std::deque<int> deq) {
     return main;
 }
 
-// ================== DISPLAY FUNCTIONS ==================
 
 // Sort with vector and display results with timing
 void PmergeMe::sortWithVector(const std::vector<int>& input) {
@@ -345,13 +342,11 @@ void PmergeMe::sortWithVector(const std::vector<int>& input) {
     }
     std::cout << std::endl;
     
-    // Display timing information
     std::cout << "Time to process a range of " << input.size() 
               << " elements with std::vector : " << duration.count() 
               << " us" << std::endl;
 }
 
-// Sort with deque and display timing
 void PmergeMe::sortWithDeque(const std::vector<int>& input) {
     // Convert vector to deque
     std::deque<int> deq(input.begin(), input.end());
