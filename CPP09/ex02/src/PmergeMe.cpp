@@ -5,17 +5,13 @@ std::vector<int> PmergeMe::jacobsthal(int size) {
     std::vector<int> seq;
     if (size <= 0) return seq;
     
-    const int SEED = 0;
-    const int FIRST = 1;
-    const int MULT = 2;
-    
-    seq.push_back(SEED);
-    seq.push_back(FIRST);
+    seq.push_back(0);
+    seq.push_back(1);
     
     while (seq.back() < size) {
         int prev = seq[seq.size() - 2];
         int curr = seq.back();
-        int next = curr + MULT * prev;
+        int next = curr + 2 * prev;
         seq.push_back(next);
     }
     
@@ -56,8 +52,7 @@ int PmergeMe::binSearchDeq(const std::deque<int>& arr, int val, int end) {
     return left;
 }
 
-
-// Create and sort pairs from input vector
+// Create pairs from input vector
 PmergeMe::PairVector PmergeMe::makePairs(const std::vector<int>& vec,
                                          int& straggler,
                                          bool& hasStraggler) {
@@ -69,11 +64,11 @@ PmergeMe::PairVector PmergeMe::makePairs(const std::vector<int>& vec,
         int first = vec[i];
         int second = vec[i + 1];
         
-        // Ensure smaller element is first in pair
-        if (first < second) {
-            pairs.push_back(std::make_pair(first, second));
-        } else {
+        // Ensure larger element is second in pair
+        if (first > second) {
             pairs.push_back(std::make_pair(second, first));
+        } else {
+            pairs.push_back(std::make_pair(first, second));
         }
     }
     
@@ -86,15 +81,34 @@ PmergeMe::PairVector PmergeMe::makePairs(const std::vector<int>& vec,
     return pairs;
 }
 
-// Sort pairs by their larger element
+// CORRECTED: Recursively sort pairs by their larger elements using Ford-Johnson
 void PmergeMe::sortPairsByLarger(PairVector& pairs) {
+    if (pairs.size() <= 1) return;
+    
+    // Extract larger elements
+    std::vector<int> largerElements;
     for (size_t i = 0; i < pairs.size(); i++) {
-        for (size_t j = i + 1; j < pairs.size(); j++) {
-            if (pairs[i].second > pairs[j].second) {
-                std::swap(pairs[i], pairs[j]);
+        largerElements.push_back(pairs[i].second);
+    }
+    
+    // Recursively sort the larger elements using Ford-Johnson
+    std::vector<int> sortedLarger = fjSortVec(largerElements);
+    
+    // Reorder pairs based on sorted larger elements
+    PairVector sortedPairs;
+    for (size_t i = 0; i < sortedLarger.size(); i++) {
+        // Find the pair with this larger element
+        for (size_t j = 0; j < pairs.size(); j++) {
+            if (pairs[j].second == sortedLarger[i]) {
+                sortedPairs.push_back(pairs[j]);
+                // Mark as used by setting to invalid value
+                pairs[j].second = -1;
+                break;
             }
         }
     }
+    
+    pairs = sortedPairs;
 }
 
 // Extract main chain and pending elements from sorted pairs
@@ -115,12 +129,15 @@ std::vector<int> PmergeMe::buildInsertOrder(int pendSize) {
     std::set<int> used;
     
     // Build insertion order based on Jacobsthal sequence
-    for (size_t i = 1; i < jac.size() && jac[i] <= pendSize; i++) {
+    for (size_t i = 2; i < jac.size(); i++) {
         int curr = jac[i];
         int prev = jac[i - 1];
         
-        // Insert indices in reverse order within each Jacobsthal range
-        for (int j = curr - 1; j >= prev && j < pendSize; j--) {
+        // Cap current at pendSize
+        if (curr > pendSize) curr = pendSize;
+        
+        // Insert indices in descending order from curr down to prev+1
+        for (int j = curr - 1; j >= prev; j--) {
             if (used.find(j) == used.end()) {
                 order.push_back(j);
                 used.insert(j);
@@ -138,18 +155,25 @@ std::vector<int> PmergeMe::buildInsertOrder(int pendSize) {
     return order;
 }
 
-// Insert pending elements into main chain using binary search
+// CORRECTED: Insert pending elements with proper search range limits
 void PmergeMe::insertPend(std::vector<int>& main,
                          const std::vector<int>& pend,
                          const std::vector<int>& order) {
-
-    for (std::vector<int>::const_iterator it = order.begin();
-																					it != order.end();
-																					++it) {
-        int idx = *it;
+    
+    for (size_t i = 0; i < order.size(); i++) {
+        int idx = order[i];
         if (idx < static_cast<int>(pend.size())) {
             int val = pend[idx];
-            int pos = binSearch(main, val, main.size());
+            
+            // Calculate search limit: position of paired element + already inserted
+            // The paired larger element is at position idx+1 in the original main chain
+            // Plus we've already inserted i elements before this one
+            int searchLimit = idx + 1 + i + 1;
+            if (searchLimit > static_cast<int>(main.size())) {
+                searchLimit = main.size();
+            }
+            
+            int pos = binSearch(main, val, searchLimit);
             main.insert(main.begin() + pos, val);
         }
     }
@@ -167,27 +191,23 @@ void PmergeMe::addStraggler(std::vector<int>& main,
 
 // ================== DEQUE HELPER FUNCTIONS ==================
 
-// Create and sort pairs from input deque
 PmergeMe::PairVector PmergeMe::makePairsDeq(const std::deque<int>& deq,
                                             int& straggler,
                                             bool& hasStraggler) {
     PairVector pairs;
     size_t size = deq.size();
     
-    // Process elements in pairs
     for (size_t i = 0; i < size - 1; i += 2) {
         int first = deq[i];
         int second = deq[i + 1];
         
-        // Ensure smaller element is first in pair
-        if (first < second) {
-            pairs.push_back(std::make_pair(first, second));
-        } else {
+        if (first > second) {
             pairs.push_back(std::make_pair(second, first));
+        } else {
+            pairs.push_back(std::make_pair(first, second));
         }
     }
     
-    // Check for odd number of elements (straggler)
     hasStraggler = (size % 2 == 1);
     if (hasStraggler) {
         straggler = deq[size - 1];
@@ -196,33 +216,36 @@ PmergeMe::PairVector PmergeMe::makePairsDeq(const std::deque<int>& deq,
     return pairs;
 }
 
-// Extract main chain and pending elements for deque
 void PmergeMe::splitToMainAndPendDeq(const PairVector& pairs,
                                      std::deque<int>& main,
                                      std::deque<int>& pend) {
     for (PairVector::const_iterator it = pairs.begin();
          it != pairs.end(); ++it) {
-        main.push_back(it->second);  // Larger elements form main chain
-        pend.push_back(it->first);   // Smaller elements are pending
+        main.push_back(it->second);
+        pend.push_back(it->first);
     }
 }
 
-// Insert pending elements into main chain deque
 void PmergeMe::insertPendDeq(std::deque<int>& main,
                              const std::deque<int>& pend,
                              const std::vector<int>& order) {
-    for (std::vector<int>::const_iterator it = order.begin();
-         it != order.end(); ++it) {
-        int idx = *it;
+    for (size_t i = 0; i < order.size(); i++) {
+        int idx = order[i];
         if (idx < static_cast<int>(pend.size())) {
             int val = pend[idx];
-            int pos = binSearchDeq(main, val, main.size());
+            
+            // Apply same search limit optimization
+            int searchLimit = idx + 1 + i + 1;
+            if (searchLimit > static_cast<int>(main.size())) {
+                searchLimit = main.size();
+            }
+            
+            int pos = binSearchDeq(main, val, searchLimit);
             main.insert(main.begin() + pos, val);
         }
     }
 }
 
-// Insert straggler element for deque
 void PmergeMe::addStragglerDeq(std::deque<int>& main,
                                int straggler,
                                bool hasStraggler) {
@@ -231,7 +254,6 @@ void PmergeMe::addStragglerDeq(std::deque<int>& main,
         main.insert(main.begin() + pos, straggler);
     }
 }
-
 
 // Ford-Johnson sort implementation for vector
 std::vector<int> PmergeMe::fjSortVec(std::vector<int> vec) {
@@ -251,7 +273,7 @@ std::vector<int> PmergeMe::fjSortVec(std::vector<int> vec) {
     bool hasStraggler = false;
     PairVector pairs = makePairs(vec, straggler, hasStraggler);
     
-    // Step 2: Sort pairs by their larger elements
+    // Step 2: CORRECTED - Recursively sort pairs by their larger elements
     sortPairsByLarger(pairs);
     
     // Step 3: Extract main chain and pending elements
@@ -268,7 +290,7 @@ std::vector<int> PmergeMe::fjSortVec(std::vector<int> vec) {
     // Step 5: Generate optimal insertion order
     std::vector<int> order = buildInsertOrder(pend.size());
     
-    // Step 6: Insert remaining pending elements
+    // Step 6: CORRECTED - Insert remaining pending elements with search limits
     insertPend(main, pend, order);
     
     // Step 7: Insert straggler if exists
@@ -281,7 +303,6 @@ std::vector<int> PmergeMe::fjSortVec(std::vector<int> vec) {
 std::deque<int> PmergeMe::fjSortDeq(std::deque<int> deq) {
     size_t size = deq.size();
     
-    // Handle base cases
     if (size <= 1) return deq;
     if (size == 2) {
         if (deq[0] > deq[1]) {
@@ -290,37 +311,31 @@ std::deque<int> PmergeMe::fjSortDeq(std::deque<int> deq) {
         return deq;
     }
     
-    // Step 1: Create pairs and identify straggler
     int straggler = -1;
     bool hasStraggler = false;
     PairVector pairs = makePairsDeq(deq, straggler, hasStraggler);
     
-    // Step 2: Sort pairs by their larger elements
+    // CORRECTED - Recursive sort
     sortPairsByLarger(pairs);
     
-    // Step 3: Extract main chain and pending elements
     std::deque<int> main;
     std::deque<int> pend;
     splitToMainAndPendDeq(pairs, main, pend);
     
-    // Step 4: Insert first pending element at the beginning
     if (!pend.empty()) {
         main.push_front(pend[0]);
         pend.pop_front();
     }
     
-    // Step 5: Generate optimal insertion order
     std::vector<int> order = buildInsertOrder(pend.size());
     
-    // Step 6: Insert remaining pending elements
+    // CORRECTED - Insert with search limits
     insertPendDeq(main, pend, order);
     
-    // Step 7: Insert straggler if exists
     addStragglerDeq(main, straggler, hasStraggler);
     
     return main;
 }
-
 
 // Sort with vector and display results with timing
 void PmergeMe::sortWithVector(const std::vector<int>& input) {
@@ -332,7 +347,6 @@ void PmergeMe::sortWithVector(const std::vector<int>& input) {
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>
                     (end - start);
     
-    // Display sorted result
     std::cout << "After:  ";
     for (size_t i = 0; i < sorted.size(); i++) {
         std::cout << sorted[i];
@@ -348,7 +362,6 @@ void PmergeMe::sortWithVector(const std::vector<int>& input) {
 }
 
 void PmergeMe::sortWithDeque(const std::vector<int>& input) {
-    // Convert vector to deque
     std::deque<int> deq(input.begin(), input.end());
     
     auto start = std::chrono::high_resolution_clock::now();
@@ -359,7 +372,6 @@ void PmergeMe::sortWithDeque(const std::vector<int>& input) {
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>
                     (end - start);
     
-    // Display timing information
     std::cout << "Time to process a range of " << input.size() 
               << " elements with std::deque  : " << duration.count() 
               << " us" << std::endl;
