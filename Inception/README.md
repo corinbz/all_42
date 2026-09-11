@@ -1,5 +1,9 @@
 # Inception
 
+![42](https://img.shields.io/badge/42-project-000000?style=flat-square&logo=42&logoColor=white)
+![Docker](https://img.shields.io/badge/tooling-Docker%20Compose-blue?style=flat-square)
+![Status](https://img.shields.io/badge/status-completed-brightgreen?style=flat-square)
+
 *This project has been created as part of the 42 curriculum by corin.*
 
 ## Description
