@@ -5,10 +5,8 @@
 ![C++](https://img.shields.io/badge/language-C%2B%2B11-blue?style=flat-square)
 
 A single repository collecting every project from the 42 School common
-core, merged from their original individual repositories with
-[`merge-repos.sh`](merge-repos.sh) (see [`repos_fixed.txt`](repos_fixed.txt)
-for the source list). Each folder below is independent — its own
-Makefile, its own README — grouped here for one clean portfolio history.
+core. Each folder below is independent — its own Makefile, its own
+README — grouped here for one clean portfolio history.
 
 ## Piscine / early C
 
