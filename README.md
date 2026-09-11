@@ -1,12 +1,12 @@
-# 42 Projects
+# 42 projects
 
 ![42](https://img.shields.io/badge/42-cursus-000000?style=flat-square&logo=42&logoColor=white)
 ![C](https://img.shields.io/badge/language-C-blue?style=flat-square)
 ![C++](https://img.shields.io/badge/language-C%2B%2B11-blue?style=flat-square)
 
 A single repository collecting every project from the 42 School common
-core. Each folder below is independent — its own Makefile, its own
-README — grouped here for one clean portfolio history.
+core. Each folder below is independent, with its own Makefile and README.
+They're grouped here for one clean portfolio history.
 
 ## Piscine / early C
 
@@ -32,7 +32,7 @@ README — grouped here for one clean portfolio history.
 | [so_long](so_long) | Small 2D tile game (MLX42): collect items, reach the exit |
 | [Cub3D](Cub3D) | Ray-casted first-person renderer (MLX42), Wolfenstein-3D style |
 
-## C++ modules (CPP00 – CPP09)
+## C++ modules (CPP00 to CPP09)
 
 | Module | Topic |
 |---|---|
@@ -45,7 +45,7 @@ README — grouped here for one clean portfolio history.
 | [CPP06](CPP06) | Casts |
 | [CPP07](CPP07) | Templates |
 | [CPP08](CPP08) | Templated containers, STL |
-| [CPP09](CPP09) | STL (`map`, `stack`, and the Ford–Johnson sort) |
+| [CPP09](CPP09) | STL (`map`, `stack`, and the Ford-Johnson sort) |
 
 ## Web
 
@@ -61,7 +61,7 @@ README — grouped here for one clean portfolio history.
 
 ## Building
 
-There's no top-level build — each project builds on its own:
+There's no top-level build. Each project builds on its own:
 
 ```sh
 cd <project> && make

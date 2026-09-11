@@ -5,8 +5,8 @@
 ![Status](https://img.shields.io/badge/status-completed-brightgreen?style=flat-square)
 
 Reimplements what the shell does for `< infile cmd1 | cmd2 > outfile`,
-without going through a shell: fork two child processes, wire their
-stdin/stdout together through a `pipe(2)`, and `execve` each command,
+without going through a shell: fork two child processes, connect their
+stdin/stdout through a `pipe(2)`, and `execve` each command,
 resolving it against `PATH` by hand.
 
 ## Usage
@@ -21,12 +21,12 @@ resolving it against `PATH` by hand.
 
 1. `create_and_open_files` opens `infile` (read) and `outfile`
    (write/create/truncate).
-2. A `pipe(2)` is created; two children are `fork()`ed
+2. The parent creates a `pipe(2)` and `fork()`s two children
    (`child_one`, `child_two`).
-   - `child_one`: stdin ← `infile`, stdout → pipe write end, then
-     `execve(cmd1)`.
-   - `child_two`: stdin ← pipe read end, stdout → `outfile`, then
-     `execve(cmd2)`.
+   - `child_one` redirects stdin from `infile` and stdout to the pipe's
+     write end, then calls `execve(cmd1)`.
+   - `child_two` redirects stdin from the pipe's read end and stdout to
+     `outfile`, then calls `execve(cmd2)`.
 3. The parent closes its own fds and `waitpid`s on both children.
 4. Command resolution (`get_commands_path`) walks `PATH` from `envp`
    looking for an executable match, unless the command is given as an
@@ -55,6 +55,6 @@ make re
 
 ## Notes
 
-- No shell is involved: no globbing, no quoting rules, no built-ins —
-  `cmd1`/`cmd2` are taken as a program name plus flags, resolved via
-  `execve` directly.
+- No shell is involved: no globbing, no quoting rules, no built-ins.
+  pipex treats `cmd1`/`cmd2` as a program name plus flags and passes
+  them to `execve` directly.

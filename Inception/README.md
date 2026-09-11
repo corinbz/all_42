@@ -4,19 +4,19 @@
 ![Docker](https://img.shields.io/badge/tooling-Docker%20Compose-blue?style=flat-square)
 ![Status](https://img.shields.io/badge/status-completed-brightgreen?style=flat-square)
 
-*This project has been created as part of the 42 curriculum by corin.*
+*corin created this project as part of the 42 curriculum.*
 
 ## Description
 
-Inception is a system administration project that involves setting up a small infrastructure using Docker. The project creates a multi-container application consisting of:
+Inception is a system administration project that sets up a small infrastructure with Docker. It runs a multi-container application made of:
 
-- **NGINX** web server with TLS encryption
-- **WordPress** content management system with PHP-FPM
-- **MariaDB** database server
+- NGINX web server with TLS encryption
+- WordPress content management system with PHP-FPM
+- MariaDB database server
 
 All services run in isolated Docker containers, connected via a custom network, with persistent data storage.
 
-## Architecture Overview
+## Architecture overview
 
 ```
 ┌─────────────────────────────────────────┐
@@ -53,18 +53,18 @@ All services run in isolated Docker containers, connected via a custom network, 
 
 ### Installation
 
-1. **Clone the repository:**
+1. Clone the repository:
 ```bash
 git clone <repository-url>
 cd inception
 ```
 
-2. **Configure domain:**
+2. Configure the domain:
 ```bash
 echo "127.0.0.1 corin.42.fr" | sudo tee -a /etc/hosts
 ```
 
-3. **Set up environment variables:**
+3. Set up environment variables:
 ```bash
 # Create .env file with your credentials
 nano srcs/.env
@@ -87,22 +87,22 @@ WP_TITLE=Inception Project
 WP_URL=https://corin.42.fr
 ```
 
-4. **Build and launch (SSL certificates generated automatically):**
+4. Build and launch:
 ```bash
 make
 ```
 
-The Makefile will automatically:
+The Makefile then:
 - Generate SSL certificates
 - Create data directories
 - Build Docker images
 - Start all containers
 
-5. **Access the site:**
+5. Access the site:
 - Open browser: `https://corin.42.fr`
 - Admin panel: `https://corin.42.fr/wp-admin`
 
-### Management Commands
+### Management commands
 
 ```bash
 make          # Generate certs and start all services
@@ -121,7 +121,7 @@ make help     # Show available commands
 
 ## Resources
 
-### Official Documentation
+### Official documentation
 - [Docker Documentation](https://docs.docker.com/)
 - [Docker Compose Reference](https://docs.docker.com/compose/)
 - [NGINX Documentation](https://nginx.org/en/docs/)
@@ -133,95 +133,72 @@ make help     # Show available commands
 - [Docker Volumes](https://docs.docker.com/storage/volumes/)
 - [PHP-FPM Configuration](https://www.php.net/manual/en/install.fpm.php)
 
-### AI Usage
+### AI usage
 
-AI tools were used in this project for:
-- **Dockerfile optimization**: Generating efficient multi-stage builds and reducing image sizes
-- **Configuration debugging**: Troubleshooting NGINX, PHP-FPM, and MariaDB configuration issues
-- **Script generation**: Creating initialization and setup bash scripts
-- **Documentation**: Structuring and formatting technical documentation
-- **Makefile automation**: Implementing build automation and certificate generation
+This project used AI tools to optimize Dockerfiles (multi-stage builds,
+smaller images), debug NGINX/PHP-FPM/MariaDB configuration issues, write
+the initialization and setup bash scripts, structure this documentation,
+and write the Makefile's build and certificate-generation targets.
 
-All AI-generated content was thoroughly reviewed, tested, and modified to ensure correctness and compliance with project requirements.
+I reviewed, tested, and adjusted every AI-generated piece to meet the
+project's requirements.
 
-## Project Design Choices
+## Project design choices
 
-### Virtual Machines vs Docker
+### Virtual machines vs Docker
 
-**Virtual Machines:**
-- Full OS virtualization with kernel
-- Higher resource overhead
-- Complete isolation
-- Minutes to start
+Virtual machines virtualize the whole OS, kernel included. That gives
+complete isolation, but they take minutes to start and use more
+resources. Docker containers share the host kernel instead, so they
+start in seconds and use fewer resources, which suits a multi-service
+setup like this one. This project uses Docker.
 
-**Docker (chosen):**
-- Container-based virtualization
-- Shares host kernel
-- Lightweight and fast (seconds to start)
-- Better resource efficiency
-- Ideal for microservices architecture
+### Secrets vs environment variables
 
-### Secrets vs Environment Variables
+Environment variables (`.env`) hold non-sensitive configuration like the
+domain name and database names. They're easy to read and modify, but can
+end up committed to git by accident. Secrets give encrypted storage for
+passwords and keys and are the better choice for production (Docker
+Swarm supports them natively). This project uses `.env` for simplicity,
+protected by `.gitignore`.
 
-**Environment Variables (.env):**
-- Used for non-sensitive configuration (domain, database names)
-- Easily readable and modifiable
-- Can be accidentally committed to git
+### Docker network vs host network
 
-**Secrets (recommended for production):**
-- Encrypted storage for passwords and keys
-- Better security practices
-- Docker secrets support in Swarm mode
-- This project uses `.env` for simplicity, with `.gitignore` protection
+Host network mode gives a container the host's own network stack, so
+there is no isolation and ports can conflict. A Docker network isolates
+each container in its own namespace, resolves other containers by name
+through DNS, and exposes only the ports a container opens. This project
+uses a Docker network.
 
-### Docker Network vs Host Network
+### Docker volumes vs bind mounts
 
-**Host Network:**
-- Container uses host's network stack
-- No isolation
-- Port conflicts possible
+Bind mounts map a host path directly into the container. That is simple,
+but it ties the setup to host-specific paths. Docker manages volumes
+itself, so they perform better, move between systems more easily, and
+are simpler to back up. This project uses volumes, with bind mounts for
+the specific host paths that need them.
 
-**Docker Network (chosen):**
-- Isolated network namespace
-- DNS-based service discovery (containers communicate by name)
-- Network segmentation and security
-- Containers can only expose specific ports
+## Key features
 
-### Docker Volumes vs Bind Mounts
+- TLS 1.2/1.3 for HTTPS
+- The Makefile generates the SSL certificates
+- Data persists across container restarts
+- Each service runs in its own container
+- Containers restart on crash
+- Credentials come from environment variables, not the images
+- A custom network connects the services
+- Alpine/Debian base images keep the images small
+- `make` deploys everything in one command
 
-**Bind Mounts:**
-- Direct host path mounting
-- Host-dependent paths
-- Less portable
+## Security considerations
 
-**Docker Volumes (chosen):**
-- Managed by Docker
-- Better performance
-- Portable across systems
-- Easier backup and migration
-- Used with bind mount options for specific host paths
+- The SSL certificates are self-signed (for production, use Let's Encrypt)
+- Passwords live in `.env`, which git ignores
+- Only containers on the Docker network can reach MariaDB
+- Only the NGINX reverse proxy can reach WordPress
+- A regular (non-admin) user account exists for day-to-day use
 
-## Key Features
-
-✅ **TLS 1.2/1.3 encryption** for secure HTTPS connections  
-✅ **Automatic SSL certificate generation** via Makefile  
-✅ **Persistent data storage** survives container restarts  
-✅ **Isolated services** in dedicated containers  
-✅ **Automatic restart** on crash  
-✅ **No hardcoded credentials** (environment variables)  
-✅ **Custom network** for inter-service communication  
-✅ **Alpine/Debian base images** for minimal attack surface  
-✅ **One-command deployment** with `make`
-
-## Security Considerations
-
-- SSL certificates are self-signed (for production, use Let's Encrypt)
-- Passwords stored in `.env` (excluded from git)
-- MariaDB only accessible within Docker network
-- WordPress accessible only through NGINX reverse proxy
-- Regular user account created (admin-only access discouraged)
-
-## File Structure
+## File structure
 
 ```
 inception/

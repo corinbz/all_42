@@ -35,8 +35,8 @@ C 225,30,0
 1111111111111
 ```
 
-- `NO`/`SO`/`WE`/`EA` — paths to the four wall textures (`parse_img_paths.c`).
-- `F` / `C` — floor / ceiling RGB colors (`parse_colors.c`).
+- `NO`/`SO`/`WE`/`EA`: paths to the four wall textures (`parse_img_paths.c`).
+- `F` / `C`: floor / ceiling RGB colors (`parse_colors.c`).
 - The map grid: `1` wall, `0` walkable floor, `N`/`S`/`E`/`W` player start +
   facing direction; unreachable/space cells are allowed only where they
   can't leak outside the map (`check_map_space.c`, `check_map_lines.c`).

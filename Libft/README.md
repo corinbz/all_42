@@ -61,5 +61,5 @@ typedef struct s_list
   constraints, header format).
 - Several other repos in this workspace (`pipex`, `push_swap`, `so_long`,
   `Minishell`) vendor their own copy of `libft` under a local `libft/`
-  directory rather than depending on this one directly — that's normal for
+  directory rather than depending on this one directly. That's normal for
   42 projects, which must be self-contained and buildable in isolation.

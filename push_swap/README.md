@@ -27,16 +27,16 @@ reports whether the result is sorted.
 
 ## Algorithm
 
-- **≤ 5 elements**: `sort_three`, `sort_four`, `sort_five` — hand-written
-  optimal sequences for small stacks.
-- **Larger stacks**: `radix_sort` — a binary radix sort adapted to the
+- 5 or fewer elements: hand-written optimal sequences (`sort_three`,
+  `sort_four`, `sort_five`) for small stacks.
+- Larger stacks: `radix_sort`, a binary radix sort adapted to the
   push/swap/rotate instruction set (`check_max_bits` determines how many
   passes are needed), pushing elements between `a` and `b` bit by bit
   rather than comparison-sorting.
 
-Input is validated up front (`check_input.c`): must be a list of integers
-representable as `long` within `INT_MIN`/`INT_MAX`, with no duplicates
-(`are_duplicates`).
+`check_input.c` validates the input up front: it must be a list of
+integers representable as `long` within `INT_MIN`/`INT_MAX`, with no
+duplicates (`are_duplicates`).
 
 ## Build
 
@@ -55,7 +55,7 @@ make re
 | `check_input.c` | Argument parsing and validation |
 | `stack_intialization.c` / `stack_utils.c` / `stack_operations.c` | Doubly linked list stack + `sa`/`pa`/`ra`/... primitives |
 | `radix_functions.c` | Radix-sort based algorithm for larger stacks |
-| `smaller_five.c` | Optimal sorts for stacks of ≤ 5 |
+| `smaller_five.c` | Optimal sorts for stacks of 5 or fewer |
 | `errors.c` | Error / usage messages |
 | `for_debugging.c` | Debug-only helpers (not part of the graded binary) |
 | `push_swap.h` | `t_node` struct and prototypes |

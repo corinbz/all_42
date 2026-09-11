@@ -61,25 +61,25 @@ fixtures for the config-parser's error handling.
 - CGI execution (`www/cgi/*.py`)
 - HTTP redirects per location
 - Per-server `max_body_size`, `keepalive_timeout`, `send_timeout`
-- Multiple listening sockets multiplexed on one `poll()` loop — no thread
-  or process is spawned per connection
+- Multiple listening sockets multiplexed on one `poll()` loop, with no
+  thread or process spawned per connection
 
 ## Architecture
 
-- **`ConfigHandler`** — hand-written recursive-descent parser for the
+- `ConfigHandler`: hand-written recursive-descent parser for the
   `http { server { location { ... } } }` block syntax, producing an
   `HttpConfig` tree of `ServerConfig`/`LocationConfig` and validating it
   (`verifyConfiguration`).
-- **`Server`** — owns every listening and client socket. `createSocket` /
+- `Server`: owns every listening and client socket. `createSocket` /
   `bindSocket` set up one non-blocking listener per configured `server`
   block; the main loop calls `poll()` over all of them plus every active
   client fd, `acceptClientSocket`s new connections, and dispatches
   readable/writable clients through `t_client_state`. `selectServerConfig`
   picks the right virtual host by `Host:` header + port.
-- **`HttpRequest`** — incremental parser for the request line, headers and
+- `HttpRequest`: incremental parser for the request line, headers and
   body (handles `Content-Length` and chunked bodies as they arrive across
   multiple `poll()` wakeups).
-- **`HttpResponse`** — builds status line, headers and body for static
+- `HttpResponse`: builds status line, headers and body for static
   files, directory listings, redirects, uploads and CGI output.
 
 ## Build

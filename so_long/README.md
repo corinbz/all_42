@@ -6,7 +6,7 @@
 
 A small 2D tile-based game built with the [MLX42](LIBS/MLX42) graphics
 library: guide the player across a map, collect every collectible, then
-reach the exit — in the fewest moves possible.
+reach the exit in the fewest moves possible.
 
 ## Usage
 
@@ -14,9 +14,9 @@ reach the exit — in the fewest moves possible.
 ./so_long maps/map.ber
 ```
 
-Move with the arrow keys (or `W`/`A`/`S`/`D`); the move counter is printed
-to the terminal on every move; `ESC` or the window's close button exits
-cleanly.
+Move with the arrow keys (or `W`/`A`/`S`/`D`). The game prints the move
+counter to the terminal on every move. `ESC` or the window's close button
+exits cleanly.
 
 ## Map format (`.ber`)
 
@@ -30,7 +30,7 @@ A rectangular grid of characters:
 | `C` | collectible (at least one) |
 | `E` | exit (exactly one) |
 
-`maps/` contains a valid sample map; `maps/invalid/` is a battery of
+`maps/` contains a valid sample map; `maps/invalid/` is a set of
 deliberately broken maps (missing player/exit, unclosed walls, unreachable
 collectibles, non-rectangular shape, wrong extension...) used to exercise
 `parse_map`/`check_map*` validation.

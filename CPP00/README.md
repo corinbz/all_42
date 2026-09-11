@@ -1,4 +1,4 @@
-# CPP00 — Namespaces, Classes, Member Functions
+# CPP00: namespaces, classes, member functions
 
 ![42](https://img.shields.io/badge/42-project-000000?style=flat-square&logo=42&logoColor=white)
 ![C++](https://img.shields.io/badge/language-C%2B%2B11-blue?style=flat-square)
@@ -9,7 +9,7 @@ member functions, `std::string`/iostreams, and the `static`/`const`
 keywords. Each `exXX/` is an independent program with its own
 `include/`, `src/` and `Makefile`.
 
-## ex00 — megaphone
+## ex00: megaphone
 
 ```sh
 cd ex00 && make
@@ -18,17 +18,17 @@ cd ex00 && make
                                     #   FEEDBACK NOISE *"-style message
 ```
 
-No classes yet — just argument handling and `std::cout`, uppercasing each
+No classes yet. Just argument handling and `std::cout`, uppercasing each
 `argv` entry via `std::toupper`.
 
-## ex01 — PhoneBook
+## ex01: PhoneBook
 
 ```sh
 cd ex01 && make
 ./phonebook
 ```
 
-A terminal contact book holding up to **8** `Contact`s (first name, last
+A terminal contact book holding up to 8 `Contact`s (first name, last
 name, nickname, phone number, darkest secret). Commands read from
 `std::cin`:
 
@@ -41,14 +41,14 @@ name, nickname, phone number, darkest secret). Commands read from
 `PhoneBook` owns the fixed-size array of `Contact`; `Contact` is a plain
 data holder with accessors.
 
-## ex02 — Account
+## ex02: Account
 
 ```sh
 cd ex02 && make
 ./tests
 ```
 
-`Account` tracks money for multiple accounts using **`static`** class-wide
+`Account` tracks money for multiple accounts using `static` class-wide
 members and functions (total number of accounts, total amount across all
 accounts, total deposits/withdrawals), logging every operation with a
 timestamp (`displayTimestamp`). `tests.cpp` exercises `makeDeposit`,
