@@ -117,21 +117,23 @@ void HttpRequest::processMultipartHeaders(const std::vector<char>& buffer)
     std::istringstream headerStream(rawHeaders);
     for (std::string line; std::getline(headerStream, line); ) {
         std::size_t pos = line.find("Content-Disposition:");
-        if (pos != std::string::npos) {
+        if(pos != std::string::npos) {
             std::size_t fnameStart = line.find("filename=\"", pos);
-            if (fnameStart != std::string::npos) {
+            if(fnameStart != std::string::npos)
+            {
                 fnameStart += 10;
                 std::size_t fnameEnd = line.find('"', fnameStart);
-                if (fnameEnd != std::string::npos) {
+                if(fnameEnd != std::string::npos) {
                     this->uploadedFileName = line.substr(fnameStart, fnameEnd - fnameStart);
                 }
             }
             continue; 
         }
         pos = line.find("Content-Type:");
-        if (pos != std::string::npos) {
+        if(pos != std::string::npos)
+        {
             std::size_t typeStart = line.find(':', pos);
-            if (typeStart != std::string::npos) {
+            if(typeStart != std::string::npos) {
                 this->fileMimeType = line.substr(typeStart + 2); // skip ": "
             }
         }
@@ -148,18 +150,18 @@ std::string HttpRequest::getBoundary(const std::string& contentType) const
     }
 	std::string boundary = contentType.substr(start + key.size());
 	size_t end = boundary.find(";");
-	if (end != std::string::npos)
+	if(end != std::string::npos)
     {
 		boundary = boundary.substr(0, end);
 	}
 	return "--" + boundary;
 }
 
-// -----    my getters :)
+// -----    getters :)
 
 std::string HttpRequest::getHttpHeader(const std::string& headerName) const
 {
-    if (httpHeaders.count(headerName) > 0)
+    if(httpHeaders.count(headerName) > 0)
         return httpHeaders.at(headerName);
     return std::string{};
 }

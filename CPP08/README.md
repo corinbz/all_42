@@ -1,28 +1,46 @@
+# CPP08: templated containers, STL
 
-## Module-Specific Rules
+![42](https://img.shields.io/badge/42-project-000000?style=flat-square&logo=42&logoColor=white)
+![C++](https://img.shields.io/badge/language-C%2B%2B11-blue?style=flat-square)
+![Status](https://img.shields.io/badge/status-completed-brightgreen?style=flat-square)
 
-You will notice that, in this module, the exercises can be solved WITHOUT the standard Containers and WITHOUT the standard Algorithms. However, **using them is precisely the goal of this Module.**
+Working *with* the STL instead of against it: generic algorithms over
+iterators, and building a container on top of an existing one.
 
-You must use the STL — especially the **Containers** (`vector`/`list`/`map`/and so forth) and the **Algorithms** (defined in header `<algorithm>`) — whenever they are appropriate. Moreover, you should use them as much as you can.
+## ex00: easyfind
 
-Thus, do your best to apply them wherever it’s appropriate. You will get a very bad grade if you don’t, even if your code works as expected. Please don’t be lazy.
+```cpp
+template <typename T>
+typename T::iterator easyfind(T &container, int value);
+```
 
-You can define your templates in the header files as usual. Or, if you want to, you can write your template declarations in the header files and write their implementations in `.tpp` files. In any case, the header files are mandatory while the `.tpp` files are optional.
+Finds the first occurrence of `value` in any STL container that exposes
+iterators (`std::vector`, `std::list`, `std::deque`...) using
+`std::find`, throwing if the value isn't present. Works for any
+container type without being rewritten per container.
 
-## Exercise 00: Easy find
+## ex01: Span
 
-| Turn-in directory | Files to turn in | Optional file | Forbidden functions |
-| :---------------- | :--------------- | :------------ | :------------------ |
-| `ex00/`           | `Makefile`, `main.cpp`, `easyfind.{h, hpp}` | `easyfind.tpp` | None                |
+`Span` stores up to `N` unsigned ints (`addNumber`, or a range-insert from
+any iterator pair) and computes:
 
-A first easy exercise is the way to start off on the right foot.
+- `shortestSpan()`: the smallest gap between any two stored numbers,
+- `longestSpan()`: the difference between the max and min stored
+  numbers,
 
-Write a function template easyfind that accepts a type T. It takes two parameters: the first one is of type T, and the second one is an integer.
+both throwing if fewer than two numbers have been added.
 
-Assuming T is a container of integers, this function has to find the first occurrence of the second parameter in the first parameter.
+## ex02: MutantStack
 
-If no occurrence is found, you can either throw an exception or return an error value of your choice. If you need some inspiration, analyze how standard containers behave.
+`MutantStack<T>` is a `std::stack<T>` with iterators added. Since
+`std::stack` is an adapter over an underlying container
+(`std::deque` by default) that hides iteration, `MutantStack` inherits
+`std::stack<T, Container>` and exposes `begin()`/`end()` (and their
+`const` counterparts) by accessing the protected underlying
+container (`c`), so the LIFO-only interface also becomes iterable.
 
-Of course, implement and turn in your own tests to ensure everything works as expected.
+## Build all
 
-⚠️ You don’t have to handle associative containers. ⚠️
+```sh
+for d in ex00 ex01 ex02; do (cd "$d" && make); done
+```

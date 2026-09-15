@@ -24,9 +24,9 @@ void ConfigHandler::processConfigFile(std::string configPath)
 	while(getline(file, currentLine))
 	{
 		currentLine = trimWhitespace(currentLine);
-		if (currentLine.empty() || currentLine[0] == '#')
+		if(currentLine.empty() || currentLine[0] == '#')
 			continue;
-		if (currentLine == "http {")
+		if(currentLine == "http {")
 			readHttpBlock(file, currentLine);
 		else
 		{
@@ -53,7 +53,7 @@ void ConfigHandler::readHttpBlock(std::ifstream& configFile, std::string& curren
 	this->scopeStack.push("HTTP");
 	while(!scopeStack.empty())
 	{
-		if (!getline(configFile, currentLine))
+		if(!getline(configFile, currentLine))
 		{
 			std::cout << "\033[1;31mERROR:\033[0m ConfFile is missing - '}'" << std::endl;
 			exit(1);
@@ -76,7 +76,7 @@ void ConfigHandler::readHttpBlock(std::ifstream& configFile, std::string& curren
 			}
 			httpConfig.server_timeout_time = stringToInt(value);
 		}
-		else if (currentLine == "server {")
+		else if(currentLine == "server {")
 		{
 			ServerConfig serverConfig;
 			setupDefaultServerConfig(serverConfig);
@@ -120,7 +120,7 @@ void ConfigHandler::readServerBlock(std::ifstream& configFile, std::string& curr
 		std::ostringstream oss;
 		for (size_t i = 0; i < required.size(); ++i)
 		{
-			if (i != 0)
+			if(i != 0)
 				oss << " ";
 			oss << required[i];
 		}
@@ -191,7 +191,7 @@ void ConfigHandler::readLocationBlock(std::ifstream& configFile, std::string& cu
 		else
 		{
 			parseKeyValuePair(currentLine, key, value);
-			if (key == "request_types")
+			if(key == "request_types")
 			{
 				std::istringstream iss(value);
 				std::string requestType;
@@ -237,12 +237,12 @@ void ConfigHandler::validateLocationPath(std::string& currentLine, LocationConfi
 
 void ConfigHandler::verifyConfiguration()
 {
-	if (this->httpConfig.server_timeout_time == -1)
+	if(this->httpConfig.server_timeout_time == -1)
 	{
 		std::cout << "\033[1;31mERROR:\033[0m server_timeout_time is missing/invalid - error code 7" << std::endl; 
 		exit(7);
 	}
-	if (this->httpConfig.serverConfigs.size() == 0)
+	if(this->httpConfig.serverConfigs.size() == 0)
 	{
 		std::cout << "\033[1;31mERROR:\033[0m server config is missing/invalid" << std::endl;
 		exit(7);

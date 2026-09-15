@@ -8,10 +8,10 @@ Server::~Server()
 {
 	std::cout << "Shutting down the server" << std::endl;
 	size_t i = 0;
-	while (i < this->fds.size())
+	while(!this->fds.empty())
 	{
+		// std::cout << ">>>>>>>>>  closing fd: " << this->fds[i].fd << std::endl;
 		disconectClient(this->fds[i].fd);
-		i++;
 	}
 }
 
@@ -107,24 +107,24 @@ void Server::handlePollOut(pollfd &fd)
 
 void Server::handleClientActivity(pollfd &fd, size_t &index)
 {
-    if (fd.revents & POLLOUT)
+    if(fd.revents & POLLOUT)
         handlePollOut(fd);
 
     time_t now;
     time(&now);
     ClientState &client = clientStates[fd.fd];
 
-    if (client.assignedConfig && client.responding && difftime(now, client.lastActivity) > client.serverConfig.sendTimeout)
+    if(client.assignedConfig && client.responding && difftime(now, client.lastActivity) > client.serverConfig.sendTimeout)
 	{
         std::cout << "timeout on socket" << std::endl;
         client.killChild = true;
     }
-    if (client.assignedConfig && difftime(now, client.lastActivity) > client.serverConfig.keepAliveTimeout)
+    if(client.assignedConfig && difftime(now, client.lastActivity) > client.serverConfig.keepAliveTimeout)
 	{
         std::cout << "keep alive timeout" << std::endl;
         client.closeConnection = true;
     }
-    if (client.closeConnection)
+    if(client.closeConnection)
 	{
         disconectClient(fd.fd);
         index--;
@@ -137,21 +137,21 @@ void Server::handleEvents()
 	{
         pollfd current = fds[i]; // make a copy, don’t hold reference
 
-        if (current.revents & (POLLERR | POLLHUP | POLLNVAL))
+        if(current.revents & (POLLERR | POLLHUP | POLLNVAL))
 		{
-            if (current.revents & (POLLERR))
+            if(current.revents & (POLLERR))
 				std::cout << "WARRNING: POLLERR ops failed on socket " << current.fd << std::endl;
-			if (current.revents & (POLLHUP))
+			if(current.revents & (POLLHUP))
 				std::cout << "WARRNING: POLLERR connection closed on socket " << current.fd << std::endl;
-			if (current.revents & (POLLNVAL))
+			if(current.revents & (POLLNVAL))
 				std::cout << "WARRNING: POLLNVAL not able to open fd or invalid socket " << current.fd << std::endl;
 			clientStates[current.fd].closeConnection = true;
             continue;
         }
-        if (current.revents & POLLIN)
+        if(current.revents & POLLIN)
             handlePollIn(fds[i]);
 
-        if (!checkServerFd(current.fd))
+        if(!checkServerFd(current.fd))
             handleClientActivity(fds[i], i);
     }
 }
@@ -167,7 +167,7 @@ void Server::launch()
 	signal(SIGINT, [](int){ server_running = false; });
 	while(server_running)
 	{
-		if (poll(&this->fds[0], this->fds.size(), this->httpConfig.server_timeout_time) < 0)
+		if(poll(&this->fds[0], this->fds.size(), this->httpConfig.server_timeout_time) < 0)
 		{
 			switch (errno)
 			{
@@ -217,6 +217,7 @@ void Server::initSockets()
         }
         if(exists)
 		{
+			std::cout << "ERROR: Duplicate port, cannot bind." << std::endl;
             i++;
             continue;
         }
@@ -237,15 +238,15 @@ void Server::initSockets()
 int Server::createSocket()
 {
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd < 0) return -1;
+    if(sockfd < 0) return -1;
     return sockfd;
 }
 
 bool Server::setSocketOptions(int sockfd)
 {
     int optval = 1;
-    if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0) return false;
-    if (fcntl(sockfd, F_SETFL, O_NONBLOCK | FD_CLOEXEC) < 0) return false;
+    if(setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0) return false;
+    if(fcntl(sockfd, F_SETFL, O_NONBLOCK | FD_CLOEXEC) < 0) return false;
     return true;
 }
 
@@ -262,7 +263,7 @@ bool Server::bindSocket(int sockfd, int port)
 int Server::setupSockets(int port)
 {
 	int sockfd = createSocket();
-    if (sockfd < 0)
+    if(sockfd < 0)
 	{
 		std::cout << "\033[1;31mERROR:\033[0m not able to create socket on port " << port << std::endl;
 		return -1;
@@ -275,14 +276,14 @@ int Server::setupSockets(int port)
         return -1;
     }
 
-    if (!bindSocket(sockfd, port))
+    if(!bindSocket(sockfd, port))
 	{
         disconectClient(sockfd);
 		std::cout << "\033[1;31mERROR:\033[0m not able to bind socket to port " << port << std::endl;
         return -1;
     }
 
-    if (listen(sockfd, SOMAXCONN) < 0)
+    if(listen(sockfd, SOMAXCONN) < 0)
 	{
         disconectClient(sockfd);
 		std::cout << "\033[1;31mERROR:\033[0m socket " << sockfd << ", failed to listen" << std::endl;
@@ -297,7 +298,7 @@ int Server::acceptClientSocket(int server_fd)
     sockaddr_in client_addr;
     socklen_t addr_len = sizeof(client_addr);
     int client_fd = accept(server_fd, (struct sockaddr*)&client_addr, &addr_len);
-    if (client_fd < 0)
+    if(client_fd < 0)
 	{
 		std::cout << "\033[1;31mERROR:\033[0m was not able to accept new connection..." << std::endl;
         return -1;
@@ -324,7 +325,7 @@ void Server::parseRequestHeaders(int fd)
 {
 	ClientState& client = clientStates[fd];
     size_t headerTerm = client.readBuffer.find("\r\n\r\n");
-    if (headerTerm == std::string::npos)
+    if(headerTerm == std::string::npos)
         return;
 
     client.headersComplete = true;
@@ -421,7 +422,7 @@ std::string Server::executeCGI(ClientState& client, std::string& path)
 
 void Server::handleCgiOut(std::string str, int fd)
 {
-	if (str.empty())
+	if(str.empty())
         return ;
 
 	HttpResponse response;
@@ -476,7 +477,7 @@ void Server::handleClientRequest(int fd)
 	HttpRequest request(this->clientStates[fd].readBuffer);
     std::string codeStr = determineResponse(fd, request);
     
-    if (codeStr.empty())
+    if(codeStr.empty())
         return;
     
     HttpResponse response;
@@ -503,7 +504,7 @@ void Server::handleClientRequest(int fd)
 void Server::respondToClient(pollfd &fd)
 {
 	ClientState &client = clientStates[fd.fd];
-	if (client.writeBuffer.empty())
+	if(client.writeBuffer.empty())
 	{
 		std::cout << "WARNING: there is no data to send on socket: " << fd.fd << std::endl;
 		fd.events = POLLIN;
@@ -524,12 +525,12 @@ void Server::respondToClient(pollfd &fd)
 	}
 
 	client.writeBuffer.erase(0, sendBytes);
-	if (client.writeBuffer.empty())
+	if(client.writeBuffer.empty())
 	{
 		client.responding = false;
 		fd.events = POLLIN;
 		std::cout << "successfull answer on socket: " << fd.fd << std::endl;
-		if (!client.keepAlive)
+		if(!client.keepAlive)
 			client.closeConnection = true;
 	}
 }
@@ -582,23 +583,22 @@ std::string Server::checkCgiStatus(ClientState& client)
 	}
 }
 
-void Server::setupAndExecChild(ClientState& client, std::string& fullPath) // this function should be restructured!!
+// curl -v -H "Host: localhost" "http://localhost:8080/cgi/my_cgi.py?param1=value1"
+void Server::setupAndExecChild(ClientState& client, std::string& fullPath)
 {
-	char cgiScriptPath[1024] = {0};
+	size_t sepPos = fullPath.find("?"); // ? - URLs separate the script path from the query string in an HTTP request
+	std::string cgiScriptPath;
 	std::string queryData;
-	size_t queryStringPos = fullPath.find("?");
-	if(queryStringPos != std::string::npos)
+	if(sepPos != std::string::npos)
 	{
-		std::strcpy(cgiScriptPath, fullPath.substr(0, queryStringPos).c_str());
-		queryData = fullPath.substr(queryStringPos + 1);
+        cgiScriptPath = fullPath.substr(0, sepPos);
+        queryData = fullPath.substr(sepPos + 1);
 	}
 	else
-		std::strcpy(cgiScriptPath, fullPath.c_str());
+		cgiScriptPath = fullPath;
 
-	if(client.method == "POST" && queryData.empty())
-	{
+	if(client.method == "POST" && queryData.empty()) 
 		queryData = client.body;
-	}
 
 	std::string envQuery = "QUERY_STRING=" + queryData;
 	std::string envRequestMethod = "REQUEST_METHOD=" + client.method;
@@ -610,8 +610,8 @@ void Server::setupAndExecChild(ClientState& client, std::string& fullPath) // th
 	close(client.cgiPipe[0]);
 	dup2(client.cgiPipe[1], STDOUT_FILENO);
 	close(client.cgiPipe[1]);
-	const char* argv[] = {"/usr/bin/python3", cgiScriptPath, NULL};
+	const char* argv[] = {"/usr/bin/python3", cgiScriptPath.c_str(), NULL};
 	execve(argv[0],  (char* const*)(argv), (char* const*)(cgiEnv));
 	std::cout << "\033[1;31mERROR:\033[0m execve failed :(" << std::endl;
-	exit(1);
+	exit(7);
 }

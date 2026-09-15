@@ -20,7 +20,7 @@ void HttpResponse::processGET(const HttpRequest& req, ClientState& session)
 	std::string uri = req.getRequestURI();
 	static int img = 0;
 	
-    if (uri != "/get-images")
+    if(uri != "/get-images")
 	{
         deliverFile(session, uri);
         return;
@@ -113,7 +113,7 @@ bool HttpResponse::isOnlySlashes(const std::string& requestPath)
 	size_t i = 0;
 	while (i < requestPath.size())
 	{
-		if (requestPath[i] != '/')
+		if(requestPath[i] != '/')
 			return false;
 		++i;
 	}
@@ -134,7 +134,7 @@ void HttpResponse::routeRequest(HttpRequest& req, ClientState& session)
 	if(!redirection.empty())
 	{
 		bool hasHttpPrefix = (redirection.substr(0, 7) == "http://" || redirection.substr(0, 8) == "https://");
-		if (!hasHttpPrefix)
+		if(!hasHttpPrefix)
 			redirection.insert(0, "http://");
 		setHttpHeader("Location", redirection);
 		setHttpStatusCode(302);
@@ -157,18 +157,18 @@ void HttpResponse::routeRequest(HttpRequest& req, ClientState& session)
 
 std::string HttpResponse::getLastFolderName(const std::string& requestPath)
 {
-	if (requestPath.empty())
+	if(requestPath.empty())
 		return ("");
 
 	size_t slashPos = requestPath.find_last_of('/');
-	if (requestPath.back() == '/')
+	if(requestPath.back() == '/')
 		slashPos = requestPath.find_last_of('/', requestPath.length() - 2);
-	if (slashPos == std::string::npos || slashPos == requestPath.length() - 1)
+	if(slashPos == std::string::npos || slashPos == requestPath.length() - 1)
 		return ("");
 
 	size_t start = slashPos + 1;
 	size_t end = requestPath.find('/', start);
-	if (end == std::string::npos)
+	if(end == std::string::npos)
 		end = requestPath.size();
 	return requestPath.substr(start, end - start);
 }
@@ -176,7 +176,7 @@ std::string HttpResponse::getLastFolderName(const std::string& requestPath)
 bool HttpResponse::deliverDefaultFile(const std::string& requestPath, const std::string& fullPath)
 {
 	std::string htmlPath = fullPath;
-	if (htmlPath.back() != '/')
+	if(htmlPath.back() != '/')
     	htmlPath += '/';
 	htmlPath += getLastFolderName(requestPath) + ".html";
 
@@ -196,7 +196,7 @@ bool HttpResponse::deliverDefaultFile(const std::string& requestPath, const std:
 bool HttpResponse::deliverIndex(const ServerConfig& serverConfig)
 {
 	std::string indexPath = serverConfig.rootDirectory;
-	if (indexPath.back() != '/')
+	if(indexPath.back() != '/')
 		indexPath += '/';
 	indexPath += serverConfig.indexFile;
 
@@ -243,7 +243,7 @@ void HttpResponse::deliverDirectoryListing(const std::string& requestPath, const
 
 	while((entry = readdir(dir)) != NULL)
 	{
-		if (entry->d_name[0] == '.')
+		if(entry->d_name[0] == '.')
 			continue;
 		std::string name = entry->d_name;
 		
@@ -262,7 +262,7 @@ void HttpResponse::deliverDirectoryListing(const std::string& requestPath, const
 		<< "<meta charset=\"UTF-8\">"
 		<< "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
 		<< "<title>Index of " << requestPath << "</title>"
-		<< "<link rel=\"stylesheet\" href=\"\\styles.css\">"
+		<< "<link rel=\"stylesheet\" href=\"\\style.css\">"
 		<< "<link rel=\"icon\" type=\"image/png\" href=\"coding.png\">"
 		<< "</head>"
 		<< "<body class=\"background\">"
@@ -291,7 +291,7 @@ void HttpResponse::deliverDeletePage(const std::string& requestPath, const std::
 
 	while((entry = readdir(dir)) != NULL)
 	{
-		if (entry->d_name[0] == '.')
+		if(entry->d_name[0] == '.')
 			continue;
 		std::string name = entry->d_name;
 		std::string sep = (requestPath.back() == '/') ? "" : "/";
@@ -299,7 +299,7 @@ void HttpResponse::deliverDeletePage(const std::string& requestPath, const std::
 		std::string deleteButton = "<button onclick=\""
 								"fetch('" + link + "', {method: 'DELETE'})"
 								".then(function(response) { "
-								"if (response.ok) { "
+								"if(response.ok) { "
 								"window.location.reload();"
 								"} else { "
 								"alert('Delete failed with status: ' + response.status);"
@@ -321,7 +321,7 @@ void HttpResponse::deliverDeletePage(const std::string& requestPath, const std::
 		<< "<meta charset=\"UTF-8\">"
 		<< "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
 		<< "<title>Delete page of " << requestPath << "</title>"
-		<< "<link rel=\"stylesheet\" href=\"\\styles.css\">"
+		<< "<link rel=\"stylesheet\" href=\"\\style.css\">"
 		<< "<link rel=\"icon\" type=\"image/png\" href=\"coding.png\">"
 		<< "</head>"
 		<< "<body class=\"background\">"
@@ -360,7 +360,7 @@ void HttpResponse::deliverFile(ClientState& client, const std::string& requestPa
 			deliverDeletePage(requestPath, fullPath);
 			return;
 		}
-		else if (client.serverConfig.directoryListing)
+		else if(client.serverConfig.directoryListing)
 		{
 			deliverDirectoryListing(requestPath, fullPath);
 			return;
@@ -390,9 +390,9 @@ std::string HttpResponse::checkRedirect(const std::string& requestPath, const Se
 	while (i < serverConfig.locations.size())
 	{
 		const LocationConfig& loc = serverConfig.locations[i];
-		if (requestPath.find(loc.locationPath) == 0)
+		if(requestPath.find(loc.locationPath) == 0)
 		{
-			if (!mostSpecificMatch || loc.locationPath.length() > mostSpecificMatch->locationPath.length())
+			if(!mostSpecificMatch || loc.locationPath.length() > mostSpecificMatch->locationPath.length())
 				mostSpecificMatch = &loc;
 		}
 		++i;
@@ -471,7 +471,7 @@ void HttpResponse::buildGenericHttpResponse(int httpStatusCode, const std::strin
 				<< "<meta charset=\"UTF-8\">"
 				<< "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
 				<< "<title>Webserv - " << code << "</title>"
-				<< "<link rel=\"stylesheet\" href=\"\\styles.css\">"
+				<< "<link rel=\"stylesheet\" href=\"\\style.css\">"
 				<< "<link rel=\"icon\" type=\"image/png\" href=\"coding.png\">"
 				<< "</head>"
 				<< "<body class=\"background\">"
@@ -491,22 +491,22 @@ bool HttpResponse::validateRequestMethod(const std::string& httpMethod, const st
 	std::vector<LocationConfig>::const_iterator it = serverConfig.locations.begin();
 	while (it != serverConfig.locations.end())
 	{
-		if (requestURI.find(it->locationPath) == 0) {
-			if (!bestMatch || it->locationPath.length() > bestMatch->locationPath.length()) {
+		if(requestURI.find(it->locationPath) == 0) {
+			if(!bestMatch || it->locationPath.length() > bestMatch->locationPath.length()) {
 				bestMatch = &(*it);
 			}
 		}
 		++it;
 	}
 
-	if (bestMatch) {
-		if (bestMatch->allowedHttpMethods.empty())
+	if(bestMatch) {
+		if(bestMatch->allowedHttpMethods.empty())
 			return false;
 
 		std::vector<HttpMethods>::const_iterator iter = bestMatch->allowedHttpMethods.begin();
 		while (iter != bestMatch->allowedHttpMethods.end())
 		{
-			if (httpMethod == requestTypeAsString(*iter))
+			if(httpMethod == requestTypeAsString(*iter))
 				return true;
 			++iter;
 		}

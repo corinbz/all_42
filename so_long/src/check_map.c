@@ -6,7 +6,7 @@
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 12:41:30 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/04/28 10:37:51 by ccraciun         ###   ########.fr       */
+/*   Updated: 2024/05/04 12:33:29 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static bool	check_walls(size_t row, size_t col, t_map *map)
 	{
 		while (col < map->width)
 		{
-			if (col == 0 || col == map->width)
+			if (col == 0 || col == map->width - 1)
 			{
 				if ((map->cell_value[row][col]) != '1')
 					return (ft_error("Incomplete wall\n"), false);
@@ -47,9 +47,7 @@ static bool	check_walls(size_t row, size_t col, t_map *map)
 			if (row == 0 || row == map->height - 1)
 			{
 				if ((map->cell_value[row][col]) != '1')
-				{
 					return (ft_error("Incomplete wall\n"), false);
-				}
 			}
 			col++;
 		}

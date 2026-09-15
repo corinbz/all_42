@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 14:39:22 by corin             #+#    #+#             */
-/*   Updated: 2023/11/19 14:42:44 by corin            ###   ########.fr       */
+/*   Updated: 2023/12/12 15:08:27 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdlib.h>
 
 // calloc
 void	*ft_calloc(size_t num_elements, size_t element_size)
@@ -23,7 +22,7 @@ void	*ft_calloc(size_t num_elements, size_t element_size)
 	if (!result)
 		return (NULL);
 	p = (unsigned char *)result;
-	while ((num_elements * element_size) != 0)
+	while (num_elements != 0)
 	{
 		*p = '\0';
 		p++;
@@ -66,18 +65,18 @@ char	*join_strs(const char *s1, const char *s2)
 	j = 0;
 	if (!s1 && !s2)
 		return (NULL);
-	while (s1 && s1[i])
+	while (s1[i])
 		i++;
-	while (s2 && s2[j])
+	while (s2[j])
 		j++;
 	result = ft_calloc(i + j + 1, sizeof(char));
 	if (!result)
 		return (NULL);
 	i = -1;
 	j = -1;
-	while (s1 && s1[++i])
+	while (s1[++i])
 		result[i] = s1[i];
-	while (s2 && s2[++j])
+	while (s2[++j])
 		result[i + j] = s2[j];
 	return (result);
 }

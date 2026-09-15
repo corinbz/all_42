@@ -5,118 +5,106 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/08 14:18:45 by ccraciun          #+#    #+#             */
-/*   Updated: 2024/11/08 13:38:15 by ccraciun         ###   ########.fr       */
+/*   Created: 2024/11/09 10:03:35 by corin             #+#    #+#             */
+/*   Updated: 2024/11/11 12:47:03 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philos.h"
 
-/*
-** Waits for simulation start time to be set
-** @param philo: Pointer to philosopher structure
-*/
-static void	wait_for_start(t_philosopher *philo)
+bool	sim_must_stop(t_data *data)
 {
-	while (1)
-	{
-		pthread_mutex_lock(philo->time_zero_mut);
-		if (philo->time_zero != 0)
-		{
-			pthread_mutex_unlock(philo->time_zero_mut);
-			break ;
-		}
-		pthread_mutex_unlock(philo->time_zero_mut);
-		ft_usleep(200);
-	}
+	bool	ret;
+
+	pthread_mutex_lock(&data->stop_sim_mut);
+	ret = data->stop_simulation;
+	pthread_mutex_unlock(&data->stop_sim_mut);
+	return (ret);
+}
+
+static void	*handle_single_philo(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->data->forks_mut[philo->forks[0]]);
+	write_status(philo, false, "has taken a fork");
+	ft_usleep(philo->data->time_to_die, philo->data);
+	write_status(philo, false, "died");
+	pthread_mutex_unlock(&philo->data->forks_mut[philo->forks[0]]);
+	pthread_mutex_lock(&philo->data->stop_sim_mut);
+	philo->data->stop_simulation = true;
+	pthread_mutex_unlock(&philo->data->stop_sim_mut);
+	return (NULL);
 }
 
 /*
-** Implements initial delay for philosophers to prevent deadlock
-** @param philo: Pointer to philosopher structure
+* The philosopher thinks for a time that is half the time it would take for
+* him to starve to death.
+* The purpose of this function is to reduce fork contention by making the
+* philosopher wait for a random amount of time before trying to take the forks
+* again.
 */
-static void	handle_initial_delay(t_philosopher *philo)
+static void	think(t_philo *philo, bool silent)
 {
-	int	group;
+	long	time_to_think;
+	long	time_since_last_meal;
+	long	max_think;
 
-	group = 0;
-	if (philo->num_philosophers == 1)
-		return ;
-	if (philo->num_philosophers >= 100)
-	{
-		group = philo->id % 4;
-		ft_usleep(50 * group);
-		return ;
-	}
-	else if (philo->id % 2 == 0)
-	{
-		ft_usleep(200);
-		return ;
-	}
-	else
-		ft_usleep(100 + (philo->id % 3) * 100);
+	max_think = 600;
+	pthread_mutex_lock(&philo->last_meal_time_mut);
+	time_since_last_meal = get_current_time() - philo->last_meal_time;
+	time_to_think = (philo->data->time_to_die - time_since_last_meal
+			- philo->data->time_to_eat) / 2;
+	pthread_mutex_unlock(&philo->last_meal_time_mut);
+	if (time_to_think < 0)
+		time_to_think = 0;
+	if (time_to_think == 0 && silent)
+		time_to_think = 1;
+	if (time_to_think > max_think)
+		time_to_think = 200;
+	if (!silent)
+		write_status(philo, false, "is thinking");
+	ft_usleep(time_to_think, philo->data);
 }
 
-/*
-** Checks if simulation should stop
-** @param philo: Pointer to philosopher structure
-** @return: true if simulation should stop, false otherwise
-*/
-bool	check_simulation_stop(t_philosopher *philo)
+static void	eat_sleep_repeat(t_philo *philo)
 {
-	bool	should_stop;
-
-	pthread_mutex_lock(philo->sim_stop_mut);
-	should_stop = *philo->simulation_stop;
-	pthread_mutex_unlock(philo->sim_stop_mut);
-	return (should_stop);
-}
-
-/*
-** Handles one cycle of philosopher actions
-** @param philo: Pointer to philosopher structure
-** @return: 0 if philosopher should stop, 1 if should continue
-*/
-static int	handle_philosopher_actions(t_philosopher *philo)
-{
-	bool	is_full;
-
-	if (!try_to_eat(philo))
+	pthread_mutex_lock(&philo->data->forks_mut[philo->forks[0]]);
+	write_status(philo, false, "has taken a fork");
+	pthread_mutex_lock(&philo->data->forks_mut[philo->forks[1]]);
+	write_status(philo, false, "has taken a fork");
+	pthread_mutex_lock(&philo->last_meal_time_mut);
+	philo->last_meal_time = get_current_time();
+	pthread_mutex_unlock(&philo->last_meal_time_mut);
+	write_status(philo, false, "is eating");
+	ft_usleep(philo->data->time_to_eat, philo->data);
+	if (!sim_must_stop(philo->data))
 	{
-		ft_usleep(200);
-		return (1);
+		pthread_mutex_lock(&philo->last_meal_time_mut);
+		philo->meals_eaten++;
+		pthread_mutex_unlock(&philo->last_meal_time_mut);
 	}
-	pthread_mutex_lock(philo->last_meal_mut);
-	is_full = philo->is_full;
-	pthread_mutex_unlock(philo->last_meal_mut);
-	if (is_full)
-		return (0);
-	print_status(philo, "is sleeping");
-	ft_usleep(philo->time_to_sleep * 1000);
-	if (!check_simulation_stop(philo))
-		print_status(philo, "is thinking");
-	return (1);
+	write_status(philo, false, "is sleeping");
+	pthread_mutex_unlock(&philo->data->forks_mut[philo->forks[1]]);
+	pthread_mutex_unlock(&philo->data->forks_mut[philo->forks[0]]);
+	ft_usleep(philo->data->time_to_sleep, philo->data);
 }
 
-/*
-** Main routine for philosopher threads
-** @param arg: Void pointer to philosopher structure
-** @return: NULL pointer when thread ends
-*/
-void	*philosopher_routine(void *arg)
+void	*philo_routine(void *arg)
 {
-	t_philosopher	*philo;
+	t_philo	*philo;
 
-	philo = (t_philosopher *)arg;
-	if (!philo)
-		return (NULL);
-	wait_for_start(philo);
-	handle_initial_delay(philo);
-	while (!check_simulation_stop(philo))
+	philo = (t_philo *)arg;
+	pthread_mutex_lock(&philo->last_meal_time_mut);
+	philo->last_meal_time = philo->data->time_zero;
+	pthread_mutex_unlock(&philo->last_meal_time_mut);
+	wait_for_start(philo->data->time_zero);
+	if (philo->data->num_philos == 1)
+		return (handle_single_philo(philo));
+	else if (philo->id % 2)
+		think(philo, true);
+	while (!sim_must_stop(philo->data))
 	{
-		if (!handle_philosopher_actions(philo))
-			break ;
-		ft_usleep(200);
+		eat_sleep_repeat(philo);
+		think(philo, false);
 	}
 	return (NULL);
 }

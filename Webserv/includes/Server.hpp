@@ -24,10 +24,10 @@ class Server
 {
 	private:
 		HttpConfig httpConfig;
-		std::map<int, ClientState> clientStates;
+		std::map<int, ClientState> clientStates; // Maps each client socket file descriptor (fd) to its current state.
 		std::map<int, ServerConfig> serverConfigs;
-		std::vector<struct pollfd> fds;
-		std::vector<int> server_fds;
+		std::vector<struct pollfd> fds; // Holds all file descriptors monitored by poll()
+		std::vector<int> server_fds; // Keeps track of all listening server sockets
 
 		void disconectClient(int fd); 
 		bool checkServerFd(int fd);

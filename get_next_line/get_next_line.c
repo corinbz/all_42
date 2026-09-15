@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corin <corin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ccraciun <ccraciun@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 14:35:28 by corin             #+#    #+#             */
-/*   Updated: 2023/11/19 14:35:49 by corin            ###   ########.fr       */
+/*   Updated: 2023/12/12 15:08:43 by ccraciun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ with a \n character.
 */
 
 #include "get_next_line.h"
-#include <stdio.h>
-#include <unistd.h>
 
 char	*get_before_nl(char *s)
 {
@@ -65,7 +63,7 @@ char	*get_after_nl(char *s)
 
 	i = 0;
 	j = 0;
-	while (s[j] && s)
+	while (s[j])
 		j++;
 	while (s[i] != '\0' && s[i] != '\n')
 		i++;
@@ -84,7 +82,7 @@ char	*get_after_nl(char *s)
 }
 
 // reads the text file untill it finds newline or EOF
-void	read_line(int fd, char **text, char **tmp)
+int	read_line(int fd, char **text, char **tmp)
 {
 	int		bytes_read;
 	char	*buf;
@@ -92,24 +90,25 @@ void	read_line(int fd, char **text, char **tmp)
 	bytes_read = 1;
 	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buf)
-		return ;
+		return (ft_free_all (text, 0, 0), 1);
 	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, buf, BUFFER_SIZE);
 		if (bytes_read == -1)
-		{
-			ft_free_all(&buf, text, tmp);
-			return ;
-		}
+			return (ft_free_all(&buf, text, tmp), 1);
 		buf[bytes_read] = '\0';
 		*tmp = ft_strdup(*text);
-		ft_free_all(text, 0, 0);
+		if (*tmp == NULL)
+			return (ft_free_all (&buf, text, tmp), 1);
+		ft_free_all (text, 0, 0);
 		*text = join_strs(*tmp, buf);
+		if (*text == NULL)
+			return (ft_free_all(&buf, tmp, text), 1);
 		ft_free_all(tmp, 0, 0);
 		if (contains_newline(*text))
 			break ;
 	}
-	ft_free_all(&buf, 0, 0);
+	return (ft_free_all (&buf, 0, 0), 0);
 }
 
 // parses the text and returns the string before newline
@@ -119,9 +118,15 @@ char	*parse_line(char **text, char **tmp)
 	char	*chars_before_nl;
 
 	*tmp = ft_strdup(*text);
+	if (*tmp == NULL)
+		return (ft_free_all(0, text, 0), (char *)1);
 	ft_free_all(text, 0, 0);
 	*text = get_after_nl(*tmp);
+	if (*text == NULL)
+		return (ft_free_all(text, tmp, 0), (char *)1);
 	chars_before_nl = get_before_nl(*tmp);
+	if (chars_before_nl == NULL)
+		return (ft_free_all(text, tmp, 0), (char *)1);
 	ft_free_all(tmp, 0, 0);
 	return (chars_before_nl);
 }
@@ -136,24 +141,32 @@ char	*get_next_line(int fd)
 	line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	read_line(fd, &text, &tmp);
-	if (text != NULL && *text != '\0')
-		line = parse_line(&text, &tmp);
-	if (!line || *line == '\0')
+	if (!(read_line (fd, &text, &tmp)))
 	{
-		ft_free_all(&text, &line, &tmp);
-		return (NULL);
+		if (text != NULL && *text != '\0')
+		{
+			line = parse_line (&text, &tmp);
+			if (line == (char *)1)
+				return (NULL);
+		}
+		if (!line || *line == '\0')
+		{
+			ft_free_all(&text, &line, &tmp);
+			return (NULL);
+		}
 	}
 	return (line);
 }
 
-// int main(int argc, char *argv[]) {
-//   int fd = open("text.txt", O_RDONLY);
+// int main() {
+//   int fd = open("test.txt", O_RDONLY);
 //   char *line;
-//   while ((line = get_next_line(fd)) != NULL) {
-//     printf("%s", line);
-//     free(line);
-//   }
+//   line = get_next_line(fd);
+// 	printf("%s", line);
+// 	free(line);
+//   line = get_next_line(fd);
+//   	printf("%s", line);
+// 	free(line);
 //   close(fd);
 //   return (0);
 // }
