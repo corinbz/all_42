@@ -19,7 +19,9 @@ UNL = "\033[4m"
 ######## ------------- ########
 
 NAME = webserv
-CC = c++ -std=c++11 -fsanitize=address -g -Wall -Wextra -Werror
+CXX = c++
+CXXFLAGS = -std=c++11 -Wall -Wextra -Werror -O2
+CC = $(CXX) $(CXXFLAGS)
 
 SRC = \
 	./src/main.cpp \
@@ -54,4 +56,8 @@ fclean: clean
 
 re:	fclean all
 
-.PHONY: all clean fclean re
+# Debug build: no optimisation, symbols, AddressSanitizer
+debug: CXXFLAGS = -std=c++11 -Wall -Wextra -Werror -O0 -g -fsanitize=address
+debug: fclean $(NAME)
+
+.PHONY: all clean fclean re debug

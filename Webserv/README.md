@@ -11,6 +11,8 @@ file, static file serving, uploads, directory listing, redirects and CGI.
 ## Usage
 
 ```sh
+make            # release build (-O2)
+make debug      # -O0 -g -fsanitize=address
 ./webserv [config_file]   # defaults to a built-in config if omitted
 ```
 
