@@ -1,0 +1,8 @@
+*.o
+*.a
+*.d
+.env
+.env.*
+**/secrets/
+.DS_Store
+.vscode/
