@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>POST Page</title>
+	<link rel="stylesheet" href="../styles.css">
+	<link rel="icon" type="image/png" href="../coding.png">
+</head>
+<body class="background">
+	<h1>POST</h1>
+	<div class="button-container">
+		<a onclick="window.history.back()" class="button-link">Back</a>
+	</div>
+	<form action="/uploads/" method="post" enctype="multipart/form-data" class="form-container">
+		<input type="file" id="fileUpload" name="file" required class="form-input">
+		<input type="submit" value="Upload File" class="button-link submit-button">
+	</form>
+</body>
+</html>

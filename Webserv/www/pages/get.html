@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>GET</title>
+	<link rel="stylesheet" href="../styles.css">
+	<link rel="icon" type="image/png" href="../coding.png">
+</head>
+<script>
+	const getImage = () => {
+	console.log('GET request initiated');
+	fetch('/get-images')
+		.then(response => response.blob())
+		.then(blob => {
+			const imageUrl = URL.createObjectURL(blob);
+			const img = document.getElementById('displayedImage');
+			img.src = imageUrl;
+			img.onload = () => {
+				img.style.display = 'block';
+			};
+		})
+		.catch(error => {
+			console.error('Error:', error)
+			alert('Error: ' + error.message)
+		});
+};
+
+const goBack = () => {
+	window.history.back();
+};
+</script>
+
+<body class="background">
+
+<h1>GET</h1>
+
+<div class="button-container">
+	<a onclick="goBack()" class="button-link">Back</a>
+	<a onclick="getImage()" class="button-link">GET IMAGE</a>
+</div>
+
+<div class="image-container">
+    <img id="displayedImage" class="image" style="display: none; max-width: 100%; height: auto; border-radius: 10px;">
+</div>
+
+</body>
+</html>
