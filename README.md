@@ -9,6 +9,14 @@ A single repository collecting every project from the 42 School common
 core. Each folder below is independent, with its own Makefile and README.
 They're grouped here for one clean portfolio history.
 
+```sh
+git clone --recurse-submodules https://github.com/corinbz/all_42.git
+```
+
+[MLX42](https://github.com/codam-coding-college/MLX42) (used by so_long and
+Cub3D) is a pinned git submodule; the Makefiles run
+`git submodule update --init` if it is missing.
+
 Every project is compiled with `-Wall -Wextra -Werror` on every push
 (see [`.github/scripts/build.sh`](.github/scripts/build.sh) to run the same
 build locally).

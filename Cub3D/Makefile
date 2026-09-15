@@ -50,6 +50,7 @@ NC=\033[0m # No Color
 all: libmlx $(NAME)
 
 libmlx:
+	@test -f $(LIBMLX)/CMakeLists.txt || git submodule update --init $(LIBMLX)
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
 
 $(OBJDIR)/%.o: src/%.c

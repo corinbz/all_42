@@ -11,6 +11,7 @@ reach the exit in the fewest moves possible.
 ## Usage
 
 ```sh
+make    # fetches the MLX42 submodule and builds it with CMake on first run
 ./so_long maps/map.ber
 ```
 

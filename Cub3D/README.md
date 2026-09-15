@@ -12,6 +12,7 @@ real time from a movable first-person camera, using
 ## Usage
 
 ```sh
+make    # fetches the MLX42 submodule and builds it with CMake on first run
 ./cub3d assets/maps/subject_map.cub
 ```
 
