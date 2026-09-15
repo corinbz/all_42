@@ -3,10 +3,15 @@
 ![42](https://img.shields.io/badge/42-cursus-000000?style=flat-square&logo=42&logoColor=white)
 ![C](https://img.shields.io/badge/language-C-blue?style=flat-square)
 ![C++](https://img.shields.io/badge/language-C%2B%2B11-blue?style=flat-square)
+[![build](https://github.com/corinbz/all_42/actions/workflows/build.yml/badge.svg)](https://github.com/corinbz/all_42/actions/workflows/build.yml)
 
 A single repository collecting every project from the 42 School common
 core. Each folder below is independent, with its own Makefile and README.
 They're grouped here for one clean portfolio history.
+
+Every project is compiled with `-Wall -Wextra -Werror` on every push
+(see [`.github/scripts/build.sh`](.github/scripts/build.sh) to run the same
+build locally).
 
 ## Piscine / early C
 

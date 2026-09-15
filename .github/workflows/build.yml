@@ -1,0 +1,47 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - Libft
+          - get_next_line
+          - ft_printf
+          - pipex
+          - push_swap
+          - Philosophers
+          - Minishell
+          - Webserv
+          - CPP00
+          - CPP01
+          - CPP02
+          - CPP03
+          - CPP04
+          - CPP05
+          - CPP06
+          - CPP07
+          - CPP08
+          - CPP09
+          - so_long
+          - Cub3D
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install readline
+        if: matrix.project == 'Minishell'
+        run: sudo apt-get update && sudo apt-get install -y libreadline-dev
+
+      - name: Install GLFW (for MLX42)
+        if: matrix.project == 'Cub3D' || matrix.project == 'so_long'
+        run: sudo apt-get update && sudo apt-get install -y libglfw3-dev
+
+      - name: Build ${{ matrix.project }}
+        run: .github/scripts/build.sh ${{ matrix.project }}
