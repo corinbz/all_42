@@ -24,9 +24,9 @@ bool Contact::isValidPhoneNumber(const std::string &number) {
   size_t start = 0;
   if (number[0] == '+')
     start = 1;
-  for(char c: number)
+  for (size_t i = start; i < number.size(); ++i)
   {
-	if(!isdigit(c))
+	if(!isdigit(number[i]))
 		return false;
   }
   return true;
